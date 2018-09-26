@@ -1,7 +1,6 @@
-Que parezca un juego no retro (cosa de @Dani)
-Plataformas
-Undertale pelea final, lo de las espadas?
+"""""""Splatoon"""""""
+- Bombas para pintar el suelo
+- Disparos
+- Colores: Rojo, amarillo, azul, verde (básicos)
 
-IDEAS IA:
-	Típicos enemigos que van hacia el personaje
-	Portal en 8 bits
+- 4 jugadores: 3 son enemigos
