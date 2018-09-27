@@ -8,6 +8,7 @@
 .area _CODE
 
 .include "cpctelera.h.s"
+.include "cpcglbl.h.s"
 .include "struct.h.s"
 ;;======================================================================
 ;;======================================================================
@@ -36,12 +37,19 @@ dw_draw::
    ld     b,   _y(ix)      ;; y  [0-199]
    call cpct_getScreenPtr_asm
 
+   ;; SIN SPRITE
    ex    de,   hl          ;; Apunta a la posicion x,y
    ld     a,   _col(ix)    ;; Código de color
    ld     c,   _w(ix)      ;; Ancho
    ld     b,   _h(ix)      ;; Alto
    call cpct_drawSolidBox_asm
 
+   ;; CON SPRITE
+   ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
+   ;; (2B DE) memory	Destination video memory pointer
+   ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
+   ;; (1B B ) height	Sprite Height in bytes (>0)
+   ;; cpct_drawSprite_asm
    ret
 
 ;;======================================================================

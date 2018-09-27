@@ -22,9 +22,9 @@ _CODE                               00004000    00000128 =         296. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00004009  hero_draw                          
-     00004010  dw_draw                            
-     0000402A  _main                              
+     00004009  hero_draw                          cpct_keyboard
+     00004010  dw_draw                            cpct_keyboard
+     0000402A  _main                              cpct_keyboard
      0000403A  cpct_setVideoMode_asm              cpct_video
      00004047  _cpct_waitVSYNC                    cpct_video
      00004047  cpct_waitVSYNC_asm                 cpct_video
@@ -42,10 +42,10 @@ Files Linked                              [ module(s) ]
 
 obj/struct.h.rel                          [  ]
 obj/hero.h.rel                            [  ]
-obj/cpctelera.h.rel                       [  ]
-obj/hero.rel                              [  ]
-obj/drawable.rel                          [  ]
-obj/main.rel                              [  ]
+obj/cpcglbl.h.rel                         [  ]
+obj/hero.rel                              [ cpct_keyboard ]
+obj/drawable.rel                          [ cpct_keyboard ]
+obj/main.rel                              [ cpct_keyboard ]
 
 
 Libraries Linked                          [ object file ]

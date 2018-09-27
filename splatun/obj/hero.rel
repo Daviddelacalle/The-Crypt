@@ -1,5 +1,6 @@
 XL2
 H 2 areas 8 global symbols
+M cpct_keyboard
 S .__.ABS. Def0000
 S dw_draw Ref0000
 S cpct_waitVSYNC_asm Ref0000

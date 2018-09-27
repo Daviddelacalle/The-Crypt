@@ -8,6 +8,7 @@
 .area _CODE
 
 .include "cpctelera.h.s"
+.include "cpcglbl.h.s"
 .include "struct.h.s"
 
 .globl dw_draw

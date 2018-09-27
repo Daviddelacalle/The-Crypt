@@ -6,6 +6,7 @@
 ;;====================================
 
 .include "cpctelera.h.s"
+.include "cpcglbl.h.s"
 .include "hero.h.s"
 
 ;; Punto de entrada de la funcion main

@@ -9,7 +9,7 @@
 -l z80
 obj/struct.h.rel
 obj/hero.h.rel
-obj/cpctelera.h.rel
+obj/cpcglbl.h.rel
 obj/hero.rel
 obj/drawable.rel
 obj/main.rel
