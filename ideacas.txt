@@ -1,6 +1,0 @@
-"""""""Splatoon"""""""
-- Bombas para pintar el suelo
-- Disparos
-- Colores: Rojo, amarillo, azul, verde (básicos)
-
-- 4 jugadores: 3 son enemigos

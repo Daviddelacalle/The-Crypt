@@ -1,0 +1,23 @@
+"""""""Splatoon"""""""
+- Bombas para pintar el suelo
+- Disparos
+- Colores: Rojo, amarillo, azul, verde (básicos)
+
+- 4 jugadores: 3 son enemigos
+
+TODO:
+   MÍNIMO:
+   [ ]   Scroll mapa
+   [ ]   Movimiento personajes
+   [ ]   Disparos
+   [ ]   Bombas de colorines que pinten
+   [ ]   Reinicio de partida
+
+   FULL GAME:
+   [ ]   Colisión con obstáculos
+   [ ]   % color del mapa     (OPT)
+   [ ]   Power ups            (OPT)
+   [ ]   Menú
+   [ ]   Sprites
+   [ ]   Música
+   [ ]   Logo/Carátula
