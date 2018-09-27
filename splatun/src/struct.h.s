@@ -11,11 +11,17 @@ _name:
 ;; Aqui falta saber el tamanyo de la entidad
 .endm
 
+;; Entidad movable
+.macro DefineMovableEnt _name, _vx, _vy
+_name:
+   .db   _vx, _vy    ;; Variables de la velocidad
+.endm
+
 ;; Entidad heroe/enemigo
 .macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
 _name:
    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
-   .db   _vx, _vy    ;; Variables de la velocidad
+   DefineMovableEnt _name'mv, _vx, _vy                            ;;'
 ;; Si no tiene sprite
    .db   _col        ;; Color
 ;; Si tiene sprite

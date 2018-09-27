@@ -9,32 +9,33 @@ Area                                    Addr        Size        Decimal Bytes (A
       -----  --------------------------------   ------------------------
      00000000  .__.ABS.                           cpct_video
      00000000  l__DATA                         
-     00000128  l__CODE                         
+     00000129  l__CODE                         
      00004000  s__CODE                         
-     00004128  s__DATA                         
+     00004129  s__DATA                         
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    00000128 =         296. bytes (REL,CON)
+_CODE                               00004000    00000129 =         297. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00004009  hero_draw                          cpct_keyboard
-     00004010  dw_draw                            cpct_keyboard
+     00004000  dw_draw                            cpct_keyboard
+     00004023  hero_draw                          cpct_keyboard
      0000402A  _main                              cpct_keyboard
-     0000403A  cpct_setVideoMode_asm              cpct_video
-     00004047  _cpct_waitVSYNC                    cpct_video
-     00004047  cpct_waitVSYNC_asm                 cpct_video
-     0000404F  _cpct_disableFirmware              cpct_firmware
-     0000404F  _cpct_removeInterruptHandler       cpct_firmware
-     0000404F  cpct_disableFirmware_asm           cpct_firmware
-     0000404F  cpct_removeInterruptHandler_asm    cpct_firmware
-     0000405F  cpct_drawSolidBox_asm              cpct_sprites
-     0000410B  _cpct_mode_rom_status              cpct_firmware
-     0000410C  cpct_getScreenPtr_asm              cpct_video
+     0000403A  mv_move                            cpct_keyboard
+     0000403B  cpct_setVideoMode_asm              cpct_video
+     00004048  _cpct_waitVSYNC                    cpct_video
+     00004048  cpct_waitVSYNC_asm                 cpct_video
+     00004050  _cpct_disableFirmware              cpct_firmware
+     00004050  _cpct_removeInterruptHandler       cpct_firmware
+     00004050  cpct_disableFirmware_asm           cpct_firmware
+     00004050  cpct_removeInterruptHandler_asm    cpct_firmware
+     00004060  cpct_drawSolidBox_asm              cpct_sprites
+     0000410C  _cpct_mode_rom_status              cpct_firmware
+     0000410D  cpct_getScreenPtr_asm              cpct_video
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 
@@ -43,9 +44,11 @@ Files Linked                              [ module(s) ]
 obj/struct.h.rel                          [  ]
 obj/hero.h.rel                            [  ]
 obj/cpcglbl.h.rel                         [  ]
-obj/hero.rel                              [ cpct_keyboard ]
 obj/drawable.rel                          [ cpct_keyboard ]
+obj/hero.rel                              [ cpct_keyboard ]
+obj/drawable.h.rel                        [  ]
 obj/main.rel                              [ cpct_keyboard ]
+obj/movable.rel                           [ cpct_keyboard ]
 
 
 Libraries Linked                          [ object file ]

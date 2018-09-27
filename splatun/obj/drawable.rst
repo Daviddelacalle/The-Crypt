@@ -2538,28 +2538,34 @@ Hexadecimal [16-Bits]
                              11 ;; Aqui falta saber el tamanyo de la entidad
                              12 .endm
                              13 
-                             14 ;; Entidad heroe/enemigo
-                             15 .macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             14 ;; Entidad movable
+                             15 .macro DefineMovableEnt _name, _vx, _vy
                              16 _name:
-                             17    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
-                             18    .db   _vx, _vy    ;; Variables de la velocidad
-                             19 ;; Si no tiene sprite
-                             20    .db   _col        ;; Color
-                             21 ;; Si tiene sprite
-                             22 ;;.dw   _spr
-                             23    .dw   _upd        ;; Puntero a la funcion de update
-                             24 
-                             25 ;; Aqui falta saber el tamanyo de la entidad
-                             26 .endm
-                             27 
-                             28 ;;;;;;;;;;;;;;;;;;;
-                             29 ;; Constantes
-                             30 ;;;;;;;;;;;;;;;;;;;
-                     0001    31    _x = 0      _y = 1
-                     0003    32    _w = 2      _h = 3
-                     0005    33   _vx = 4     _vy = 5
-                     0006    34  _col = 6
-                     0008    35 _up_l = 7   _up_h = 8
+                             17    .db   _vx, _vy    ;; Variables de la velocidad
+                             18 .endm
+                             19 
+                             20 ;; Entidad heroe/enemigo
+                             21 .macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             22 _name:
+                             23    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
+                             24    DefineMovableEnt _name'mv, _vx, _vy                            ;;'
+                             25 ;; Si no tiene sprite
+                             26    .db   _col        ;; Color
+                             27 ;; Si tiene sprite
+                             28 ;;.dw   _spr
+                             29    .dw   _upd        ;; Puntero a la funcion de update
+                             30 
+                             31 ;; Aqui falta saber el tamanyo de la entidad
+                             32 .endm
+                             33 
+                             34 ;;;;;;;;;;;;;;;;;;;
+                             35 ;; Constantes
+                             36 ;;;;;;;;;;;;;;;;;;;
+                     0001    37    _x = 0      _y = 1
+                     0003    38    _w = 2      _h = 3
+                     0005    39   _vx = 4     _vy = 5
+                     0006    40  _col = 6
+                     0008    41 _up_l = 7   _up_h = 8
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
@@ -2584,20 +2590,20 @@ Hexadecimal [16-Bits]
                              29 ;; ENTRADA: IX -> Puntero a entidad
                              30 ;; DESTRUYE: AF, BC, DE, HL
                              31 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4010                      32 dw_draw::
+   4000                      32 dw_draw::
                              33    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
                              34 
-   4010 11 00 C0      [10]   35    ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-   4013 DD 4E 00      [19]   36    ld     c,   _x(ix)      ;; x  [0-79]
-   4016 DD 46 01      [19]   37    ld     b,   _y(ix)      ;; y  [0-199]
-   4019 CD 0C 41      [17]   38    call cpct_getScreenPtr_asm
+   4000 11 00 C0      [10]   35    ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
+   4003 DD 4E 00      [19]   36    ld     c,   _x(ix)      ;; x  [0-79]
+   4006 DD 46 01      [19]   37    ld     b,   _y(ix)      ;; y  [0-199]
+   4009 CD 0D 41      [17]   38    call cpct_getScreenPtr_asm
                              39 
                              40    ;; SIN SPRITE
-   401C EB            [ 4]   41    ex    de,   hl          ;; Apunta a la posicion x,y
-   401D DD 7E 06      [19]   42    ld     a,   _col(ix)    ;; Código de color
-   4020 DD 4E 02      [19]   43    ld     c,   _w(ix)      ;; Ancho
-   4023 DD 46 03      [19]   44    ld     b,   _h(ix)      ;; Alto
-   4026 CD 5F 40      [17]   45    call cpct_drawSolidBox_asm
+   400C EB            [ 4]   41    ex    de,   hl          ;; Apunta a la posicion x,y
+   400D DD 7E 06      [19]   42    ld     a,   _col(ix)    ;; Código de color
+   4010 DD 4E 02      [19]   43    ld     c,   _w(ix)      ;; Ancho
+   4013 DD 46 03      [19]   44    ld     b,   _h(ix)      ;; Alto
+   4016 CD 60 40      [17]   45    call cpct_drawSolidBox_asm
                              46 
                              47    ;; CON SPRITE
                              48    ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
@@ -2605,7 +2611,7 @@ Hexadecimal [16-Bits]
                              50    ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
                              51    ;; (1B B ) height	Sprite Height in bytes (>0)
                              52    ;; cpct_drawSprite_asm
-   4029 C9            [10]   53    ret
+   4019 C9            [10]   53    ret
                              54 
                              55 ;;======================================================================
                              56 ;;======================================================================

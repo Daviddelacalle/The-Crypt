@@ -3,19 +3,21 @@ Hexadecimal [16-Bits]
 
 
 
-                              1 .area _DATA
-                              2 .area _CODE
-                              3 
-                              4 ;;====================================
-                              5 ;; INCLUDES
-                              6 ;;====================================
-                              7 
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              3 ;; MODELO PARA CADA ARCHIVO .s QUE SE CREE
+                              4 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              5 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              6 
+                              7 .area _DATA
+                              8 .area _CODE
+                              9 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 
 
-                              8 .include "cpctelera.h.s"
+                             10 .include "cpctelera.h.s"
                               1 ;;-----------------------------LICENSE NOTICE------------------------------------
                               2 ;;  This file is part of CPCtelera: An Amstrad CPC Game Engine
                               3 ;;  Copyright (C) 2017 ronaldo / Fremos / Cheesetea / ByteRealms (@FranGallegoBR)
@@ -2507,45 +2509,39 @@ Hexadecimal [16-Bits]
 
 
 
-                              9 .include "cpcglbl.h.s"
-                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                              2 ;; Cabecera con funciones de cpctelera ;;
-                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                              4 
-                              5 .globl cpct_getScreenPtr_asm
-                              6 .globl cpct_drawSolidBox_asm
-                              7 .globl cpct_disableFirmware_asm
-                              8 .globl cpct_setVideoMode_asm
-                              9 .globl cpct_waitVSYNC_asm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
-Hexadecimal [16-Bits]
-
-
-
-                             10 .include "hero.h.s"
-                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                              2 ;; Cabecera con funciones de hero ;;
-                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                              4 
-                              5 .globl hero_draw
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
-Hexadecimal [16-Bits]
-
-
-
-                             11 
-                             12 ;; Punto de entrada de la funcion main
-   402A                      13 _main::
-                             14    ;; Deshabilitar el firmware
-   402A CD 50 40      [17]   15    call cpct_disableFirmware_asm
+                             11 ;;======================================================================
+                             12 ;;======================================================================
+                             13 ;; DATOS PRIVADOS
+                             14 ;;======================================================================
+                             15 ;;======================================================================
                              16 
-                             17    ;; Cambiar el VideoMode a 0
-   402D 0E 00         [ 7]   18    ld    c, #0
-   402F CD 3B 40      [17]   19    call cpct_setVideoMode_asm
-                             20 
-                             21 ;; Comienza el bucle del juego
-   4032                      22 loop:
-   4032 CD 23 40      [17]   23    call hero_draw
-                             24 
-   4035 CD 48 40      [17]   25    call cpct_waitVSYNC_asm
-   4038 18 F8         [12]   26 jr loop
+                             17 
+                             18 ;;======================================================================
+                             19 ;;======================================================================
+                             20 ;; FUNCIONES PUBLICAS
+                             21 ;;======================================================================
+                             22 ;;======================================================================
+   403A                      23 mv_move::
+                             24    ;; Manejo de eventos con teclado
+                             25    ;; call mv_checkKeyboard
+                             26 
+                             27    ;; Ahora si a moverse se ha dicho
+                             28    ;; call mv_moveDir
+   403A C9            [10]   29    ret
+                             30 
+                             31 ;;======================================================================
+                             32 ;;======================================================================
+                             33 ;; FUNCIONES PRIVADAS
+                             34 ;;======================================================================
+                             35 ;;======================================================================
+                             36 
+                             37 
+                             38 
+                             39 
+                             40 
+                             41 
+                             42 
+                             43 
+                             44 
+                             45 
+                             46 

@@ -16,25 +16,31 @@ Hexadecimal [16-Bits]
                              11 ;; Aqui falta saber el tamanyo de la entidad
                              12 .endm
                              13 
-                             14 ;; Entidad heroe/enemigo
-                             15 .macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             14 ;; Entidad movable
+                             15 .macro DefineMovableEnt _name, _vx, _vy
                              16 _name:
-                             17    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
-                             18    .db   _vx, _vy    ;; Variables de la velocidad
-                             19 ;; Si no tiene sprite
-                             20    .db   _col        ;; Color
-                             21 ;; Si tiene sprite
-                             22 ;;.dw   _spr
-                             23    .dw   _upd        ;; Puntero a la funcion de update
-                             24 
-                             25 ;; Aqui falta saber el tamanyo de la entidad
-                             26 .endm
-                             27 
-                             28 ;;;;;;;;;;;;;;;;;;;
-                             29 ;; Constantes
-                             30 ;;;;;;;;;;;;;;;;;;;
-                     0001    31    _x = 0      _y = 1
-                     0003    32    _w = 2      _h = 3
-                     0005    33   _vx = 4     _vy = 5
-                     0006    34  _col = 6
-                     0008    35 _up_l = 7   _up_h = 8
+                             17    .db   _vx, _vy    ;; Variables de la velocidad
+                             18 .endm
+                             19 
+                             20 ;; Entidad heroe/enemigo
+                             21 .macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             22 _name:
+                             23    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
+                             24    DefineMovableEnt _name'mv, _vx, _vy                            ;;'
+                             25 ;; Si no tiene sprite
+                             26    .db   _col        ;; Color
+                             27 ;; Si tiene sprite
+                             28 ;;.dw   _spr
+                             29    .dw   _upd        ;; Puntero a la funcion de update
+                             30 
+                             31 ;; Aqui falta saber el tamanyo de la entidad
+                             32 .endm
+                             33 
+                             34 ;;;;;;;;;;;;;;;;;;;
+                             35 ;; Constantes
+                             36 ;;;;;;;;;;;;;;;;;;;
+                     0001    37    _x = 0      _y = 1
+                     0003    38    _w = 2      _h = 3
+                     0005    39   _vx = 4     _vy = 5
+                     0006    40  _col = 6
+                     0008    41 _up_l = 7   _up_h = 8

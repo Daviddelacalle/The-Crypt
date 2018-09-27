@@ -10,8 +10,10 @@
 obj/struct.h.rel
 obj/hero.h.rel
 obj/cpcglbl.h.rel
-obj/hero.rel
 obj/drawable.rel
+obj/hero.rel
+obj/drawable.h.rel
 obj/main.rel
+obj/movable.rel
 
 -e
