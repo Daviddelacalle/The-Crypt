@@ -1,23 +1,28 @@
-"""""""Splatoon"""""""
-- Bombas para pintar el suelo
-- Disparos
-- Colores: Rojo, amarillo, azul, verde (básicos)
-
-- 4 jugadores: 3 son enemigos
+NOTA:
+   [x] -> ACABADO
+   [-] -> EN PROCESO
 
 TODO:
    MÍNIMO:
-   [ ]   Scroll mapa
-   [ ]   Movimiento personajes
-   [ ]   Disparos
-   [ ]   Bombas de colorines que pinten
-   [ ]   Reinicio de partida
+   [-]   Scroll mapa                      DANNY
+   [ ]   Movimiento personajes            DD
+   [ ]   HUD                              DD
+   [ ]   Disparos                         PABLO
+   [ ]   Reinicio de partida              PABLO
 
    FULL GAME:
    [ ]   Colisión con obstáculos
-   [ ]   % color del mapa     (OPT)
-   [ ]   Power ups            (OPT)
    [ ]   Menú
    [ ]   Sprites
    [ ]   Música
    [ ]   Logo/Carátula
+
+   MUY OPCIONAL:
+   [ ]   Bombas de colorines que pinten
+   [ ]   Power ups
+   [ ]   % color del mapa actual
+
+   NECESARIO:
+   [-]   "Herencia de clases"             (Tipo lo de drawable)
+   [ ]   Doble buffer                     DANNY
+   [ ]   Optimizar a saco                 TODOS O NOS VAMOS A LA MIERDA

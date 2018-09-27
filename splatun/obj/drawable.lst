@@ -1,0 +1,123 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+
+
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              3 ;; TODO OBJETO DIBUJABLE DEBE 'HEREDAR' DE drawable.s
+                              4 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              5 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              6 
+                              7 .area _DATA
+                              8 .area _CODE
+                              9 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+
+
+                             10 .include "cpctelera.h.s"
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;; Cabecera con funciones de cpctelera ;;
+                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              4 
+                              5 .globl cpct_getScreenPtr_asm
+                              6 .globl cpct_drawSolidBox_asm
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+Hexadecimal [16-Bits]
+
+
+
+                             11 .include "struct.h.s"
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;; DEFINICION DE LAS MACROS PARA LA CREACION DE ENTIDADES ;;
+                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              4 
+                              5 ;; Entidad drawable
+                              6 .macro DefineDrawableEnt _name, _x, _y, _w, _h
+                              7 _name:
+                              8    .db   _x, _y      ;; Posicion    (x,y)
+                              9    .db   _w, _h      ;; Dimensiones (w,h)
+                             10 
+                             11 ;; Aqui falta saber el tamanyo de la entidad
+                             12 .endm
+                             13 
+                             14 ;; Entidad heroe/enemigo
+                             15 .macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             16 _name:
+                             17    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
+                             18    .db   _vx, _vy    ;; Variables de la velocidad
+                             19 ;; Si no tiene sprite
+                             20    .db   _col        ;; Color
+                             21 ;; Si tiene sprite
+                             22 ;;.dw   _spr
+                             23    .dw   _upd        ;; Puntero a la funcion de update
+                             24 
+                             25 ;; Aqui falta saber el tamanyo de la entidad
+                             26 .endm
+                             27 
+                             28 ;;;;;;;;;;;;;;;;;;;
+                             29 ;; Constantes
+                             30 ;;;;;;;;;;;;;;;;;;;
+                     0001    31    _x = 0      _y = 1
+                     0003    32    _w = 2      _h = 3
+                     0005    33   _vx = 4     _vy = 5
+                     0006    34  _col = 6
+                     0008    35 _up_l = 7   _up_h = 8
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+Hexadecimal [16-Bits]
+
+
+
+                             12 ;;======================================================================
+                             13 ;;======================================================================
+                             14 ;; DATOS PRIVADOS
+                             15 ;;======================================================================
+                             16 ;;======================================================================
+                             17 
+                             18 
+                             19 ;;======================================================================
+                             20 ;;======================================================================
+                             21 ;; FUNCIONES PUBLICAS
+                             22 ;;======================================================================
+                             23 ;;======================================================================
+                             24 
+                             25 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             26 ;; DIBUJADO DE UNA ENTIDAD
+                             27 ;; _______________________
+                             28 ;; ENTRADA: IX -> Puntero a entidad
+                             29 ;; DESTRUYE: AF, BC, DE, HL
+                             30 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   0000                      31 dw_draw::
+                             32    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
+                             33 
+   0000 11 00 C0      [10]   34    ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
+   0003 DD 4E 00      [19]   35    ld     c,   _x(ix)      ;; x  [0-79]
+   0006 DD 46 01      [19]   36    ld     b,   _y(ix)      ;; y  [0-199]
+   0009 CD 00 00      [17]   37    call cpct_getScreenPtr_asm
+                             38 
+   000C EB            [ 4]   39    ex    de,   hl          ;; Apunta a la posicion x,y
+   000D DD 7E 06      [19]   40    ld     a,   _col(ix)    ;; Código de color
+   0010 DD 4E 02      [19]   41    ld     c,   _w(ix)      ;; Ancho
+   0013 DD 46 03      [19]   42    ld     b,   _h(ix)      ;; Alto
+   0016 CD 00 00      [17]   43    call cpct_drawSolidBox_asm
+                             44 
+   0019 C9            [10]   45    ret
+                             46 
+                             47 ;;======================================================================
+                             48 ;;======================================================================
+                             49 ;; FUNCIONES PRIVADAS
+                             50 ;;======================================================================
+                             51 ;;======================================================================
+                             52 
+                             53 
+                             54 
+                             55 
+                             56 
+                             57 
+                             58 
+                             59 
+                             60 
+                             61 
+                             62 

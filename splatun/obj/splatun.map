@@ -1,0 +1,73 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           cpct_video
+     00000000  l__DATA                         
+     00000128  l__CODE                         
+     00004000  s__CODE                         
+     00004128  s__DATA                         
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00000128 =         296. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004009  hero_draw                          
+     00004010  dw_draw                            
+     0000402A  _main                              
+     0000403A  cpct_setVideoMode_asm              cpct_video
+     00004047  _cpct_waitVSYNC                    cpct_video
+     00004047  cpct_waitVSYNC_asm                 cpct_video
+     0000404F  _cpct_disableFirmware              cpct_firmware
+     0000404F  _cpct_removeInterruptHandler       cpct_firmware
+     0000404F  cpct_disableFirmware_asm           cpct_firmware
+     0000404F  cpct_removeInterruptHandler_asm    cpct_firmware
+     0000405F  cpct_drawSolidBox_asm              cpct_sprites
+     0000410B  _cpct_mode_rom_status              cpct_firmware
+     0000410C  cpct_getScreenPtr_asm              cpct_video
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+
+Files Linked                              [ module(s) ]
+
+obj/struct.h.rel                          [  ]
+obj/hero.h.rel                            [  ]
+obj/cpctelera.h.rel                       [  ]
+obj/hero.rel                              [  ]
+obj/drawable.rel                          [  ]
+obj/main.rel                              [  ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMode_asmbindings.re ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_waitVSYNC.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_removeInterruptHandler.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawSolidBox_asmbindings.re ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpc_mode_rom_status.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_getScreenPtr_asmbindings.re ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+
+User Base Address Definitions
+
+_CODE = 0x4000
+_DATA = 0x0000
+
+
