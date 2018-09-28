@@ -1,0 +1,204 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           cpct_keyboard
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__DATA                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     00000E7A  l__CODE                         
+     00004000  s__CODE                         
+     00004E7A  s__DATA                         
+     00004E7A  s__GSFINAL                      
+     00004E7A  s__GSINIT                       
+     00004E7A  s__HOME                         
+     00004E7A  s__INITIALIZED                  
+     00004E7A  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00000E7A =        3706. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004000  _nivel1                            Mapa
+     000048CA  _tileset                           Tileset
+     0000494A  _g_00                              Tileset
+     00004952  _g_01                              Tileset
+     0000495A  _g_02                              Tileset
+     00004962  _g_03                              Tileset
+     0000496A  _g_04                              Tileset
+     00004972  _g_05                              Tileset
+     0000497A  _g_06                              Tileset
+     00004982  _g_07                              Tileset
+     0000498A  _g_08                              Tileset
+     00004992  _g_09                              Tileset
+     0000499A  _g_10                              Tileset
+     000049A2  _g_11                              Tileset
+     000049AA  _g_12                              Tileset
+     000049B2  _g_13                              Tileset
+     000049BA  _g_14                              Tileset
+     000049C2  _g_15                              Tileset
+     000049CA  _g_16                              Tileset
+     000049D2  _g_17                              Tileset
+     000049DA  _g_18                              Tileset
+     000049E2  _g_19                              Tileset
+     000049EA  _g_20                              Tileset
+     000049F2  _g_21                              Tileset
+     000049FA  _g_22                              Tileset
+     00004A02  _g_23                              Tileset
+     00004A0A  _g_24                              Tileset
+     00004A12  _g_25                              Tileset
+     00004A1A  _g_26                              Tileset
+     00004A22  _g_27                              Tileset
+     00004A2A  _g_28                              Tileset
+     00004A32  _g_29                              Tileset
+     00004A3A  _g_30                              Tileset
+     00004A42  _g_31                              Tileset
+     00004A4A  _g_32                              Tileset
+     00004A52  _g_33                              Tileset
+     00004A5A  _g_34                              Tileset
+     00004A62  _g_35                              Tileset
+     00004A6A  _g_36                              Tileset
+     00004A72  _g_37                              Tileset
+     00004A7A  _g_38                              Tileset
+     00004A82  _g_39                              Tileset
+     00004A8A  _g_40                              Tileset
+     00004A92  _g_41                              Tileset
+     00004A9A  _g_42                              Tileset
+     00004AA2  _g_43                              Tileset
+     00004AAA  _g_44                              Tileset
+     00004AB2  _g_45                              Tileset
+     00004ABA  _g_46                              Tileset
+     00004AC2  _g_47                              Tileset
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00000E7A =        3706. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004ACA  _g_48                              Tileset
+     00004AD2  _g_49                              Tileset
+     00004ADA  _g_50                              Tileset
+     00004AE2  _g_51                              Tileset
+     00004AEA  _g_52                              Tileset
+     00004AF2  _g_53                              Tileset
+     00004AFA  _g_54                              Tileset
+     00004B02  _g_55                              Tileset
+     00004B0A  _g_56                              Tileset
+     00004B12  _g_57                              Tileset
+     00004B1A  _g_58                              Tileset
+     00004B22  _g_59                              Tileset
+     00004B2A  _g_60                              Tileset
+     00004B32  _g_61                              Tileset
+     00004B3A  _g_62                              Tileset
+     00004B42  _g_63                              Tileset
+     00004B4A  _g2_palette                        g2_palette
+     00004B5A  _g_palette                         g_palette
+     00004B82  bullet_draw                        cpct_keyboard
+     00004B88  bullet_init                        cpct_keyboard
+     00004BEC  dw_draw                            cpct_keyboard
+     00004C0F  hero_draw                          cpct_keyboard
+     00004C42  _main                              cpct_keyboard
+     00004C5F  mv_move                            cpct_keyboard
+     00004C60  _cpct_isKeyPressed                 cpct_keyboard
+     00004C60  cpct_isKeyPressed_asm              cpct_keyboard
+     00004C6C  cpct_setPalette_asm                cpct_video
+     00004C7F  cpct_etm_drawTileBox2x4_asm        cpct_easytilemaps
+     00004D0B  _cpct_etm_setTileset2x4            cpct_easytilemaps
+     00004D0B  cpct_etm_setTileset2x4_asm         cpct_easytilemaps
+     00004D0F  _cpct_keyboardStatusBuffer         cpct_keyboard
+     00004D19  _cpct_etm_drawTileRow2x4           cpct_easytilemaps
+     00004D20  cpct_etm_drawTileRow2x4_asm        cpct_easytilemaps
+     00004D22  dtr_restore_ptileset               cpct_easytilemaps
+     00004D3A  cpct_setVideoMode_asm              cpct_video
+     00004D47  _cpct_waitVSYNC                    cpct_video
+     00004D47  cpct_waitVSYNC_asm                 cpct_video
+     00004D4F  _cpct_disableFirmware              cpct_firmware
+     00004D4F  _cpct_removeInterruptHandler       cpct_firmware
+     00004D4F  cpct_disableFirmware_asm           cpct_firmware
+     00004D4F  cpct_removeInterruptHandler_asm    cpct_firmware
+     00004D5F  cpct_drawSolidBox_asm              cpct_sprites
+     00004E0B  cpct_drawTileAligned2x4_f_asm      cpct_sprites
+     00004E2C  _cpct_mode_rom_status              cpct_firmware
+     00004E2D  cpct_getScreenPtr_asm              cpct_video
+     00004E49  _cpct_scanKeyboard                 cpct_keyboard
+     00004E49  cpct_scanKeyboard_asm              cpct_keyboard
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+
+Files Linked                              [ module(s) ]
+
+obj/Mapas/Mapa.rel                        [ Mapa ]
+obj/Sprites/Tileset.rel                   [ Tileset ]
+obj/Sprites/g2_palette.rel                [ g2_palette ]
+obj/Sprites/g_palette.rel                 [ g_palette ]
+obj/struct.h.rel                          [  ]
+obj/hero.h.rel                            [  ]
+obj/cpcglbl.h.rel                         [  ]
+obj/bullet.rel                            [ cpct_keyboard ]
+obj/drawable.rel                          [ cpct_keyboard ]
+obj/hero.rel                              [ cpct_keyboard ]
+obj/drawable.h.rel                        [  ]
+obj/main.rel                              [ cpct_keyboard ]
+obj/bullet.h.rel                          [  ]
+obj/movable.rel                           [ cpct_keyboard ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isKeyPressed.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPalette_asmbindings.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_drawTileBox2x4_asmbindi ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_setTileset2x4.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ keyboard.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_drawTileRow2x4.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMode_asmbindings.re ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_waitVSYNC.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_removeInterruptHandler.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawSolidBox_asmbindings.re ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawTileAligned2x4_f_asmbin ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpc_mode_rom_status.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_getScreenPtr_asmbindings.re ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_scanKeyboard.rel ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+
+User Base Address Definitions
+
+_CODE = 0x4000
+_DATA = 0x0000
+
+

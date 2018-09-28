@@ -1,5 +1,5 @@
 ##-----------------------------LICENSE NOTICE------------------------------------
-##  This file is part of CPCtelera: An Amstrad CPC Game Engine 
+##  This file is part of CPCtelera: An Amstrad CPC Game Engine
 ##  Copyright (C) 2018 ronaldo / Fremos / Cheesetea / ByteRealms (@FranGallegoBR)
 ##
 ##  This program is free software: you can redistribute it and/or modify
@@ -41,6 +41,20 @@
 #$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), g_palette ))
 #$(eval $(call IMG2SP, CONVERT         , img.png , w, h, array, palette, tileset))
 
+PALETTE=13 1 2 3 4 5 8 12 0 15 16 18 20 24 25 26
+PALETTEALT=13 1 2 3 6 9 10 12 0 15 26 18 21 24 25 16
+
+$(eval $(call IMG2SP, SET_MODE        , 0                  ))
+#$(eval $(call IMG2SP, SET_MASK        , none               ))
+$(eval $(call IMG2SP, SET_FOLDER      , src/Sprites         ))
+#$(eval $(call IMG2SP, SET_EXTRAPAR    ,                    ))
+#$(eval $(call IMG2SP, SET_IMG_FORMAT  , sprites            ))
+#(eval $(call IMG2SP, SET_OUTPUT      , c                  ))
+$(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)         ))
+$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), g_palette ))
+$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTEALT), g2_palette ))
+$(eval $(call IMG2SP, CONVERT         , assets/Tiled/Tileset.png , 4, 4, g, , tileset))
+
 ##
 ## OLD MACROS (For compatibility)
 ##
@@ -55,7 +69,7 @@
 ##    A C-array called pre_example[24*12*2] would be generated with the definition
 ##    of the image example.png in mode 0 screen pixel format, with interlaced mask.
 ##    The palette used for conversion is given through the PALETTE variable and
-##    a pre_palette[16] array will be generated with the 16 palette colours as 
+##    a pre_palette[16] array will be generated with the 16 palette colours as
 ##	  hardware colour values.
 
 #$(eval $(call IMG2SPRITES,img/example.png,0,pre,24,12,$(PALETTE),mask,src/,hwpalette))

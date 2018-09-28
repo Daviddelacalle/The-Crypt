@@ -1,5 +1,5 @@
 ##-----------------------------LICENSE NOTICE------------------------------------
-##  This file is part of CPCtelera: An Amstrad CPC Game Engine 
+##  This file is part of CPCtelera: An Amstrad CPC Game Engine
 ##  Copyright (C) 2018 ronaldo / Fremos / Cheesetea / ByteRealms (@FranGallegoBR)
 ##
 ##  This program is free software: you can redistribute it and/or modify
@@ -33,11 +33,20 @@
 #$(eval $(call TMX2DATA, SET_OUTPUTS     , h c       ))   { bin hs h s c }
 #$(eval $(call TMX2DATA, SET_BASE        , dec       ))   { dec hex bin }
 #$(eval $(call TMX2DATA, SET_BITSPERITEM , 8         ))   { 1, 2, 4, 6, 8 }
-#$(eval $(call TMX2DATA, SET_FOLDER      , src/      )) 
-#$(eval $(call TMX2DATA, SET_EXTRAPAR    ,           ))	
-# Conversion 
-#$(eval $(call TMX2DATA, CONVERT, tmxfile, array )) 
+#$(eval $(call TMX2DATA, SET_FOLDER      , src/      ))
+#$(eval $(call TMX2DATA, SET_EXTRAPAR    ,           ))
+# Conversion
+#$(eval $(call TMX2DATA, CONVERT, tmxfile, array ))
 
+$(eval $(call TMX2DATA, SET_ASMVARPREFIX, yes       ))
+$(eval $(call TMX2DATA, SET_USEMACROS   , yes       ))
+$(eval $(call TMX2DATA, SET_OUTPUTS     , h c       ))
+$(eval $(call TMX2DATA, SET_BASE        , dec       ))
+$(eval $(call TMX2DATA, SET_BITSPERITEM , 8         ))
+$(eval $(call TMX2DATA, SET_FOLDER      , src/Mapas ))
+$(eval $(call TMX2DATA, SET_EXTRAPAR    ,           ))
+# Conversion
+$(eval $(call TMX2DATA, CONVERT, assets/Tiled/Mapa.tmx, nivel1 ))
 
 ##
 ## OLD MACROS (For compatibility)
@@ -49,17 +58,17 @@
 ## Convert img/tilemap.tmx to src/tilemap.c and src/tilemap.h
 ##		This file contains a tilemap created with Tiled that uses tiles
 ## in img/tiles.png. This macro will convert the tilemap into a C-array
-## named g_tilemap, containing all the IDs of the tiles that are located 
-## at each given location of the C-array. 
+## named g_tilemap, containing all the IDs of the tiles that are located
+## at each given location of the C-array.
 ##
 
 #$(eval $(call TMX2C,img/tilemap.tmx,g_tilemap,src/,4))
 
 ## Convert img/level0b.tmx to src/levels/level0b.c and src/levels/level0b.h
-##		This file contains another tilemap created with Tiled. This macro 
+##		This file contains another tilemap created with Tiled. This macro
 ## will convert the tilemap into a C bitarray of 4-bits per item. The array
-## will be named g_level0_4bit. For each tile ID included into the final 
-## bitarray, only 4 bits will be used. Therefore, each byte of the array 
+## will be named g_level0_4bit. For each tile ID included into the final
+## bitarray, only 4 bits will be used. Therefore, each byte of the array
 ## will contain 2 tile IDs.
 ##
 
