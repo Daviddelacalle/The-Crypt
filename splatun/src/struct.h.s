@@ -17,11 +17,25 @@ _name:
    .db   _vx, _vy    ;; Variables de la velocidad
 .endm
 
+;; Entidad por defecto
+.macro DefineEntityDefault _name, _suf
+   DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0xFFFF           ;;'
+.endm
+
+;; Definir N entidades
+.macro DefineNEntities _name, _n
+   _c = 0
+      .rept _n
+         DefineEntityDefault _name, \_c
+      _c = _c + 1
+   .endm
+.endm
+
 ;; Entidad heroe/enemigo
-.macro DefineEntity _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+.macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
 _name:
-   DefineDrawableEnt _name'_dw, _x, _y, _w, _h                    ;;'
-   DefineMovableEnt _name'mv, _vx, _vy                            ;;'
+   DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+   DefineMovableEnt _name'_mv, _vx, _vy                               ;;'
 ;; Si no tiene sprite
    .db   _col        ;; Color
 ;; Si tiene sprite
@@ -29,6 +43,7 @@ _name:
    .dw   _upd        ;; Puntero a la funcion de update
 
 ;; Aqui falta saber el tamanyo de la entidad
+_sizeEnt = . - (_name) - 1
 .endm
 
 ;;;;;;;;;;;;;;;;;;;
