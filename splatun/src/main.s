@@ -8,6 +8,7 @@
 .include "cpctelera.h.s"
 .include "cpcglbl.h.s"
 .include "hero.h.s"
+.include "bullet.h.s"
 
 ;; Punto de entrada de la funcion main
 _main::
@@ -21,6 +22,7 @@ _main::
 ;; Comienza el bucle del juego
 loop:
    call hero_draw
+   call bullet_draw
 
    call cpct_waitVSYNC_asm
 jr loop

@@ -24,6 +24,10 @@ DefineEntity hero, 0x28, 0x66, 0x04, 0x10, 0x00, 0x00, 0x0F, 0x0000
 ;; FUNCIONES PUBLICAS
 ;;======================================================================
 ;;======================================================================
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DIBUJADO DE LA ENTIDAD HERO
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
 hero_draw::
    ld    ix,   #hero    ;; ix apunta a los datos del heroe
    jp dw_draw           ;; Llamo al draw de drawable
