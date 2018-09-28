@@ -5,9 +5,10 @@ NOTA:
 TODO:
    MÍNIMO:
    [-]   Scroll mapa                      DANNY
+   [ ]   Doble buffer                     DANNY
    [ ]   Movimiento personajes            DD
    [ ]   HUD                              DD
-   [ ]   Disparos                         PABLO
+   [-]   Disparos                         PABLO
    [ ]   Reinicio de partida              PABLO
 
    FULL GAME:
@@ -24,5 +25,4 @@ TODO:
 
    NECESARIO:
    [-]   "Herencia de clases"             (Tipo lo de drawable)
-   [ ]   Doble buffer                     DANNY
-   [ ]   Optimizar a saco                 TODOS O NOS VAMOS A LA MIERDA
+   [-]   Optimizar a saco                 TODOS O NOS VAMOS A LA MIERDA

@@ -3,3 +3,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .globl bullet_draw
+.globl bullet_init
