@@ -13,6 +13,7 @@
 .include "cpctelera.h.s"
 .include "struct.h.s"
 .include "drawable.h.s"
+.include "hero.h.s"
 
 ;;======================================================================
 ;;======================================================================
@@ -25,6 +26,7 @@ bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
 DefineNBullets vector_bullets, vector_size
+DefineBullet bullet_copy 20, 20, 1, 1, 1, 1, #0xFF, #1, bullet_checkUpdate
 
 save_a:        .db #0x00            ;; Guarda el valor de A
 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
@@ -41,7 +43,7 @@ flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet q
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_draw::
    ld    hl,   #bullet_checkDraw
-   jp    bullet_search
+   jp    bullet_search              ;; Llamada al bucle
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; INICIALIZA UNA ENTIDAD BULLET
@@ -49,13 +51,22 @@ bullet_draw::
 ;; DESTRUYE: HL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_init::
-   ld     hl,   #bullet_checkInit
-   call   bullet_search
-   ld     a,   #0                ;; Reset de flag_init
-   ld (flag_init), a             ;; flag_init = 0
+   ld    hl,   #bullet_checkInit
+   call   bullet_search             ;; Llamada al bucle
+
+   ld     a,   #0                   ;; Reset de flag_init
+   ld (flag_init), a                ;; flag_init = 0
    ret
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; UPDATE DE TODAS LAS BALAS INICIALIZADAS
+;; _______________________
+;; DESTRUYE: HL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+bullet_update::
+   ld    hl,   #bullet_checkUpdate
+   call bullet_search               ;; Llamada al bucle
+   ret
 
 ;;======================================================================
 ;;======================================================================
@@ -104,7 +115,7 @@ bullet_checkDraw:
 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive = 0
 ;; _______________________
 ;; ENTRADA:    IX -> Puntero a entidad BULLET
-;; DESTRUYE:   A
+;; DESTRUYE:   A, HL, DE, BC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_checkInit:
    ld     a,   (flag_init)       ;; Si no se ha iniciado ninguna entidad bullet A==0
@@ -113,25 +124,66 @@ bullet_checkInit:
 
    ;; Comprueba el atributo alive
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-   cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+   cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1 -> INICIALIZO
    ret   nz                      ;; Si ya esta inicializada, hago ret
 
-   ;; Debo inicializar la entidad segun la posicion del jugador
-   ld       b_x(ix),    #20      ;; Posicion X
-   ld       b_y(ix),    #20      ;; Posicion Y
-   ld       b_w(ix),    #1      ;; Anchura
-   ld       b_h(ix),    #1      ;; Altura
-   ld      b_vx(ix),    #1       ;; Velocidad X
-   ld      b_vy(ix),    #1       ;; Velocidad Y
-   ld     b_col(ix),    #0x0F    ;; Codigo de color/sprite
-   ld    b_alive(ix),   #1       ;; Flag Alive
-   ;;b_up_l(ix), #0xFF
-   ;;b_up_h(ix), #0xFF
+   ;; REALIZA UNA COPIA DE LA ENTIDAD POR DEFECTO -> DefineBullet bullet_copy 20, 20, 1, 1, 1, 1, #0xFF, #1, bullet_checkUpdate
+   push  ix                      ;; Guardo IX en la pila
+   pop   de                      ;; Entidad DESTINO
+   ld    hl,   #bullet_copy      ;; Entidad ORIGEN
+   ld    bc,   #bullet_size      ;; Tamanyo de la entidad
+   ldir
+
+   ;; Si debo cambiar algo de la entidad, aqui
+   call hero_get_position        ;; A = hero_x // B = hero_y
+   ld    b_x(ix), a              ;; Asigno X
+   ld    b_y(ix), b              ;; Asigno Y
 
    ld     a,   #1                ;; flag_init = 1
    ld (flag_init), a             ;; YA NO SE PODRA INICIALIZAR NINGUNA ENTIDAD MAS
                                  ;;   EN EL RECORRIDO DE ESTE BUCLE, AHORA MISMO
    ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0 Y LO ACTUALIZO
+;; _______________________
+;; ENTRADA:    IX -> Puntero a entidad BULLET
+;; DESTRUYE:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+bullet_checkUpdate:
+   ld     a,   b_alive(ix)       ;; Si se ha inicializado la entidad, a > 0
+   cp    #0
+   ret    z                      ;; Si Z==1 la entidad no ha sido inicializada
+
+   ;; UPDATE ALIVE
+   ;; Decrementar el valor de alive y si llega a 1 matar la bala -> alive = 0
+
+   ;; UPDATE POSICION
+   ld     a,   b_x(ix)           ;; Cargo en A la posicion en X
+   add b_vx(ix)                  ;; Le aumento la velocidad en X
+   ld  b_x(ix), a                ;; Guardo el dato actualizado
+
+   ld     a,   b_y(ix)           ;; Cargo en A la posicion en Y
+   add b_vy(ix)                  ;; Le aumento la velocidad en Y
+   ld  b_y(ix), a                ;; Guardo el dato actualizado
+
+   ret
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

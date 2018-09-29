@@ -3,3 +3,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .globl hero_draw
+
+.globl hero_get_position

@@ -22,13 +22,20 @@ _main::
 ;; Comienza el bucle del juego
 loop:
    ;;call hero_check_inputs
-   call cpct_scanKeyboard_asm
-   ld hl, #Key_Space
-   call cpct_isKeyPressed_asm
-   call nz, #bullet_init
+      call cpct_scanKeyboard_asm
+      ld hl, #Key_Space
+      call cpct_isKeyPressed_asm
+      call nz, #bullet_init
 
+   ;; CLIAR
+
+   ;; UPDEIT
+   call bullet_update
+
+   ;; DRO
    call hero_draw
    call bullet_draw
+
 
    call cpct_waitVSYNC_asm
 jr loop
