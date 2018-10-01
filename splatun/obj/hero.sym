@@ -54,7 +54,7 @@ Symbol Table
     Key_Tab =  1008     |     Key_U   =  0405     |     Key_V   =  8006 
     Key_W   =  0807     |     Key_X   =  8007     |     Key_Y   =  0805 
     Key_Z   =  8008     |     PAL_INKR=  0040     |     PAL_PENR=  0000 
-    PPI_PORT=  00F5     |   0 a_no_pul   0047 R   |     b_alive =  0007 
+    PPI_PORT=  00F5     |   0 a_no_pul   0032 R   |     b_alive =  0007 
     b_col   =  0006     |     b_h     =  0003     |     b_up_h  =  0009 
     b_up_l  =  0008     |     b_vx    =  0004     |     b_vy    =  0005 
     b_w     =  0002     |     b_x     =  0000     |     b_y     =  0001 
@@ -64,24 +64,26 @@ Hexadecimal [16-Bits]
 Symbol Table
 
     cpct_dis   **** GX  |     cpct_dra   **** GX  |     cpct_etm   **** GX
-    cpct_etm   **** GX  |     cpct_get   **** GX  |     cpct_isK   **** GX
-    cpct_pag=  0000     |     cpct_pag=  0010     |     cpct_pag=  0020 
-    cpct_pag=  0030     |     cpct_sca   **** GX  |     cpct_set   **** GX
-    cpct_set   **** GX  |     cpct_wai   **** GX  |   0 d_no_pul   005A R
-    dw_clear   **** GX  |     dw_draw    **** GX  |     e_col   =  0006 
-    e_h     =  0003     |     e_size  =  0009     |     e_up_h  =  0008 
-    e_up_l  =  0007     |     e_vx    =  0004     |     e_vy    =  0005 
-    e_w     =  0002     |     e_x     =  0000     |     e_y     =  0001 
-  0 hero       0000 R   |   0 hero_cle   0025 GR  |   0 hero_dra   0009 GR
-  0 hero_dw    0000 R   |   0 hero_mv    0004 R   |   0 hero_upd   002C GR
-    opc_DI  =  00F3     |     opc_EI  =  00FB     |     opc_JR  =  0018 
-    opc_LD_D=  0016     |   0 s_no_pul   0084 R   |   0 w_no_pul   006F R
+    cpct_etm   **** GX  |     cpct_get   **** GX  |     cpct_isA   **** GX
+    cpct_isK   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
+    cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_sca   **** GX
+    cpct_set   **** GX  |     cpct_set   **** GX  |     cpct_wai   **** GX
+  0 d_no_pul   0045 R   |     dw_clear   **** GX  |     dw_draw    **** GX
+    dw_draw_   **** GX  |     e_col   =  0006     |     e_h     =  0003 
+    e_size  =  0009     |     e_up_h  =  0008     |     e_up_l  =  0007 
+    e_vx    =  0004     |     e_vy    =  0005     |     e_w     =  0002 
+    e_x     =  0000     |     e_y     =  0001     |   0 hero       0000 R
+  0 hero_cle   0010 GR  |   0 hero_dra   0009 GR  |   0 hero_dw    0000 R
+  0 hero_get   0070 GR  |   0 hero_mv    0004 R   |   0 hero_upd   0017 GR
+  0 hero_x  =  0000 R   |   0 hero_y  =  0001 R   |     opc_DI  =  00F3 
+    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
+  0 s_no_pul   006F R   |   0 w_no_pul   005A R
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   85   flags    0
+   0 _CODE      size   78   flags    0
    1 _DATA      size    0   flags    0
 

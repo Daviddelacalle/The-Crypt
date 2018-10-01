@@ -57,20 +57,21 @@ _main::
 
     ;; Comienza el bucle del juego
     loop:
-       ;;call hero_check_inputs
-       ;call cpct_scanKeyboard_asm
-       ;ld hl, #Key_Space
-       ;call cpct_isKeyPressed_asm
-       ;call nz, #bullet_init
-       call obs_clear
-       call hero_clear
 
-       call hero_update
-       call hero_draw
+        call bullet_inputs
+        ;; CLIAR
+        call bullet_clear
+        call obs_clear
+        call hero_clear
 
-       call obs_draw
-       call cpct_waitVSYNC_asm
+        ;; UPDEIT
+        call hero_update
+        call bullet_update
 
-       ;call bullet_draw
+        ;; DRO
+        call hero_draw
+        call bullet_draw
+        call obs_draw
 
+        call cpct_waitVSYNC_asm
 jr loop

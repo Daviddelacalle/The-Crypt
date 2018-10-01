@@ -2519,10 +2519,11 @@ Hexadecimal [16-Bits]
                               9 .globl cpct_waitVSYNC_asm
                              10 .globl cpct_scanKeyboard_asm
                              11 .globl cpct_isKeyPressed_asm
-                             12 
-                             13 .globl cpct_setPalette_asm
-                             14 .globl cpct_etm_setTileset2x4_asm
-                             15 .globl cpct_etm_drawTileBox2x4_asm
+                             12 .globl cpct_isAnyKeyPressed_asm
+                             13 
+                             14 .globl cpct_setPalette_asm
+                             15 .globl cpct_etm_setTileset2x4_asm
+                             16 .globl cpct_etm_drawTileBox2x4_asm
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
@@ -2534,8 +2535,10 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl hero_draw
-                              6 .globl hero_clear
-                              7 .globl hero_update
+                              6 
+                              7 .globl hero_get_position
+                              8 .globl hero_clear
+                              9 .globl hero_update
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
@@ -2547,7 +2550,10 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl bullet_draw
-                              6 .globl bullet_init
+                              6 ;;.globl bullet_init
+                              7 .globl bullet_update
+                              8 .globl bullet_clear
+                              9 .globl bullet_inputs
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
@@ -2604,36 +2610,37 @@ Hexadecimal [16-Bits]
                              53     ;ld sp, #0x8000
                              54 
    0000                      55     init
-   4010 CD 80 42      [17]    1     call cpct_disableFirmware_asm
+   4010 CD C7 43      [17]    1     call cpct_disableFirmware_asm
    4013 0E 00         [ 7]    2     ld    c, #0
-   4015 CD 6B 42      [17]    3     call cpct_setVideoMode_asm
+   4015 CD B2 43      [17]    3     call cpct_setVideoMode_asm
                               4 
    4018 21 00 40      [10]    5     ld hl, #_g_palette
    401B 11 10 00      [10]    6     ld de, #16
-   401E CD 9D 41      [17]    7     call cpct_setPalette_asm
+   401E CD D7 42      [17]    7     call cpct_setPalette_asm
                              56     ;call drawMap
                              57 
                              58     ;; Comienza el bucle del juego
    4021                      59     loop:
-                             60        ;;call hero_check_inputs
+                             60 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 
 
-                             61        ;call cpct_scanKeyboard_asm
-                             62        ;ld hl, #Key_Space
-                             63        ;call cpct_isKeyPressed_asm
-                             64        ;call nz, #bullet_init
-   4021 CD 89 41      [17]   65        call obs_clear
-   4024 CD 17 41      [17]   66        call hero_clear
-                             67 
-   4027 CD 1E 41      [17]   68        call hero_update
-   402A CD FB 40      [17]   69        call hero_draw
+   4021 CD DA 40      [17]   61         call bullet_inputs
+                             62         ;; CLIAR
+   4024 CD D4 40      [17]   63         call bullet_clear
+   4027 CD C3 42      [17]   64         call obs_clear
+   402A CD 49 42      [17]   65         call hero_clear
+                             66 
+                             67         ;; UPDEIT
+   402D CD 50 42      [17]   68         call hero_update
+   4030 CD CE 40      [17]   69         call bullet_update
                              70 
-   402D CD 82 41      [17]   71        call obs_draw
-   4030 CD 78 42      [17]   72        call cpct_waitVSYNC_asm
-                             73 
-                             74        ;call bullet_draw
+                             71         ;; DRO
+   4033 CD 42 42      [17]   72         call hero_draw
+   4036 CD C8 40      [17]   73         call bullet_draw
+   4039 CD BC 42      [17]   74         call obs_draw
                              75 
-   4033 18 EC         [12]   76 jr loop
+   403C CD BF 43      [17]   76         call cpct_waitVSYNC_asm
+   403F 18 E0         [12]   77 jr loop

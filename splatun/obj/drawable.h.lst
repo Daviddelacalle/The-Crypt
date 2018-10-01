@@ -9,3 +9,4 @@ Hexadecimal [16-Bits]
                               4 
                               5 .globl dw_draw
                               6 .globl dw_clear
+                              7 .globl dw_draw_movable

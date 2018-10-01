@@ -2519,10 +2519,11 @@ Hexadecimal [16-Bits]
                               9 .globl cpct_waitVSYNC_asm
                              10 .globl cpct_scanKeyboard_asm
                              11 .globl cpct_isKeyPressed_asm
-                             12 
-                             13 .globl cpct_setPalette_asm
-                             14 .globl cpct_etm_setTileset2x4_asm
-                             15 .globl cpct_etm_drawTileBox2x4_asm
+                             12 .globl cpct_isAnyKeyPressed_asm
+                             13 
+                             14 .globl cpct_setPalette_asm
+                             15 .globl cpct_etm_setTileset2x4_asm
+                             16 .globl cpct_etm_drawTileBox2x4_asm
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
@@ -2534,8 +2535,10 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl hero_draw
-                              6 .globl hero_clear
-                              7 .globl hero_update
+                              6 
+                              7 .globl hero_get_position
+                              8 .globl hero_clear
+                              9 .globl hero_update
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
@@ -2547,7 +2550,10 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl bullet_draw
-                              6 .globl bullet_init
+                              6 ;;.globl bullet_init
+                              7 .globl bullet_update
+                              8 .globl bullet_clear
+                              9 .globl bullet_inputs
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
@@ -2615,25 +2621,26 @@ Hexadecimal [16-Bits]
                              57 
                              58     ;; Comienza el bucle del juego
    0011                      59     loop:
-                             60        ;;call hero_check_inputs
+                             60 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 
 
-                             61        ;call cpct_scanKeyboard_asm
-                             62        ;ld hl, #Key_Space
-                             63        ;call cpct_isKeyPressed_asm
-                             64        ;call nz, #bullet_init
-   0011 CD 00 00      [17]   65        call obs_clear
-   0014 CD 00 00      [17]   66        call hero_clear
-                             67 
-   0017 CD 00 00      [17]   68        call hero_update
-   001A CD 00 00      [17]   69        call hero_draw
+   0011 CD 00 00      [17]   61         call bullet_inputs
+                             62         ;; CLIAR
+   0014 CD 00 00      [17]   63         call bullet_clear
+   0017 CD 00 00      [17]   64         call obs_clear
+   001A CD 00 00      [17]   65         call hero_clear
+                             66 
+                             67         ;; UPDEIT
+   001D CD 00 00      [17]   68         call hero_update
+   0020 CD 00 00      [17]   69         call bullet_update
                              70 
-   001D CD 00 00      [17]   71        call obs_draw
-   0020 CD 00 00      [17]   72        call cpct_waitVSYNC_asm
-                             73 
-                             74        ;call bullet_draw
+                             71         ;; DRO
+   0023 CD 00 00      [17]   72         call hero_draw
+   0026 CD 00 00      [17]   73         call bullet_draw
+   0029 CD 00 00      [17]   74         call obs_draw
                              75 
-   0023 18 EC         [12]   76 jr loop
+   002C CD 00 00      [17]   76         call cpct_waitVSYNC_asm
+   002F 18 E0         [12]   77 jr loop

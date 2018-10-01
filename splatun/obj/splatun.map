@@ -18,60 +18,66 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     000003AB  l__CODE                         
+     000004F2  l__CODE                         
      00004000  s__CODE                         
-     000043AB  s__DATA                         
-     000043AB  s__GSFINAL                      
-     000043AB  s__GSINIT                       
-     000043AB  s__HOME                         
-     000043AB  s__INITIALIZED                  
-     000043AB  s__INITIALIZER                  
+     000044F2  s__DATA                         
+     000044F2  s__GSFINAL                      
+     000044F2  s__GSINIT                       
+     000044F2  s__HOME                         
+     000044F2  s__INITIALIZED                  
+     000044F2  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    000003AB =         939. bytes (REL,CON)
+_CODE                               00004000    000004F2 =        1266. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00004000  _g_palette                         g_palette
      00004010  _main                              cpct_keyboard
-     0000404D  bullet_draw                        cpct_keyboard
-     00004053  bullet_init                        cpct_keyboard
-     000040B7  dw_draw                            cpct_keyboard
-     000040E2  dw_clear                           cpct_keyboard
-     000040FB  hero_draw                          cpct_keyboard
-     00004117  hero_clear                         cpct_keyboard
-     0000411E  hero_update                        cpct_keyboard
-     00004177  CameraMinMax                       
-     00004182  obs_draw                           
-     00004189  obs_clear                          
-     00004190  mv_move                            cpct_keyboard
-     00004191  _cpct_isKeyPressed                 cpct_keyboard
-     00004191  cpct_isKeyPressed_asm              cpct_keyboard
-     0000419D  cpct_setPalette_asm                cpct_video
-     000041B0  cpct_etm_drawTileBox2x4_asm        cpct_easytilemaps
-     0000423C  _cpct_etm_setTileset2x4            cpct_easytilemaps
-     0000423C  cpct_etm_setTileset2x4_asm         cpct_easytilemaps
-     00004240  _cpct_keyboardStatusBuffer         cpct_keyboard
-     0000424A  _cpct_etm_drawTileRow2x4           cpct_easytilemaps
-     00004251  cpct_etm_drawTileRow2x4_asm        cpct_easytilemaps
-     00004253  dtr_restore_ptileset               cpct_easytilemaps
-     0000426B  cpct_setVideoMode_asm              cpct_video
-     00004278  _cpct_waitVSYNC                    cpct_video
-     00004278  cpct_waitVSYNC_asm                 cpct_video
-     00004280  _cpct_disableFirmware              cpct_firmware
-     00004280  _cpct_removeInterruptHandler       cpct_firmware
-     00004280  cpct_disableFirmware_asm           cpct_firmware
-     00004280  cpct_removeInterruptHandler_asm    cpct_firmware
-     00004290  cpct_drawSolidBox_asm              cpct_sprites
-     0000433C  cpct_drawTileAligned2x4_f_asm      cpct_sprites
-     0000435D  _cpct_mode_rom_status              cpct_firmware
-     0000435E  cpct_getScreenPtr_asm              cpct_video
-     0000437A  _cpct_scanKeyboard                 cpct_keyboard
-     0000437A  cpct_scanKeyboard_asm              cpct_keyboard
+     000040C8  bullet_draw                        cpct_keyboard
+     000040CE  bullet_update                      cpct_keyboard
+     000040D4  bullet_clear                       cpct_keyboard
+     000040DA  bullet_inputs                      cpct_keyboard
+     000041E4  dw_draw                            cpct_keyboard
+     0000420F  dw_draw_movable                    cpct_keyboard
+     00004229  dw_clear                           cpct_keyboard
+     00004242  hero_draw                          cpct_keyboard
+     00004249  hero_clear                         cpct_keyboard
+     00004250  hero_update                        cpct_keyboard
+     000042A9  hero_get_position                  cpct_keyboard
+     000042B1  CameraMinMax                       
+     000042BC  obs_draw                           
+     000042C3  obs_clear                          
+     000042CA  mv_move                            cpct_keyboard
+     000042CB  _cpct_isKeyPressed                 cpct_keyboard
+     000042CB  cpct_isKeyPressed_asm              cpct_keyboard
+     000042D7  cpct_setPalette_asm                cpct_video
+     000042EA  cpct_etm_drawTileBox2x4_asm        cpct_easytilemaps
+     00004376  _cpct_etm_setTileset2x4            cpct_easytilemaps
+     00004376  cpct_etm_setTileset2x4_asm         cpct_easytilemaps
+     0000437A  _cpct_keyboardStatusBuffer         cpct_keyboard
+     00004384  _cpct_etm_drawTileRow2x4           cpct_easytilemaps
+     0000438B  cpct_etm_drawTileRow2x4_asm        cpct_easytilemaps
+     0000438D  dtr_restore_ptileset               cpct_easytilemaps
+     000043A5  _cpct_isAnyKeyPressed              cpct_keyboard
+     000043A5  cpct_isAnyKeyPressed_asm           cpct_keyboard
+     000043B2  cpct_setVideoMode_asm              cpct_video
+     000043BF  _cpct_waitVSYNC                    cpct_video
+     000043BF  cpct_waitVSYNC_asm                 cpct_video
+     000043C7  _cpct_disableFirmware              cpct_firmware
+     000043C7  _cpct_removeInterruptHandler       cpct_firmware
+     000043C7  cpct_disableFirmware_asm           cpct_firmware
+     000043C7  cpct_removeInterruptHandler_asm    cpct_firmware
+     000043D7  cpct_drawSolidBox_asm              cpct_sprites
+     00004483  cpct_drawTileAligned2x4_f_asm      cpct_sprites
+     000044A4  _cpct_mode_rom_status              cpct_firmware
+     000044A5  cpct_getScreenPtr_asm              cpct_video
+     000044C1  _cpct_scanKeyboard                 cpct_keyboard
+     000044C1  cpct_scanKeyboard_asm              cpct_keyboard
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 
 Files Linked                              [ module(s) ]
@@ -105,6 +111,8 @@ Libraries Linked                          [ object file ]
                                           [ keyboard.rel ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_etm_drawTileRow2x4.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isAnyKeyPressed.rel ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setVideoMode_asmbindings.re ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib

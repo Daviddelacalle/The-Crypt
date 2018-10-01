@@ -9,6 +9,7 @@
 .globl cpct_waitVSYNC_asm
 .globl cpct_scanKeyboard_asm
 .globl cpct_isKeyPressed_asm
+.globl cpct_isAnyKeyPressed_asm
 
 .globl cpct_setPalette_asm
 .globl cpct_etm_setTileset2x4_asm

@@ -34,12 +34,13 @@
 dw_draw::
    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
 
-   ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-   ld a, e_x(ix)
-   ld hl, #CameraMinMax
-   sub (hl)
-   cp #80
-   ret nc
+   ld    de,   #0xC000                  ;; Apunta al inicio de la memoria de video
+
+   ld a, e_x(ix)                        ;; Consigue la posicion del jugador
+   ld hl, #CameraMinMax                 ;; Cargo en HL la coordenada minima en X
+   sub (hl)                             ;; Le resto a A, esta coordenada
+   cp #80                               ;; Compruebo que esté entre 0 y 80
+   ret nc                               ;; Si está fuera del límite no la dibujo
    ld     c,   a      ;; x  [0-79]
 
    ld a, e_y(ix)
@@ -66,6 +67,20 @@ dw_draw::
    ;; cpct_drawSprite_asm
    ret
 
+
+dw_draw_movable::
+       ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
+       ld     c,   e_x(ix)      ;; x  [0-79]
+       ld     b,   e_y(ix)      ;; y  [0-199]
+       call cpct_getScreenPtr_asm
+
+       ;; SIN SPRITE
+       ex    de,   hl          ;; Apunta a la posicion x,y
+       ld     a,   e_col(ix)    ;; Código de color
+       ld     c,   e_w(ix)      ;; Ancho
+       ld     b,   e_h(ix)      ;; Alto
+       call cpct_drawSolidBox_asm
+   ret
 
 ;==================================
 ; Clears the sprite (squeare now)

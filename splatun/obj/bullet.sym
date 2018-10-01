@@ -54,34 +54,55 @@ Symbol Table
     Key_U   =  0405     |     Key_V   =  8006     |     Key_W   =  0807 
     Key_X   =  8007     |     Key_Y   =  0805     |     Key_Z   =  8008 
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
-    _c      =  0002     |     b_alive =  0007     |     b_col   =  0006 
+    _c      =  000A     |     b_alive =  0007     |     b_col   =  0006 
     b_h     =  0003     |     b_up_h  =  0009     |     b_up_l  =  0008 
     b_vx    =  0004     |     b_vy    =  0005     |     b_w     =  0002 
-    b_x     =  0000     |     b_y     =  0001     |   0 bullet_c   0047 R
+    b_x     =  0000     |     b_y     =  0001     |   0 bullet_c   0193 R
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Symbol Table
 
-  0 bullet_c   0050 R   |   0 bullet_d   0018 GR  |   0 bullet_i   001E GR
-  0 bullet_s   002A R   |     bullet_s=  000A     |     cpct_pag=  0000 
-    cpct_pag=  0010     |     cpct_pag=  0020     |     cpct_pag=  0030 
-    dw_clear   **** GX  |     dw_draw    **** GX  |     e_col   =  0006 
-    e_h     =  0003     |     e_up_h  =  0008     |     e_up_l  =  0007 
-    e_vx    =  0004     |     e_vy    =  0005     |     e_w     =  0002 
-    e_x     =  0000     |     e_y     =  0001     |   0 f_custom=  0037 R
-  0 flag_ini   0017 R   |     opc_DI  =  00F3     |     opc_EI  =  00FB 
-    opc_JR  =  0018     |     opc_LD_D=  0016     |   0 save_a     0016 R
-  0 search_l   0033 R   |   0 vector_b   0002 R   |   0 vector_b   0002 R
-  0 vector_b   0006 R   |   0 vector_b   000C R   |   0 vector_b   000C R
-  0 vector_b   0010 R   |   0 vector_i   0000 R   |   0 vector_i   0002 R
-    vector_s=  0002 
+  0 bullet_c   0135 R   |   0 bullet_c   013E R   |   0 bullet_c   017D R
+  0 bullet_c   0093 GR  |   0 bullet_c   0066 R   |   0 bullet_c   0066 R
+  0 bullet_c   006A R   |   0 bullet_d   0087 GR  |   0 bullet_i   00F9 R
+  0 bullet_i   0109 R   |   0 bullet_i   0099 GR  |   0 bullet_s   0118 R
+  0 bullet_s   0170 R   |     bullet_s=  000A     |   0 bullet_u   008D GR
+    cpct_dis   **** GX  |     cpct_dra   **** GX  |     cpct_etm   **** GX
+    cpct_etm   **** GX  |     cpct_get   **** GX  |     cpct_isA   **** GX
+    cpct_isK   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
+    cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_sca   **** GX
+    cpct_set   **** GX  |     cpct_set   **** GX  |     cpct_wai   **** GX
+    dw_clear   **** GX  |     dw_draw    **** GX  |     dw_draw_   **** GX
+    e_col   =  0006     |     e_h     =  0003     |     e_up_h  =  0008 
+    e_up_l  =  0007     |     e_vx    =  0004     |     e_vy    =  0005 
+    e_w     =  0002     |     e_x     =  0000     |     e_y     =  0001 
+  0 end_loop   00CA R   |   0 f_custom=  0125 R   |   0 flag_ini   0071 R
+  0 flag_key   0086 R   |   0 flag_sho   0085 R   |   0 flag_sho   00F3 R
+  0 flag_sho   00ED R   |   0 flag_vx    0083 R   |   0 flag_vy    0084 R
+    hero_cle   **** GX  |     hero_dra   **** GX  |     hero_get   **** GX
+    hero_upd   **** GX  |   0 k_custom=  00BA R   |   0 keep_loo   00C3 R
+  0 keyDown_   00DB R   |   0 keyLeft_   00E7 R   |   0 keyRight   00E1 R
+  0 keyUp_ON   00D5 R   |   0 loop       00A0 R   |     opc_DI  =  00F3 
+    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
+  0 save_a     0070 R   |   0 search_l   0121 R   |   0 vector_b   0002 R
+  0 vector_b   0002 R   |   0 vector_b   0006 R   |   0 vector_b   000C R
+  0 vector_b   000C R   |   0 vector_b   0010 R   |   0 vector_b   0016 R
+  0 vector_b   0016 R   |   0 vector_b   001A R   |   0 vector_b   0020 R
+  0 vector_b   0020 R   |   0 vector_b   0024 R   |   0 vector_b   002A R
+  0 vector_b   002A R   |   0 vector_b   002E R   |   0 vector_b   0034 R
+  0 vector_b   0034 R   |   0 vector_b   0038 R   |   0 vector_b   003E R
+  0 vector_b   003E R   |   0 vector_b   0042 R   |   0 vector_b   0048 R
+  0 vector_b   0048 R   |   0 vector_b   004C R   |   0 vector_b   0052 R
+  0 vector_b   0052 R   |   0 vector_b   0056 R   |   0 vector_b   005C R
+  0 vector_b   005C R   |   0 vector_b   0060 R   |   0 vector_i   0000 R
+  0 vector_i   0002 R   |   0 vector_k   0072 R   |     vector_s=  000A 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   82   flags    0
+   0 _CODE      size  1A3   flags    0
    1 _DATA      size    0   flags    0
 

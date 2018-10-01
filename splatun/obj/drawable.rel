@@ -1,5 +1,5 @@
 XL2
-H 2 areas E global symbols
+H 2 areas 10 global symbols
 M cpct_keyboard
 S cpct_setPalette_asm Ref0000
 S cpct_isKeyPressed_asm Ref0000
@@ -7,15 +7,17 @@ S cpct_etm_drawTileBox2x4_asm Ref0000
 S cpct_etm_setTileset2x4_asm Ref0000
 S CameraMinMax Ref0000
 S .__.ABS. Def0000
+S cpct_isAnyKeyPressed_asm Ref0000
 S cpct_waitVSYNC_asm Ref0000
 S cpct_setVideoMode_asm Ref0000
 S cpct_disableFirmware_asm Ref0000
 S cpct_drawSolidBox_asm Ref0000
 S cpct_scanKeyboard_asm Ref0000
 S cpct_getScreenPtr_asm Ref0000
-A _CODE size 3B flags 0 addr 0
-S dw_clear Def002B
+A _CODE size 55 flags 0 addr 0
+S dw_clear Def0045
 S dw_draw Def0000
+S dw_draw_movable Def002B
 A _DATA size 0 flags 0 addr 0
 T 00 00
 R 00 00 00 00
@@ -24,12 +26,18 @@ R 00 00 00 00 02 09 04 00
 T 0E 00 DD 7E 01 21 01 00 96 FE 64 D0 87 47 CD
 R 00 00 00 00 02 06 04 00
 T 1B 00 00 00 EB DD 7E 06 DD 4E 02 DD 46 03 CD
-R 00 00 00 00 02 02 0B 00
+R 00 00 00 00 02 02 0C 00
 T 28 00 00 00 C9
-R 00 00 00 00 02 02 09 00
+R 00 00 00 00 02 02 0A 00
 T 2B 00
 R 00 00 00 00
-T 2B 00 DD 7E 06 08 DD 36 06 00 CD 00 00 08 DD 77
+T 2B 00 11 00 C0 DD 4E 00 DD 46 01 CD 00 00 EB DD
+R 00 00 00 00 02 0C 0C 00
+T 39 00 7E 06 DD 4E 02 DD 46 03 CD 00 00 C9
+R 00 00 00 00 02 0B 0A 00
+T 45 00
+R 00 00 00 00
+T 45 00 DD 7E 06 08 DD 36 06 00 CD 00 00 08 DD 77
 R 00 00 00 00 00 0B 00 00
-T 39 00 06 C9
+T 53 00 06 C9
 R 00 00 00 00

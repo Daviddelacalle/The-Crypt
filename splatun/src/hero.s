@@ -19,7 +19,10 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-DefineEntity hero, #40, #110, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+
+hero_x = .
+hero_y = . + 1
+DefineEntity hero, #40, #100, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 
 ;;======================================================================
 ;;======================================================================
@@ -32,18 +35,8 @@ DefineEntity hero, #40, #110, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 hero_draw::
     ld    ix,   #hero    ;; ix apunta a los datos del heroe
-    ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-    ld     c,   #40      ;; x  [0-79]
-    ld     b,   #100      ;; y  [0-199]
-    call cpct_getScreenPtr_asm
+    jp dw_draw_movable
 
-    ;; SIN SPRITE
-    ex    de,   hl          ;; Apunta a la posicion x,y
-    ld     a,   e_col(ix)    ;; Código de color
-    ld     c,   e_w(ix)      ;; Ancho
-    ld     b,   e_h(ix)      ;; Alto
-    call cpct_drawSolidBox_asm
-ret
 
 hero_clear::
     ld ix, #hero
@@ -95,6 +88,18 @@ hero_update::
 
 
 ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CARGA EN LOS REGISTROS A,B LOS VALORES DE X,Y
+;; _______________________
+;; DESTRUYE: A, B
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+hero_get_position::
+   ld    a,    (hero_y)
+   ld    b,    a
+   ld    a,    (hero_x)
+   ret
+
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PRIVADAS

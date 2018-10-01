@@ -2512,7 +2512,29 @@ Hexadecimal [16-Bits]
 
 
 
-                             14 .include "struct.h.s"
+                             14 .include "cpcglbl.h.s"
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;; Cabecera con funciones de cpctelera ;;
+                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              4 
+                              5 .globl cpct_getScreenPtr_asm
+                              6 .globl cpct_drawSolidBox_asm
+                              7 .globl cpct_disableFirmware_asm
+                              8 .globl cpct_setVideoMode_asm
+                              9 .globl cpct_waitVSYNC_asm
+                             10 .globl cpct_scanKeyboard_asm
+                             11 .globl cpct_isKeyPressed_asm
+                             12 .globl cpct_isAnyKeyPressed_asm
+                             13 
+                             14 .globl cpct_setPalette_asm
+                             15 .globl cpct_etm_setTileset2x4_asm
+                             16 .globl cpct_etm_drawTileBox2x4_asm
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
+Hexadecimal [16-Bits]
+
+
+
+                             15 .include "struct.h.s"
                               1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               2 ;; DEFINICION DE LAS MACROS PARA LA CREACION DE ENTIDADES ;;
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2567,7 +2589,7 @@ Hexadecimal [16-Bits]
                      0005    52   e_vx = 4     e_vy = 5
                      0006    53  e_col = 6
                      0008    54 e_up_l = 7   e_up_h = 8
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
 
@@ -2622,189 +2644,613 @@ Hexadecimal [16-Bits]
                             102 
                             103 
                             104 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
 
-                             15 .include "drawable.h.s"
+                             16 .include "drawable.h.s"
                               1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               2 ;; Cabecera con funciones de hero ;;
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl dw_draw
                               6 .globl dw_clear
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
-Hexadecimal [16-Bits]
-
-
-
-                             16 
-                             17 ;;======================================================================
-                             18 ;;======================================================================
-                             19 ;; DATOS PRIVADOS
-                             20 ;;======================================================================
-                             21 ;;======================================================================
-                     0002    22 vector_size = 2
-                     000A    23 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
-                             24 
-   4035 00 00                25 vector_index:  .dw #0x0000
-   4037                      26 vector_init:                        ;; Marca el inicio de vector_bullets
-   4037                      27 DefineNBullets vector_bullets, vector_size
-                     0000     1    _c = 0
-                              2    .rept vector_size
-                              3       DefineBulletDefault vector_bullets, \_c
-                              4       _c = _c + 1
-                              5    .endm
-   4037                       1       DefineBulletDefault vector_bullets, \_c
-   0002                       1    DefineBullet vector_bullets0, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
-   0002                       1 vector_bullets0:
-   0002                       2    DefineDrawableEnt vector_bullets0_dw, 0xAA, 0, 0, 0                       ;;'
-   0002                       1 vector_bullets0_dw:
-   4037 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
-   4039 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
-   403B                       3    DefineMovableEnt  vector_bullets0_mv, 0, 0                             ;;'
-   0006                       1 vector_bullets0_mv:
-   403B 00 00                 2    .db   0, 0    ;; Variables de la velocidad
-   403D 00                    4    .db   0        ;; Color / Sprite (cuando haya)
-   403E 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
-   403F FF FF                 6    .dw   0xFFFF        ;; Funcion de update
-                              7 
-                              8 ;; Saber tamanyo de entidad bala
-                     0001     2       _c = _c + 1
-   4041                       1       DefineBulletDefault vector_bullets, \_c
-   4041                       1    DefineBullet vector_bullets1, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
-   000C                       1 vector_bullets1:
-   000C                       2    DefineDrawableEnt vector_bullets1_dw, 0xAA, 0, 0, 0                       ;;'
-   000C                       1 vector_bullets1_dw:
-   4041 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
-   4043 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
-   4045                       3    DefineMovableEnt  vector_bullets1_mv, 0, 0                             ;;'
-   0010                       1 vector_bullets1_mv:
-   4045 00 00                 2    .db   0, 0    ;; Variables de la velocidad
-   4047 00                    4    .db   0        ;; Color / Sprite (cuando haya)
-   4048 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
-   4049 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
-                              7 
-                              8 ;; Saber tamanyo de entidad bala
-                     0002     2       _c = _c + 1
-                             28 
-   404B 00                   29 save_a:        .db #0x00            ;; Guarda el valor de A
-   404C 00                   30 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
-                             31 ;;======================================================================
-                             32 ;;======================================================================
-                             33 ;; FUNCIONES PUBLICAS
+                              7 .globl dw_draw_movable
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
 
-                             34 ;;======================================================================
-                             35 ;;======================================================================
-                             36 
-                             37 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             38 ;; DIBUJADO DE LA ENTIDAD BULLET
-                             39 ;; _______________________
-                             40 ;; DESTRUYE: HL
-                             41 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   404D                      42 bullet_draw::
-   404D 21 7C 40      [10]   43    ld    hl,   #bullet_checkDraw
-   4050 C3 5F 40      [10]   44    jp    bullet_search
-                             45 
-                             46 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             47 ;; INICIALIZA UNA ENTIDAD BULLET
-                             48 ;; _______________________
-                             49 ;; DESTRUYE: HL
-                             50 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4053                      51 bullet_init::
-   4053 21 85 40      [10]   52    ld     hl,   #bullet_checkInit
-   4056 CD 5F 40      [17]   53    call   bullet_search
-   4059 3E 00         [ 7]   54    ld     a,   #0                ;; Reset de flag_init
-   405B 32 4C 40      [13]   55    ld (flag_init), a             ;; flag_init = 0
-   405E C9            [10]   56    ret
-                             57 
-                             58 
-                             59 
-                             60 ;;======================================================================
-                             61 ;;======================================================================
-                             62 ;; FUNCIONES PRIVADAS
-                             63 ;;======================================================================
-                             64 ;;======================================================================
-                             65 
-                             66 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             67 ;; RECORRE vector_bullets
-                             68 ;; _______________________
-                             69 ;; ENTRADA:    HL -> Puntero a funcion custom
-                             70 ;; DESTRUYE:   A, DE, IX
-                             71 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   405F                      72 bullet_search:
-   405F 3E 00         [ 7]   73    ld     a,   #0                ;; Cargo en A el valor inicial 0
-   4061 DD 21 37 40   [14]   74    ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
-   4065 22 6C 40      [16]   75    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
-   4068                      76    search_loop:
-   4068 32 4B 40      [13]   77       ld (save_a),  a            ;; Guardo el valor de A, porque la llamada a la funcion puede destruirlo
-                             78 
-                     0037    79       f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (valor arbitrario, puesto que siempre va a cambiar)
-   406B CD 00 00      [17]   80       call (0x0000)                    ;; Llamada a funcion personalizable
-                             81 
-   406E 11 0A 00      [10]   82       ld    de,   #bullet_size         ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
-   4071 DD 19         [15]   83       add   ix,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
-                             84 
-   4073 3A 4B 40      [13]   85       ld     a,   (save_a)             ;; Recupero el valor de a
-   4076 3C            [ 4]   86       inc    a                         ;; A++
-   4077 FE 02         [ 7]   87    cp #vector_size
-   4079 20 ED         [12]   88    jr nz, search_loop
+                             17 .include "hero.h.s"
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;; Cabecera con funciones de hero ;;
+                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              4 
+                              5 .globl hero_draw
+                              6 
+                              7 .globl hero_get_position
+                              8 .globl hero_clear
+                              9 .globl hero_update
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 
 
-   407B C9            [10]   89    ret
-                             90 
-                             91 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             92 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0
-                             93 ;; _______________________
-                             94 ;; ENTRADA:    IX -> Puntero a entidad BULLET
-                             95 ;; DESTRUYE:   A
-                             96 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   407C                      97 bullet_checkDraw:
-   407C DD 7E 07      [19]   98    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-   407F FE 00         [ 7]   99    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-   4081 C4 B7 40      [17]  100    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
-   4084 C9            [10]  101    ret
-                            102 
-                            103 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                            104 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive = 0
-                            105 ;; _______________________
-                            106 ;; ENTRADA:    IX -> Puntero a entidad BULLET
-                            107 ;; DESTRUYE:   A
-                            108 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4085                     109 bullet_checkInit:
-   4085 3A 4C 40      [13]  110    ld     a,   (flag_init)       ;; Si no se ha iniciado ninguna entidad bullet A==0
-   4088 FE 00         [ 7]  111    cp    #0
-   408A C0            [11]  112    ret   nz                      ;; Si es 1 (1!=0), vuelve y no inicia mas entidades
-                            113 
-                            114    ;; Comprueba el atributo alive
-   408B DD 7E 07      [19]  115    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-   408E FE 00         [ 7]  116    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-   4090 C0            [11]  117    ret   nz                      ;; Si ya esta inicializada, hago ret
-                            118 
-                            119    ;; Debo inicializar la entidad segun la posicion del jugador
-   4091 DD 36 00 14   [19]  120    ld       b_x(ix),    #20      ;; Posicion X
-   4095 DD 36 01 14   [19]  121    ld       b_y(ix),    #20      ;; Posicion Y
-   4099 DD 36 02 01   [19]  122    ld       b_w(ix),    #1      ;; Anchura
-   409D DD 36 03 01   [19]  123    ld       b_h(ix),    #1      ;; Altura
-   40A1 DD 36 04 01   [19]  124    ld      b_vx(ix),    #1       ;; Velocidad X
-   40A5 DD 36 05 01   [19]  125    ld      b_vy(ix),    #1       ;; Velocidad Y
-   40A9 DD 36 06 0F   [19]  126    ld     b_col(ix),    #0x0F    ;; Codigo de color/sprite
-   40AD DD 36 07 01   [19]  127    ld    b_alive(ix),   #1       ;; Flag Alive
-                            128    ;;b_up_l(ix), #0xFF
-                            129    ;;b_up_h(ix), #0xFF
-                            130 
-   40B1 3E 01         [ 7]  131    ld     a,   #1                ;; flag_init = 1
-   40B3 32 4C 40      [13]  132    ld (flag_init), a             ;; YA NO SE PODRA INICIALIZAR NINGUNA ENTIDAD MAS
-                            133                                  ;;   EN EL RECORRIDO DE ESTE BUCLE, AHORA MISMO
-   40B6 C9            [10]  134    ret
+                             18 
+                             19 ;;======================================================================
+                             20 ;;======================================================================
+                             21 ;; DATOS PRIVADOS
+                             22 ;;======================================================================
+                             23 ;;======================================================================
+                     000A    24 vector_size = 10
+                     000A    25 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
+                             26 
+   4041 00 00                27 vector_index:  .dw #0x0000
+   4043                      28 vector_init:                        ;; Marca el inicio de vector_bullets
+   4043                      29 DefineNBullets vector_bullets, vector_size
+                     0000     1    _c = 0
+                              2    .rept vector_size
+                              3       DefineBulletDefault vector_bullets, \_c
+                              4       _c = _c + 1
+                              5    .endm
+   4043                       1       DefineBulletDefault vector_bullets, \_c
+   0002                       1    DefineBullet vector_bullets0, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   0002                       1 vector_bullets0:
+   0002                       2    DefineDrawableEnt vector_bullets0_dw, 0xAA, 0, 0, 0                       ;;'
+   0002                       1 vector_bullets0_dw:
+   4043 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4045 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4047                       3    DefineMovableEnt  vector_bullets0_mv, 0, 0                             ;;'
+   0006                       1 vector_bullets0_mv:
+   4047 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4049 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   404A 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   404B FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0001     2       _c = _c + 1
+   404D                       1       DefineBulletDefault vector_bullets, \_c
+   404D                       1    DefineBullet vector_bullets1, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   000C                       1 vector_bullets1:
+   000C                       2    DefineDrawableEnt vector_bullets1_dw, 0xAA, 0, 0, 0                       ;;'
+   000C                       1 vector_bullets1_dw:
+   404D AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   404F 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4051                       3    DefineMovableEnt  vector_bullets1_mv, 0, 0                             ;;'
+   0010                       1 vector_bullets1_mv:
+   4051 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4053 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   4054 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   4055 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0002     2       _c = _c + 1
+   4057                       1       DefineBulletDefault vector_bullets, \_c
+   4057                       1    DefineBullet vector_bullets2, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   0016                       1 vector_bullets2:
+   0016                       2    DefineDrawableEnt vector_bullets2_dw, 0xAA, 0, 0, 0                       ;;'
+   0016                       1 vector_bullets2_dw:
+   4057 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 56.
+Hexadecimal [16-Bits]
+
+
+
+   4059 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   405B                       3    DefineMovableEnt  vector_bullets2_mv, 0, 0                             ;;'
+   001A                       1 vector_bullets2_mv:
+   405B 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   405D 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   405E 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   405F FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0003     2       _c = _c + 1
+   4061                       1       DefineBulletDefault vector_bullets, \_c
+   4061                       1    DefineBullet vector_bullets3, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   0020                       1 vector_bullets3:
+   0020                       2    DefineDrawableEnt vector_bullets3_dw, 0xAA, 0, 0, 0                       ;;'
+   0020                       1 vector_bullets3_dw:
+   4061 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4063 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4065                       3    DefineMovableEnt  vector_bullets3_mv, 0, 0                             ;;'
+   0024                       1 vector_bullets3_mv:
+   4065 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4067 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   4068 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   4069 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0004     2       _c = _c + 1
+   406B                       1       DefineBulletDefault vector_bullets, \_c
+   406B                       1    DefineBullet vector_bullets4, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   002A                       1 vector_bullets4:
+   002A                       2    DefineDrawableEnt vector_bullets4_dw, 0xAA, 0, 0, 0                       ;;'
+   002A                       1 vector_bullets4_dw:
+   406B AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   406D 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   406F                       3    DefineMovableEnt  vector_bullets4_mv, 0, 0                             ;;'
+   002E                       1 vector_bullets4_mv:
+   406F 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4071 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   4072 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   4073 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0005     2       _c = _c + 1
+   4075                       1       DefineBulletDefault vector_bullets, \_c
+   4075                       1    DefineBullet vector_bullets5, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   0034                       1 vector_bullets5:
+   0034                       2    DefineDrawableEnt vector_bullets5_dw, 0xAA, 0, 0, 0                       ;;'
+   0034                       1 vector_bullets5_dw:
+   4075 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4077 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4079                       3    DefineMovableEnt  vector_bullets5_mv, 0, 0                             ;;'
+   0038                       1 vector_bullets5_mv:
+   4079 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   407B 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   407C 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   407D FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 57.
+Hexadecimal [16-Bits]
+
+
+
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0006     2       _c = _c + 1
+   407F                       1       DefineBulletDefault vector_bullets, \_c
+   407F                       1    DefineBullet vector_bullets6, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   003E                       1 vector_bullets6:
+   003E                       2    DefineDrawableEnt vector_bullets6_dw, 0xAA, 0, 0, 0                       ;;'
+   003E                       1 vector_bullets6_dw:
+   407F AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4081 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4083                       3    DefineMovableEnt  vector_bullets6_mv, 0, 0                             ;;'
+   0042                       1 vector_bullets6_mv:
+   4083 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4085 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   4086 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   4087 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0007     2       _c = _c + 1
+   4089                       1       DefineBulletDefault vector_bullets, \_c
+   4089                       1    DefineBullet vector_bullets7, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   0048                       1 vector_bullets7:
+   0048                       2    DefineDrawableEnt vector_bullets7_dw, 0xAA, 0, 0, 0                       ;;'
+   0048                       1 vector_bullets7_dw:
+   4089 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   408B 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   408D                       3    DefineMovableEnt  vector_bullets7_mv, 0, 0                             ;;'
+   004C                       1 vector_bullets7_mv:
+   408D 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   408F 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   4090 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   4091 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0008     2       _c = _c + 1
+   4093                       1       DefineBulletDefault vector_bullets, \_c
+   4093                       1    DefineBullet vector_bullets8, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   0052                       1 vector_bullets8:
+   0052                       2    DefineDrawableEnt vector_bullets8_dw, 0xAA, 0, 0, 0                       ;;'
+   0052                       1 vector_bullets8_dw:
+   4093 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4095 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4097                       3    DefineMovableEnt  vector_bullets8_mv, 0, 0                             ;;'
+   0056                       1 vector_bullets8_mv:
+   4097 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4099 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   409A 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   409B FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     0009     2       _c = _c + 1
+   409D                       1       DefineBulletDefault vector_bullets, \_c
+   409D                       1    DefineBullet vector_bullets9, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   005C                       1 vector_bullets9:
+   005C                       2    DefineDrawableEnt vector_bullets9_dw, 0xAA, 0, 0, 0                       ;;'
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 58.
+Hexadecimal [16-Bits]
+
+
+
+   005C                       1 vector_bullets9_dw:
+   409D AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   409F 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   40A1                       3    DefineMovableEnt  vector_bullets9_mv, 0, 0                             ;;'
+   0060                       1 vector_bullets9_mv:
+   40A1 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   40A3 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   40A4 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   40A5 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                     000A     2       _c = _c + 1
+   40A7                      30 DefineBullet bullet_copy 0xFF, 0xFF, 1, 1, 0, 4, #0x0F, #20, bullet_checkUpdate
+   40A7                       1 bullet_copy:
+   0066                       2    DefineDrawableEnt bullet_copy_dw, 0xFF, 0xFF, 1, 1                       ;;'
+   0066                       1 bullet_copy_dw:
+   40A7 FF FF                 2    .db   0xFF, 0xFF      ;; Posicion    (x,y)
+   40A9 01 01                 3    .db   1, 1      ;; Dimensiones (w,h)
+   40AB                       3    DefineMovableEnt  bullet_copy_mv, 0, 4                             ;;'
+   006A                       1 bullet_copy_mv:
+   40AB 00 04                 2    .db   0, 4    ;; Variables de la velocidad
+   40AD 0F                    4    .db   #0x0F        ;; Color / Sprite (cuando haya)
+   40AE 14                    5    .db   #20      ;; _alive>0? Se actualiza/dibuja
+   40AF BE 41                 6    .dw   bullet_checkUpdate        ;; Funcion de update
+                              7 
+                              8 ;; Saber tamanyo de entidad bala
+                             31 
+   40B1 00                   32 save_a:        .db #0x00            ;; Guarda el valor de A
+   40B2 00                   33 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
+                             34 
+   40B3                      35 vector_keys:
+   40B3 00 01 16 41          36    .dw #Key_CursorUp,      #keyUp_ON      ;; Flecha de arriba
+   40B7 00 04 1C 41          37    .dw #Key_CursorDown,    #keyDown_ON    ;; Flecha de abajo
+   40BB 00 02 22 41          38    .dw #Key_CursorRight,   #keyRight_ON   ;; Flecha de derecha
+   40BF 01 01 28 41          39    .dw #Key_CursorLeft,    #keyLeft_ON    ;; Flecha de izquierda
+   40C3 FF                   40    .db #0xFF                              ;; Fin
+   40C4 00                   41 flag_vx:       .db #0
+   40C5 00                   42 flag_vy:       .db #0
+   40C6 00                   43 flag_shoot:    .db #0                     ;; Solo habra un disparo por cada vez que se pulse cada tecla
+   40C7 00                   44 flag_key:      .db #0                     ;; Si ha pulsado alguna de las 4 teclas de disparo, flag_key = 1
+                             45 
+                             46 ;;======================================================================
+                             47 ;;======================================================================
+                             48 ;; FUNCIONES PUBLICAS
+                             49 ;;======================================================================
+                             50 ;;======================================================================
+                             51 
+                             52 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             53 ;; DIBUJADO DE LA ENTIDAD BULLET
+                             54 ;; _______________________
+                             55 ;; DESTRUYE: HL
+                             56 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   40C8                      57 bullet_draw::
+   40C8 21 76 41      [10]   58    ld    hl,   #bullet_checkDraw
+   40CB C3 59 41      [10]   59    jp    bullet_search                 ;; Llamada al bucle
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 59.
+Hexadecimal [16-Bits]
+
+
+
+                             60 
+                             61 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             62 ;; UPDATE DE TODAS LAS BALAS INICIALIZADAS
+                             63 ;; _______________________
+                             64 ;; DESTRUYE: HL
+                             65 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   40CE                      66 bullet_update::
+   40CE 21 B1 41      [10]   67    ld    hl,   #bullet_searchUpdate
+   40D1 C3 59 41      [10]   68    jp    bullet_search                 ;; Llamada al bucle
+                             69 
+                             70 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             71 ;; CLEAR
+                             72 ;; _______________________
+                             73 ;; DESTRUYE: HL
+                             74 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   40D4                      75 bullet_clear::
+   40D4 21 D4 41      [10]   76    ld    hl,   #bullet_checkClear
+   40D7 C3 59 41      [10]   77    jp    bullet_search
+                             78 
+                             79 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             80 ;; COMPRUEBA LOS INPUTS
+                             81 ;; _______________________
+                             82 ;; DESTRUYE: AF, BC, DE, HL, IX
+                             83 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   40DA                      84 bullet_inputs::
+   40DA CD C1 44      [17]   85    call cpct_scanKeyboard_asm
+                             86 
+                             87    ;; ¡¡¡¡¡¡¡¡HAY QUE ARREGLAR ESTO!!!!!!!!
+                             88    ;;ld    hl,   #vector_keys         ;; IX apunta al vector de codigos de teclado
+                             89    ;;loop:
+                             90    ;;   ld     a,   (hl)              ;; A = 0(ix)
+                             91    ;;   cp  #0xFF                     ;; El final del vector lo marca un FF
+                             92    ;;   jr     z,   end_loop          ;; Sale del bucle en caso que A == FF
+                             93    ;;      push  hl
+                             94    ;;      call  cpct_isKeyPressed_asm   ;; CPC
+                             95    ;;      pop   hl
+                             96    ;;   inc   hl                      ;; HL ++
+                             97    ;;   inc   hl                      ;; HL ++
+                             98    ;;   ld     c,   (hl)              ;; Guardo en BC el valor al que apunta HL
+                             99    ;;   inc   hl                      ;; HL ++
+                            100    ;;   ld     b,   (hl)              ;; Guardo en BC el valor al que apunta HL
+                            101    ;;   inc   hl                      ;; HL ++
+                            102    ;;   ld (k_custom), bc             ;;
+                            103    ;;      k_custom = . + 1           ;; CARGAR LA FUNCION PROPIA DE CADA KEY
+                            104    ;;      call nz, (0x0000)          ;;
+                            105    ;;   jr    loop                    ;; Vuelta arriba
+                            106    ;;end_loop:
+                            107 
+                            108    ;; Bucle mas costoso
+   40DD DD 21 B3 40   [14]  109    ld    ix,   #vector_keys         ;; IX apunta al vector de codigos de teclado
+   40E1                     110    loop:
+   40E1 DD 7E 00      [19]  111       ld     a,   0(ix)             ;; A = 0(ix)
+   40E4 FE FF         [ 7]  112       cp  #0xFF                     ;; El final del vector lo marca un FF
+   40E6 28 23         [12]  113       jr     z,   end_loop          ;; Sale del bucle en caso que A == FF
+                            114 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 60.
+Hexadecimal [16-Bits]
+
+
+
+   40E8 DD 6E 00      [19]  115       ld     l,   0(ix)             ;; Cargo el codigo de la tecla en HL
+   40EB DD 66 01      [19]  116       ld     h,   1(ix)             ;; Cargo el codigo de la tecla en HL
+   40EE CD CB 42      [17]  117       call cpct_isKeyPressed_asm    ;; CPC
+   40F1 DD 6E 02      [19]  118       ld     l,   2(ix)             ;; Cargo el codigo de la funcion en HL
+   40F4 DD 66 03      [19]  119       ld     h,   3(ix)             ;; Cargo el codigo de la funcion en HL
+   40F7 22 FB 40      [16]  120       ld (k_custom), hl
+                     00BA   121          k_custom = . + 1
+   40FA C4 00 00      [17]  122          call nz, (0x0000)          ;; CUSTOM
+   40FD 28 05         [12]  123          jr z, keep_looping         ;; Si no se ha pulsado ninguna tecla, pasa
+   40FF 3E 01         [ 7]  124             ld a, #1
+   4101 32 C7 40      [13]  125             ld (flag_key), a        ;; flag_key = ON
+   4104                     126       keep_looping:
+   4104 11 04 00      [10]  127       ld    de,   #4                ;; Sumo 4 para ir a la siguiente tecla
+   4107 DD 19         [15]  128       add   ix,   de                ;; IX + 4
+   4109 18 D6         [12]  129       jr    loop
+   410B                     130    end_loop:
+                            131 
+   410B 3A C7 40      [13]  132    ld a, (flag_key)                 ;; A = flag_key
+   410E FE 00         [ 7]  133    cp #0                            ;; Si A == 1: SE HA PULSADO ALGUNA DE LAS 4 TECLAS DE DISPARO
+   4110 C2 3A 41      [10]  134    jp nz, bullet_init               ;; Si A == 0: NO SE HA PULSADO NINGUNA TECLA DE DISPARO
                             135 
-                            136 
+   4113 C3 34 41      [10]  136    jp flag_shoot_off                ;; Volver flag_shoot a 0
                             137 
+                            138 ;;======================================================================
+                            139 ;;======================================================================
+                            140 ;; FUNCIONES PRIVADAS
+                            141 ;;======================================================================
+                            142 ;;======================================================================
+                            143 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            144 ;; CAMBIA LOS FLAGS DE LA VELOCIDAD EN Y
+                            145 ;; _______________________
+                            146 ;; DESTRUYE: A
+                            147 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   4116                     148 keyUp_ON:
+   4116 3E FF         [ 7]  149    ld a, #-1
+   4118 32 C5 40      [13]  150    ld (flag_vy), a
+   411B C9            [10]  151    ret
+                            152 
+                            153 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            154 ;; CAMBIA LOS FLAGS DE LA VELOCIDAD EN Y
+                            155 ;; _______________________
+                            156 ;; DESTRUYE: A
+                            157 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   411C                     158 keyDown_ON:
+   411C 3E 01         [ 7]  159    ld a, #1
+   411E 32 C5 40      [13]  160    ld (flag_vy), a
+   4121 C9            [10]  161    ret
+                            162 
+                            163 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            164 ;; CAMBIA LOS FLAGS DE LA VELOCIDAD EN X
+                            165 ;; _______________________
+                            166 ;; DESTRUYE: A
+                            167 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   4122                     168 keyRight_ON:
+   4122 3E 01         [ 7]  169    ld a, #1
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 61.
+Hexadecimal [16-Bits]
+
+
+
+   4124 32 C4 40      [13]  170    ld (flag_vx), a
+   4127 C9            [10]  171    ret
+                            172 
+                            173 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            174 ;; CAMBIA LOS FLAGS DE LA VELOCIDAD EN X
+                            175 ;; _______________________
+                            176 ;; DESTRUYE: A
+                            177 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   4128                     178 keyLeft_ON:
+   4128 3E FF         [ 7]  179    ld a, #-1
+   412A 32 C4 40      [13]  180    ld (flag_vx), a
+   412D C9            [10]  181    ret
+                            182 
+                            183 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            184 ;; CAMBIA flag_shoot A 1 E IMPIDE DISPARAR MAS, A MENOS QUE SUELTES LA TECLA
+                            185 ;; _______________________
+                            186 ;; DESTRUYE: A
+                            187 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   412E                     188 flag_shoot_on:
+   412E 3E 01         [ 7]  189    ld a, #1
+   4130 32 C6 40      [13]  190    ld (flag_shoot), a
+   4133 C9            [10]  191    ret
+                            192 
+                            193 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            194 ;; CAMBIA flag_shoot A 0 Y PERMITE DISPARAR MAS VECES AL PULSAR
+                            195 ;; _______________________
+                            196 ;; DESTRUYE: A
+                            197 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   4134                     198 flag_shoot_off:
+   4134 3E 00         [ 7]  199    ld a, #0
+   4136 32 C6 40      [13]  200    ld (flag_shoot), a
+   4139 C9            [10]  201    ret
+                            202 
+                            203 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            204 ;; INICIALIZA UNA ENTIDAD BULLET
+                            205 ;; _______________________
+                            206 ;; DESTRUYE: HL, A
+                            207 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   413A                     208 bullet_init:
+                            209    ;; Comprueba que solo se pueda disparar una vez por cada pulsacion de tecla
+   413A 3A C6 40      [13]  210    ld a, (flag_shoot)               ;; A = flag_shoot
+   413D FE 00         [ 7]  211    cp #0                            ;; A - 0 = A
+   413F 20 09         [12]  212    jr nz, bullet_init_end           ;; Si flag_shoot == 1, vuelve
+                            213 
+   4141 21 7F 41      [10]  214    ld    hl,   #bullet_checkInit
+   4144 CD 59 41      [17]  215    call  bullet_search              ;; Llamada al bucle
+   4147 CD 2E 41      [17]  216    call  flag_shoot_on              ;; Si llega aqui, es que se ha pulsado alguna tecla, entonces flag = ON
+                            217 
+   414A                     218    bullet_init_end:
+                            219    ;; Reset de los flags
+   414A 3E 00         [ 7]  220    ld     a,   #0
+   414C 32 B2 40      [13]  221       ld (flag_init), a
+   414F 32 C4 40      [13]  222       ld   (flag_vx), a
+   4152 32 C5 40      [13]  223       ld   (flag_vy), a
+   4155 32 C7 40      [13]  224       ld  (flag_key), a
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 62.
+Hexadecimal [16-Bits]
+
+
+
+   4158 C9            [10]  225    ret
+                            226 
+                            227 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            228 ;; RECORRE vector_bullets
+                            229 ;; _______________________
+                            230 ;; ENTRADA:    HL -> Puntero a funcion custom
+                            231 ;; DESTRUYE:   A, DE, IX
+                            232 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   4159                     233 bullet_search:
+   4159 3E 00         [ 7]  234    ld     a,   #0                ;; Cargo en A el valor inicial 0
+   415B DD 21 43 40   [14]  235    ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
+   415F 22 66 41      [16]  236    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
+   4162                     237    search_loop:
+   4162 32 B1 40      [13]  238       ld (save_a),  a            ;; Guardo el valor de A, porque la llamada a la funcion puede destruirlo
+                            239 
+                     0125   240       f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (valor arbitrario, puesto que siempre va a cambiar)
+   4165 CD 00 00      [17]  241       call (0x0000)                    ;; LLAMADA A FUNCION PERSONALIZABLE
+                            242 
+   4168 11 0A 00      [10]  243       ld    de,   #bullet_size         ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
+   416B DD 19         [15]  244       add   ix,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
+                            245 
+   416D 3A B1 40      [13]  246       ld     a,   (save_a)             ;; Recupero el valor de a
+   4170 3C            [ 4]  247       inc    a                         ;; A++
+   4171 FE 0A         [ 7]  248    cp #vector_size
+   4173 20 ED         [12]  249    jr nz, search_loop
+   4175 C9            [10]  250    ret
+                            251 
+                            252 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            253 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0
+                            254 ;; _______________________
+                            255 ;; ENTRADA:    IX -> Puntero a entidad BULLET
+                            256 ;; DESTRUYE:   A
+                            257 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   4176                     258 bullet_checkDraw:
+   4176 DD 7E 07      [19]  259    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
+   4179 FE 00         [ 7]  260    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+   417B C4 0F 42      [17]  261    call  nz,   #dw_draw_movable          ;; Llama a la funcion de dibujado
+   417E C9            [10]  262    ret
+                            263 
+                            264 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            265 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive = 0
+                            266 ;; _______________________
+                            267 ;; ENTRADA:    IX -> Puntero a entidad BULLET
+                            268 ;; DESTRUYE:   A, HL, DE, BC
+                            269 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   417F                     270 bullet_checkInit:
+   417F 3A B2 40      [13]  271    ld     a,   (flag_init)       ;; Si no se ha iniciado ninguna entidad bullet A==0
+   4182 FE 00         [ 7]  272    cp    #0
+   4184 C0            [11]  273    ret   nz                      ;; Si es 1 (1!=0), vuelve y no inicia mas entidades
+                            274 
+                            275    ;; Comprueba el atributo alive
+   4185 DD 7E 07      [19]  276    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
+   4188 FE 00         [ 7]  277    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1 -> INICIALIZO
+   418A C0            [11]  278    ret   nz                      ;; Si ya esta inicializada, hago ret
+                            279 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 63.
+Hexadecimal [16-Bits]
+
+
+
+                            280    ;; REALIZA UNA COPIA DE LA ENTIDAD POR DEFECTO
+   418B DD E5         [15]  281    push  ix                      ;; Guardo IX en la pila
+   418D D1            [10]  282    pop   de                      ;; Entidad DESTINO
+   418E 21 A7 40      [10]  283    ld    hl,   #bullet_copy      ;; Entidad ORIGEN
+   4191 01 0A 00      [10]  284    ld    bc,   #bullet_size      ;; Tamanyo de la entidad
+   4194 ED B0         [21]  285    ldir
+                            286 
+                            287    ;; Si debo cambiar algo de la entidad, aqui
+   4196 CD A9 42      [17]  288    call hero_get_position        ;; A = hero_x // B = hero_y
+   4199 DD 77 00      [19]  289    ld    b_x(ix), a              ;; Asigno X
+   419C DD 70 01      [19]  290    ld    b_y(ix), b              ;; Asigno Y
+                            291 
+   419F 3A C4 40      [13]  292    ld    a,    (flag_vx)         ;;
+   41A2 DD 77 04      [19]  293    ld    b_vx(ix), a             ;; Asigno VX
+   41A5 3A C5 40      [13]  294    ld    a,    (flag_vy)         ;;
+   41A8 DD 77 05      [19]  295    ld    b_vy(ix), a             ;; Asigno VX
+                            296 
+   41AB 3E 01         [ 7]  297    ld     a,   #1                ;; flag_init = 1
+   41AD 32 B2 40      [13]  298    ld (flag_init), a             ;; YA NO SE PODRA INICIALIZAR NINGUNA ENTIDAD MAS
+                            299                                  ;;   EN EL RECORRIDO DE ESTE BUCLE, AHORA MISMO
+   41B0 C9            [10]  300    ret
+                            301 
+                            302 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            303 ;; LLAMA A CADA FUNCION DE ACTUALIZACION DE CADA ENTIDAD
+                            304 ;; _______________________
+                            305 ;; ENTRADA:    IX -> Puntero a entidad BULLET
+                            306 ;; DESTRUYE:   HL, A
+                            307 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   41B1                     308 bullet_searchUpdate:
+   41B1 DD 7E 07      [19]  309    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
+   41B4 FE 00         [ 7]  310    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+   41B6 C8            [11]  311    ret    z                      ;; Si no se ha inicialiado, poco podemos hacer
+                            312 
+   41B7 DD 6E 08      [19]  313    ld l, b_up_l(ix)           ;; Carga el byte bajo en L
+   41BA DD 66 09      [19]  314    ld h, b_up_h(ix)           ;; Carga el byte alto en H
+   41BD E9            [ 4]  315    jp (hl)                    ;; Llama a la funcion propia de cada entidad
+                            316 
+                            317 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            318 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0 Y LO ACTUALIZO
+                            319 ;; _______________________
+                            320 ;; ENTRADA:    IX -> Puntero a entidad BULLET
+                            321 ;; DESTRUYE:   A
+                            322 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   41BE                     323 bullet_checkUpdate:
+                            324    ;; UPDATE ALIVE
+   41BE DD 35 07      [23]  325    dec   b_alive(ix)     ;; Decrementar el valor de alive y si llega a 1 matar la bala -> alive = 0
+                            326 
+                            327    ;; UPDATE POSICION
+   41C1 DD 7E 00      [19]  328    ld     a,   b_x(ix)           ;; Cargo en A la posicion en X
+   41C4 DD 86 04      [19]  329    add b_vx(ix)                  ;; Le aumento la velocidad en X
+   41C7 DD 77 00      [19]  330    ld  b_x(ix), a                ;; Guardo el dato actualizado
+                            331 
+   41CA DD 7E 01      [19]  332    ld     a,   b_y(ix)           ;; Cargo en A la posicion en Y
+   41CD DD 86 05      [19]  333    add b_vy(ix)                  ;; Le aumento la velocidad en Y
+   41D0 DD 77 01      [19]  334    ld  b_y(ix), a                ;; Guardo el dato actualizado
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 64.
+Hexadecimal [16-Bits]
+
+
+
+                            335 
+   41D3 C9            [10]  336    ret
+                            337 
+                            338 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            339 ;; CAMBIA EL COLOR DE LA BALA AL DEL FONDO (SI NO HAY SPRITES)
+                            340 ;; _______________________
+                            341 ;; ENTRADA:    IX -> Puntero a entidad BULLET
+                            342 ;; DESTRUYE:
+                            343 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   41D4                     344 bullet_checkClear:
+                            345    ;; SI NO HAY SPRITES!!!!!
+   41D4 DD 7E 06      [19]  346    ld      a,  b_col(ix)            ;; Guardo el valor del color actual en A
+   41D7 08            [ 4]  347    ex    af',  af              ;;'  ;; Intercambio registros
+   41D8 DD 36 06 00   [19]  348    ld b_col(ix),  #0                ;; Guardo el valor del color fondo en la entidad
+                            349 
+   41DC CD 76 41      [17]  350    call bullet_checkDraw            ;; Llamo al draw
+                            351 
+   41DF 08            [ 4]  352    ex    af',  af              ;;'  ;; Vuelvo a cargar el color anterior
+   41E0 DD 77 06      [19]  353    ld b_col(ix),  a                 ;; Guardo el valor del color fondo original en la entidad
+   41E3 C9            [10]  354    ret
+                            355 
+                            356 
+                            357 
+                            358 
+                            359 
+                            360 
+                            361 
+                            362 
+                            363 
+                            364 
+                            365 
+                            366 
+                            367 
+                            368 
+                            369 
+                            370 
+                            371 

@@ -64,21 +64,21 @@ Hexadecimal [16-Bits]
 Symbol Table
 
     cpct_dra   **** GX  |     cpct_etm   **** GX  |     cpct_etm   **** GX
-    cpct_get   **** GX  |     cpct_isK   **** GX  |     cpct_pag=  0000 
-    cpct_pag=  0010     |     cpct_pag=  0020     |     cpct_pag=  0030 
-    cpct_sca   **** GX  |     cpct_set   **** GX  |     cpct_set   **** GX
-    cpct_wai   **** GX  |   0 dw_clear   002B GR  |   0 dw_draw    0000 GR
-    e_col   =  0006     |     e_h     =  0003     |     e_up_h  =  0008 
-    e_up_l  =  0007     |     e_vx    =  0004     |     e_vy    =  0005 
-    e_w     =  0002     |     e_x     =  0000     |     e_y     =  0001 
-    opc_DI  =  00F3     |     opc_EI  =  00FB     |     opc_JR  =  0018 
-    opc_LD_D=  0016 
+    cpct_get   **** GX  |     cpct_isA   **** GX  |     cpct_isK   **** GX
+    cpct_pag=  0000     |     cpct_pag=  0010     |     cpct_pag=  0020 
+    cpct_pag=  0030     |     cpct_sca   **** GX  |     cpct_set   **** GX
+    cpct_set   **** GX  |     cpct_wai   **** GX  |   0 dw_clear   0045 GR
+  0 dw_draw    0000 GR  |   0 dw_draw_   002B GR  |     e_col   =  0006 
+    e_h     =  0003     |     e_up_h  =  0008     |     e_up_l  =  0007 
+    e_vx    =  0004     |     e_vy    =  0005     |     e_w     =  0002 
+    e_x     =  0000     |     e_y     =  0001     |     opc_DI  =  00F3 
+    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   3B   flags    0
+   0 _CODE      size   55   flags    0
    1 _DATA      size    0   flags    0
 

@@ -2521,10 +2521,11 @@ Hexadecimal [16-Bits]
                               9 .globl cpct_waitVSYNC_asm
                              10 .globl cpct_scanKeyboard_asm
                              11 .globl cpct_isKeyPressed_asm
-                             12 
-                             13 .globl cpct_setPalette_asm
-                             14 .globl cpct_etm_setTileset2x4_asm
-                             15 .globl cpct_etm_drawTileBox2x4_asm
+                             12 .globl cpct_isAnyKeyPressed_asm
+                             13 
+                             14 .globl cpct_setPalette_asm
+                             15 .globl cpct_etm_setTileset2x4_asm
+                             16 .globl cpct_etm_drawTileBox2x4_asm
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
@@ -2652,6 +2653,7 @@ Hexadecimal [16-Bits]
                               4 
                               5 .globl dw_draw
                               6 .globl dw_clear
+                              7 .globl dw_draw_movable
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
@@ -2665,11 +2667,14 @@ Hexadecimal [16-Bits]
                              19 ;; DATOS PRIVADOS
                              20 ;;======================================================================
                              21 ;;======================================================================
-   0000                      22 DefineEntity hero, #40, #110, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+                             22 
+                     0000    23 hero_x = .
+                     0001    24 hero_y = . + 1
+   0000                      25 DefineEntity hero, #40, #100, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
    0000                       1 hero:
-   0000                       2    DefineDrawableEnt hero_dw, #40, #110, 0x02, 0x08                       ;;'
+   0000                       2    DefineDrawableEnt hero_dw, #40, #100, 0x02, 0x08                       ;;'
    0000                       1 hero_dw:
-   0000 28 6E                 2    .db   #40, #110      ;; Posicion    (x,y)
+   0000 28 64                 2    .db   #40, #100      ;; Posicion    (x,y)
    0002 02 08                 3    .db   0x02, 0x08      ;; Dimensiones (w,h)
    0004                       3    DefineMovableEnt  hero_mv, 0x00, 0x00                             ;;'
    0004                       1 hero_mv:
@@ -2682,96 +2687,93 @@ Hexadecimal [16-Bits]
                               9 
                              10 ;; Aqui falta saber el tamanyo de la entidad
                      0009    11 e_size = . - (hero)
-                             23 
-                             24 ;;======================================================================
-                             25 ;;======================================================================
-                             26 ;; FUNCIONES PUBLICAS
+                             26 
                              27 ;;======================================================================
                              28 ;;======================================================================
-                             29 
-                             30 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             31 ;; DIBUJADO DE LA ENTIDAD HERO
-                             32 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   0009                      33 hero_draw::
-   0009 DD 21 00 00   [14]   34     ld    ix,   #hero    ;; ix apunta a los datos del heroe
-   000D 11 00 C0      [10]   35     ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-   0010 0E 28         [ 7]   36     ld     c,   #40      ;; x  [0-79]
-   0012 06 64         [ 7]   37     ld     b,   #100      ;; y  [0-199]
-   0014 CD 00 00      [17]   38     call cpct_getScreenPtr_asm
+                             29 ;; FUNCIONES PUBLICAS
+                             30 ;;======================================================================
+                             31 ;;======================================================================
+                             32 
+                             33 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             34 ;; DIBUJADO DE LA ENTIDAD HERO
+                             35 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   0009                      36 hero_draw::
+   0009 DD 21 00 00   [14]   37     ld    ix,   #hero    ;; ix apunta a los datos del heroe
+   000D C3 00 00      [10]   38     jp dw_draw_movable
                              39 
-                             40     ;; SIN SPRITE
-   0017 EB            [ 4]   41     ex    de,   hl          ;; Apunta a la posicion x,y
-   0018 DD 7E 06      [19]   42     ld     a,   e_col(ix)    ;; Código de color
-   001B DD 4E 02      [19]   43     ld     c,   e_w(ix)      ;; Ancho
-   001E DD 46 03      [19]   44     ld     b,   e_h(ix)      ;; Alto
-   0021 CD 00 00      [17]   45     call cpct_drawSolidBox_asm
-   0024 C9            [10]   46 ret
-                             47 
-   0025                      48 hero_clear::
-   0025 DD 21 00 00   [14]   49     ld ix, #hero
-   0029 C3 00 00      [10]   50     jp dw_clear
-                             51 
-   002C                      52 hero_update::
+                             40 
+   0010                      41 hero_clear::
+   0010 DD 21 00 00   [14]   42     ld ix, #hero
+   0014 C3 00 00      [10]   43     jp dw_clear
+                             44 
+   0017                      45 hero_update::
+   0017 DD 36 04 00   [19]   46     ld e_vx(ix), #0
+   001B DD 36 05 00   [19]   47     ld e_vy(ix), #0
+                             48 
+   001F CD 00 00      [17]   49     call cpct_scanKeyboard_asm
+   0022 21 08 20      [10]   50     ld hl, #Key_A
+   0025 CD 00 00      [17]   51     call cpct_isKeyPressed_asm
+   0028 CA 32 00      [10]   52     jp z, a_no_pulsada
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 
 
-   002C DD 36 04 00   [19]   53     ld e_vx(ix), #0
-   0030 DD 36 05 00   [19]   54     ld e_vy(ix), #0
-                             55 
-   0034 CD 00 00      [17]   56     call cpct_scanKeyboard_asm
-   0037 21 08 20      [10]   57     ld hl, #Key_A
-   003A CD 00 00      [17]   58     call cpct_isKeyPressed_asm
-   003D CA 47 00      [10]   59     jp z, a_no_pulsada
-   0040 3A 00 00      [13]   60         ld a, (CameraMinMax)
-   0043 3D            [ 4]   61         dec a
-   0044 32 00 00      [13]   62         ld (CameraMinMax), a
-                             63 
-                             64 
-   0047                      65     a_no_pulsada:
-   0047 CD 00 00      [17]   66         call cpct_scanKeyboard_asm
-   004A 21 07 20      [10]   67         ld hl, #Key_D
-   004D CD 00 00      [17]   68         call cpct_isKeyPressed_asm
-   0050 CA 5A 00      [10]   69         jp z, d_no_pulsada
-   0053 3A 00 00      [13]   70             ld a, (CameraMinMax)
-   0056 3C            [ 4]   71             inc a
-   0057 32 00 00      [13]   72             ld (CameraMinMax), a
-                             73 
-   005A                      74     d_no_pulsada:
-   005A CD 00 00      [17]   75         call cpct_scanKeyboard_asm
-   005D 21 07 08      [10]   76         ld hl, #Key_W
-   0060 CD 00 00      [17]   77         call cpct_isKeyPressed_asm
-   0063 CA 6F 00      [10]   78         jp z, w_no_pulsada
-   0066 3A 01 00      [13]   79             ld a, (CameraMinMax+1)
-   0069 06 02         [ 7]   80             ld b, #2
-   006B 90            [ 4]   81             sub b
-   006C 32 01 00      [13]   82             ld (CameraMinMax+1), a
-                             83 
-   006F                      84     w_no_pulsada:
-   006F CD 00 00      [17]   85         call cpct_scanKeyboard_asm
-   0072 21 07 10      [10]   86         ld hl, #Key_S
-   0075 CD 00 00      [17]   87         call cpct_isKeyPressed_asm
-   0078 CA 84 00      [10]   88         jp z, s_no_pulsada
-   007B 3A 01 00      [13]   89             ld a, (CameraMinMax+1)
-   007E 06 02         [ 7]   90             ld b, #2
-   0080 80            [ 4]   91             add b
-   0081 32 01 00      [13]   92             ld (CameraMinMax+1), a
-                             93 
-   0084                      94     s_no_pulsada:
-                             95 
-                             96 
-   0084 C9            [10]   97 ret
-                             98 ;;======================================================================
-                             99 ;;======================================================================
-                            100 ;; FUNCIONES PRIVADAS
-                            101 ;;======================================================================
-                            102 ;;======================================================================
-                            103 
-                            104 
-                            105 
-                            106 
-                            107 
+   002B 3A 00 00      [13]   53         ld a, (CameraMinMax)
+   002E 3D            [ 4]   54         dec a
+   002F 32 00 00      [13]   55         ld (CameraMinMax), a
+                             56 
+                             57 
+   0032                      58     a_no_pulsada:
+   0032 CD 00 00      [17]   59         call cpct_scanKeyboard_asm
+   0035 21 07 20      [10]   60         ld hl, #Key_D
+   0038 CD 00 00      [17]   61         call cpct_isKeyPressed_asm
+   003B CA 45 00      [10]   62         jp z, d_no_pulsada
+   003E 3A 00 00      [13]   63             ld a, (CameraMinMax)
+   0041 3C            [ 4]   64             inc a
+   0042 32 00 00      [13]   65             ld (CameraMinMax), a
+                             66 
+   0045                      67     d_no_pulsada:
+   0045 CD 00 00      [17]   68         call cpct_scanKeyboard_asm
+   0048 21 07 08      [10]   69         ld hl, #Key_W
+   004B CD 00 00      [17]   70         call cpct_isKeyPressed_asm
+   004E CA 5A 00      [10]   71         jp z, w_no_pulsada
+   0051 3A 01 00      [13]   72             ld a, (CameraMinMax+1)
+   0054 06 02         [ 7]   73             ld b, #2
+   0056 90            [ 4]   74             sub b
+   0057 32 01 00      [13]   75             ld (CameraMinMax+1), a
+                             76 
+   005A                      77     w_no_pulsada:
+   005A CD 00 00      [17]   78         call cpct_scanKeyboard_asm
+   005D 21 07 10      [10]   79         ld hl, #Key_S
+   0060 CD 00 00      [17]   80         call cpct_isKeyPressed_asm
+   0063 CA 6F 00      [10]   81         jp z, s_no_pulsada
+   0066 3A 01 00      [13]   82             ld a, (CameraMinMax+1)
+   0069 06 02         [ 7]   83             ld b, #2
+   006B 80            [ 4]   84             add b
+   006C 32 01 00      [13]   85             ld (CameraMinMax+1), a
+                             86 
+   006F                      87     s_no_pulsada:
+                             88 
+                             89 
+   006F C9            [10]   90 ret
+                             91 
+                             92 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             93 ;; CARGA EN LOS REGISTROS A,B LOS VALORES DE X,Y
+                             94 ;; _______________________
+                             95 ;; DESTRUYE: A, B
+                             96 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   0070                      97 hero_get_position::
+   0070 3A 01 00      [13]   98    ld    a,    (hero_y)
+   0073 47            [ 4]   99    ld    b,    a
+   0074 3A 00 00      [13]  100    ld    a,    (hero_x)
+   0077 C9            [10]  101    ret
+                            102 
+                            103 ;;======================================================================
+                            104 ;;======================================================================
+                            105 ;; FUNCIONES PRIVADAS
+                            106 ;;======================================================================
+                            107 ;;======================================================================
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 56.
 Hexadecimal [16-Bits]
 
@@ -2779,3 +2781,8 @@ Hexadecimal [16-Bits]
 
                             108 
                             109 
+                            110 
+                            111 
+                            112 
+                            113 
+                            114 

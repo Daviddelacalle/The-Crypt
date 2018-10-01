@@ -2521,10 +2521,11 @@ Hexadecimal [16-Bits]
                               9 .globl cpct_waitVSYNC_asm
                              10 .globl cpct_scanKeyboard_asm
                              11 .globl cpct_isKeyPressed_asm
-                             12 
-                             13 .globl cpct_setPalette_asm
-                             14 .globl cpct_etm_setTileset2x4_asm
-                             15 .globl cpct_etm_drawTileBox2x4_asm
+                             12 .globl cpct_isAnyKeyPressed_asm
+                             13 
+                             14 .globl cpct_setPalette_asm
+                             15 .globl cpct_etm_setTileset2x4_asm
+                             16 .globl cpct_etm_drawTileBox2x4_asm
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
@@ -2666,75 +2667,90 @@ Hexadecimal [16-Bits]
                              31 ;; ENTRADA: IX -> Puntero a entidad
                              32 ;; DESTRUYE: AF, BC, DE, HL
                              33 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   40B7                      34 dw_draw::
+   41E4                      34 dw_draw::
                              35    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
                              36 
-   40B7 11 00 C0      [10]   37    ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-   40BA DD 7E 00      [19]   38    ld a, e_x(ix)
-   40BD 21 77 41      [10]   39    ld hl, #CameraMinMax
-   40C0 96            [ 7]   40    sub (hl)
-   40C1 FE 50         [ 7]   41    cp #80
-   40C3 D0            [11]   42    ret nc
-   40C4 4F            [ 4]   43    ld     c,   a      ;; x  [0-79]
-                             44 
-   40C5 DD 7E 01      [19]   45    ld a, e_y(ix)
-   40C8 21 78 41      [10]   46    ld hl, #CameraMinMax+1
-   40CB 96            [ 7]   47    sub (hl)
-   40CC FE 64         [ 7]   48    cp #100
-   40CE D0            [11]   49    ret nc
-   40CF 87            [ 4]   50    add a
-   40D0 47            [ 4]   51    ld     b,   a      ;; y  [0-199]
-   40D1 CD 5E 43      [17]   52    call cpct_getScreenPtr_asm
-                             53 
-                             54    ;; SIN SPRITE
-   40D4 EB            [ 4]   55    ex    de,   hl          ;; Apunta a la posicion x,y
-   40D5 DD 7E 06      [19]   56    ld     a,   e_col(ix)    ;; Código de color
-   40D8 DD 4E 02      [19]   57    ld     c,   e_w(ix)      ;; Ancho
-   40DB DD 46 03      [19]   58    ld     b,   e_h(ix)      ;; Alto
-   40DE CD 90 42      [17]   59    call cpct_drawSolidBox_asm
-                             60 
-                             61    ;; CON SPRITE
-                             62    ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
-                             63    ;; (2B DE) memory	Destination video memory pointer
-                             64    ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
-                             65    ;; (1B B ) height	Sprite Height in bytes (>0)
-                             66    ;; cpct_drawSprite_asm
-   40E1 C9            [10]   67    ret
+   41E4 11 00 C0      [10]   37    ld    de,   #0xC000                  ;; Apunta al inicio de la memoria de video
+                             38 
+   41E7 DD 7E 00      [19]   39    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
+   41EA 21 B1 42      [10]   40    ld hl, #CameraMinMax                 ;; Cargo en HL la coordenada minima en X
+   41ED 96            [ 7]   41    sub (hl)                             ;; Le resto a A, esta coordenada
+   41EE FE 50         [ 7]   42    cp #80                               ;; Compruebo que esté entre 0 y 80
+   41F0 D0            [11]   43    ret nc                               ;; Si está fuera del límite no la dibujo
+   41F1 4F            [ 4]   44    ld     c,   a      ;; x  [0-79]
+                             45 
+   41F2 DD 7E 01      [19]   46    ld a, e_y(ix)
+   41F5 21 B2 42      [10]   47    ld hl, #CameraMinMax+1
+   41F8 96            [ 7]   48    sub (hl)
+   41F9 FE 64         [ 7]   49    cp #100
+   41FB D0            [11]   50    ret nc
+   41FC 87            [ 4]   51    add a
+   41FD 47            [ 4]   52    ld     b,   a      ;; y  [0-199]
+   41FE CD A5 44      [17]   53    call cpct_getScreenPtr_asm
+                             54 
+                             55    ;; SIN SPRITE
+   4201 EB            [ 4]   56    ex    de,   hl          ;; Apunta a la posicion x,y
+   4202 DD 7E 06      [19]   57    ld     a,   e_col(ix)    ;; Código de color
+   4205 DD 4E 02      [19]   58    ld     c,   e_w(ix)      ;; Ancho
+   4208 DD 46 03      [19]   59    ld     b,   e_h(ix)      ;; Alto
+   420B CD D7 43      [17]   60    call cpct_drawSolidBox_asm
+                             61 
+                             62    ;; CON SPRITE
+                             63    ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
+                             64    ;; (2B DE) memory	Destination video memory pointer
+                             65    ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
+                             66    ;; (1B B ) height	Sprite Height in bytes (>0)
+                             67    ;; cpct_drawSprite_asm
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
 
-                             68 
+   420E C9            [10]   68    ret
                              69 
-                             70 ;==================================
-                             71 ; Clears the sprite (squeare now)
-                             72 ;==================================
-   40E2                      73 dw_clear::
-   40E2 DD 7E 06      [19]   74   ld  a, e_col(ix)
-   40E5 08            [ 4]   75   ex af, af'            ;'
+                             70 
+   420F                      71 dw_draw_movable::
+   420F 11 00 C0      [10]   72        ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
+   4212 DD 4E 00      [19]   73        ld     c,   e_x(ix)      ;; x  [0-79]
+   4215 DD 46 01      [19]   74        ld     b,   e_y(ix)      ;; y  [0-199]
+   4218 CD A5 44      [17]   75        call cpct_getScreenPtr_asm
                              76 
-   40E6 DD 36 06 00   [19]   77   ld  e_col(ix), #0
-                             78 
-   40EA CD B7 40      [17]   79   call dw_draw
-   40ED 08            [ 4]   80   ex af, af'            ;'
-   40EE DD 77 06      [19]   81   ld e_col(ix), a
-                             82 
-   40F1 C9            [10]   83  ret
+                             77        ;; SIN SPRITE
+   421B EB            [ 4]   78        ex    de,   hl          ;; Apunta a la posicion x,y
+   421C DD 7E 06      [19]   79        ld     a,   e_col(ix)    ;; Código de color
+   421F DD 4E 02      [19]   80        ld     c,   e_w(ix)      ;; Ancho
+   4222 DD 46 03      [19]   81        ld     b,   e_h(ix)      ;; Alto
+   4225 CD D7 43      [17]   82        call cpct_drawSolidBox_asm
+   4228 C9            [10]   83    ret
                              84 
-                             85 ;;======================================================================
-                             86 ;;======================================================================
-                             87 ;; FUNCIONES PRIVADAS
-                             88 ;;======================================================================
-                             89 ;;======================================================================
-                             90 
+                             85 ;==================================
+                             86 ; Clears the sprite (squeare now)
+                             87 ;==================================
+   4229                      88 dw_clear::
+   4229 DD 7E 06      [19]   89   ld  a, e_col(ix)
+   422C 08            [ 4]   90   ex af, af'            ;'
                              91 
-                             92 
+   422D DD 36 06 00   [19]   92   ld  e_col(ix), #0
                              93 
-                             94 
-                             95 
-                             96 
+   4231 CD E4 41      [17]   94   call dw_draw
+   4234 08            [ 4]   95   ex af, af'            ;'
+   4235 DD 77 06      [19]   96   ld e_col(ix), a
                              97 
-                             98 
+   4238 C9            [10]   98  ret
                              99 
-                            100 
+                            100 ;;======================================================================
+                            101 ;;======================================================================
+                            102 ;; FUNCIONES PRIVADAS
+                            103 ;;======================================================================
+                            104 ;;======================================================================
+                            105 
+                            106 
+                            107 
+                            108 
+                            109 
+                            110 
+                            111 
+                            112 
+                            113 
+                            114 
+                            115 

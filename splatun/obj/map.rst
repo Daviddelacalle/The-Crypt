@@ -139,8 +139,8 @@ Hexadecimal [16-Bits]
 
 
                               6 
-   4177                       7 CameraMinMax::
-   4177 00 00                 8     .db #0, #0 ;Min X, Min Y
+   42B1                       7 CameraMinMax::
+   42B1 00 00                 8     .db #0, #0 ;Min X, Min Y
                               9 
                      0000    10 cam_min_x = 0
                      0001    11 cam_max_x = 1
@@ -148,31 +148,31 @@ Hexadecimal [16-Bits]
                      0003    13 cam_max_y = 3
                              14 
                              15 
-   4179                      16 DefineEntity _obs, #10, #10, 0x04, 0x08, 0x00, 0x00, 0xFF, 0x0000
-   4179                       1 _obs:
+   42B3                      16 DefineEntity _obs, #10, #10, 0x04, 0x08, 0x00, 0x00, 0xFF, 0x0000
+   42B3                       1 _obs:
    0002                       2    DefineDrawableEnt _obs_dw, #10, #10, 0x04, 0x08                       ;;'
    0002                       1 _obs_dw:
-   4179 0A 0A                 2    .db   #10, #10      ;; Posicion    (x,y)
-   417B 04 08                 3    .db   0x04, 0x08      ;; Dimensiones (w,h)
-   417D                       3    DefineMovableEnt  _obs_mv, 0x00, 0x00                             ;;'
+   42B3 0A 0A                 2    .db   #10, #10      ;; Posicion    (x,y)
+   42B5 04 08                 3    .db   0x04, 0x08      ;; Dimensiones (w,h)
+   42B7                       3    DefineMovableEnt  _obs_mv, 0x00, 0x00                             ;;'
    0006                       1 _obs_mv:
-   417D 00 00                 2    .db   0x00, 0x00    ;; Variables de la velocidad
+   42B7 00 00                 2    .db   0x00, 0x00    ;; Variables de la velocidad
                               4 ;; Si no tiene sprite
-   417F FF                    5    .db   0xFF        ;; Color
+   42B9 FF                    5    .db   0xFF        ;; Color
                               6 ;; Si tiene sprite
                               7 ;;.dw   _spr
-   4180 00 00                 8    .dw   0x0000        ;; Puntero a la funcion de update
+   42BA 00 00                 8    .dw   0x0000        ;; Puntero a la funcion de update
                               9 
                              10 ;; Aqui falta saber el tamanyo de la entidad
                      0009    11 e_size = . - (_obs)
                              17 
                              18 
                              19 ;Disrupción alienígeca
-   4182                      20 obs_draw::
-   4182 DD 21 79 41   [14]   21     ld ix, #_obs
-   4186 C3 B7 40      [10]   22     jp dw_draw
+   42BC                      20 obs_draw::
+   42BC DD 21 B3 42   [14]   21     ld ix, #_obs
+   42C0 C3 E4 41      [10]   22     jp dw_draw
                              23 
-   4189                      24 obs_clear::
-   4189 DD 21 79 41   [14]   25     ld ix, #_obs
-   418D C3 E2 40      [10]   26     jp dw_clear
+   42C3                      24 obs_clear::
+   42C3 DD 21 B3 42   [14]   25     ld ix, #_obs
+   42C7 C3 29 42      [10]   26     jp dw_clear
                              27 

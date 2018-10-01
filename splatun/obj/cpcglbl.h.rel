@@ -1,10 +1,11 @@
 XL2
-H 1 areas B global symbols
+H 1 areas C global symbols
 S cpct_setPalette_asm Ref0000
 S cpct_isKeyPressed_asm Ref0000
 S cpct_etm_drawTileBox2x4_asm Ref0000
 S cpct_etm_setTileset2x4_asm Ref0000
 S .__.ABS. Def0000
+S cpct_isAnyKeyPressed_asm Ref0000
 S cpct_waitVSYNC_asm Ref0000
 S cpct_setVideoMode_asm Ref0000
 S cpct_disableFirmware_asm Ref0000
