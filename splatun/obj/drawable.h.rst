@@ -8,3 +8,4 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl dw_draw
+                              6 .globl dw_clear

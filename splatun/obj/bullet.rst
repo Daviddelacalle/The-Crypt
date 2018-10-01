@@ -2622,22 +2622,7 @@ Hexadecimal [16-Bits]
                             102 
                             103 
                             104 
-                            105 
-                            106 
-                            107 
-                            108 
-                            109 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
-Hexadecimal [16-Bits]
-
-
-
-                            110 
-                            111 
-                            112 
-                            113 
-                            114 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
@@ -2648,7 +2633,8 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl dw_draw
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
+                              6 .globl dw_clear
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
@@ -2662,53 +2648,53 @@ Hexadecimal [16-Bits]
                      0002    22 vector_size = 2
                      000A    23 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
                              24 
-   4B6A 00 00                25 vector_index:  .dw #0x0000
-   4B6C                      26 vector_init:                        ;; Marca el inicio de vector_bullets
-   4B6C                      27 DefineNBullets vector_bullets, vector_size
+   4035 00 00                25 vector_index:  .dw #0x0000
+   4037                      26 vector_init:                        ;; Marca el inicio de vector_bullets
+   4037                      27 DefineNBullets vector_bullets, vector_size
                      0000     1    _c = 0
                               2    .rept vector_size
                               3       DefineBulletDefault vector_bullets, \_c
                               4       _c = _c + 1
                               5    .endm
-   4B6C                       1       DefineBulletDefault vector_bullets, \_c
+   4037                       1       DefineBulletDefault vector_bullets, \_c
    0002                       1    DefineBullet vector_bullets0, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
    0002                       1 vector_bullets0:
    0002                       2    DefineDrawableEnt vector_bullets0_dw, 0xAA, 0, 0, 0                       ;;'
    0002                       1 vector_bullets0_dw:
-   4B6C AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
-   4B6E 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
-   4B70                       3    DefineMovableEnt  vector_bullets0_mv, 0, 0                             ;;'
+   4037 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4039 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   403B                       3    DefineMovableEnt  vector_bullets0_mv, 0, 0                             ;;'
    0006                       1 vector_bullets0_mv:
-   4B70 00 00                 2    .db   0, 0    ;; Variables de la velocidad
-   4B72 00                    4    .db   0        ;; Color / Sprite (cuando haya)
-   4B73 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
-   4B74 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+   403B 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   403D 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   403E 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   403F FF FF                 6    .dw   0xFFFF        ;; Funcion de update
                               7 
                               8 ;; Saber tamanyo de entidad bala
                      0001     2       _c = _c + 1
-   4B76                       1       DefineBulletDefault vector_bullets, \_c
-   4B76                       1    DefineBullet vector_bullets1, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   4041                       1       DefineBulletDefault vector_bullets, \_c
+   4041                       1    DefineBullet vector_bullets1, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
    000C                       1 vector_bullets1:
    000C                       2    DefineDrawableEnt vector_bullets1_dw, 0xAA, 0, 0, 0                       ;;'
    000C                       1 vector_bullets1_dw:
-   4B76 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
-   4B78 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
-   4B7A                       3    DefineMovableEnt  vector_bullets1_mv, 0, 0                             ;;'
+   4041 AA 00                 2    .db   0xAA, 0      ;; Posicion    (x,y)
+   4043 00 00                 3    .db   0, 0      ;; Dimensiones (w,h)
+   4045                       3    DefineMovableEnt  vector_bullets1_mv, 0, 0                             ;;'
    0010                       1 vector_bullets1_mv:
-   4B7A 00 00                 2    .db   0, 0    ;; Variables de la velocidad
-   4B7C 00                    4    .db   0        ;; Color / Sprite (cuando haya)
-   4B7D 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
-   4B7E FF FF                 6    .dw   0xFFFF        ;; Funcion de update
+   4045 00 00                 2    .db   0, 0    ;; Variables de la velocidad
+   4047 00                    4    .db   0        ;; Color / Sprite (cuando haya)
+   4048 00                    5    .db   0      ;; _alive>0? Se actualiza/dibuja
+   4049 FF FF                 6    .dw   0xFFFF        ;; Funcion de update
                               7 
                               8 ;; Saber tamanyo de entidad bala
                      0002     2       _c = _c + 1
                              28 
-   4B80 00                   29 save_a:        .db #0x00            ;; Guarda el valor de A
-   4B81 00                   30 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
+   404B 00                   29 save_a:        .db #0x00            ;; Guarda el valor de A
+   404C 00                   30 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
                              31 ;;======================================================================
                              32 ;;======================================================================
                              33 ;; FUNCIONES PUBLICAS
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
@@ -2721,21 +2707,21 @@ Hexadecimal [16-Bits]
                              39 ;; _______________________
                              40 ;; DESTRUYE: HL
                              41 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4B82                      42 bullet_draw::
-   4B82 21 B1 4B      [10]   43    ld    hl,   #bullet_checkDraw
-   4B85 C3 94 4B      [10]   44    jp    bullet_search
+   404D                      42 bullet_draw::
+   404D 21 7C 40      [10]   43    ld    hl,   #bullet_checkDraw
+   4050 C3 5F 40      [10]   44    jp    bullet_search
                              45 
                              46 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
                              47 ;; INICIALIZA UNA ENTIDAD BULLET
                              48 ;; _______________________
                              49 ;; DESTRUYE: HL
                              50 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4B88                      51 bullet_init::
-   4B88 21 BA 4B      [10]   52    ld     hl,   #bullet_checkInit
-   4B8B CD 94 4B      [17]   53    call   bullet_search
-   4B8E 3E 00         [ 7]   54    ld     a,   #0                ;; Reset de flag_init
-   4B90 32 81 4B      [13]   55    ld (flag_init), a             ;; flag_init = 0
-   4B93 C9            [10]   56    ret
+   4053                      51 bullet_init::
+   4053 21 85 40      [10]   52    ld     hl,   #bullet_checkInit
+   4056 CD 5F 40      [17]   53    call   bullet_search
+   4059 3E 00         [ 7]   54    ld     a,   #0                ;; Reset de flag_init
+   405B 32 4C 40      [13]   55    ld (flag_init), a             ;; flag_init = 0
+   405E C9            [10]   56    ret
                              57 
                              58 
                              59 
@@ -2751,29 +2737,29 @@ Hexadecimal [16-Bits]
                              69 ;; ENTRADA:    HL -> Puntero a funcion custom
                              70 ;; DESTRUYE:   A, DE, IX
                              71 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4B94                      72 bullet_search:
-   4B94 3E 00         [ 7]   73    ld     a,   #0                ;; Cargo en A el valor inicial 0
-   4B96 DD 21 6C 4B   [14]   74    ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
-   4B9A 22 A1 4B      [16]   75    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
-   4B9D                      76    search_loop:
-   4B9D 32 80 4B      [13]   77       ld (save_a),  a            ;; Guardo el valor de A, porque la llamada a la funcion puede destruirlo
+   405F                      72 bullet_search:
+   405F 3E 00         [ 7]   73    ld     a,   #0                ;; Cargo en A el valor inicial 0
+   4061 DD 21 37 40   [14]   74    ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
+   4065 22 6C 40      [16]   75    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
+   4068                      76    search_loop:
+   4068 32 4B 40      [13]   77       ld (save_a),  a            ;; Guardo el valor de A, porque la llamada a la funcion puede destruirlo
                              78 
                      0037    79       f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (valor arbitrario, puesto que siempre va a cambiar)
-   4BA0 CD 00 00      [17]   80       call (0x0000)                    ;; Llamada a funcion personalizable
+   406B CD 00 00      [17]   80       call (0x0000)                    ;; Llamada a funcion personalizable
                              81 
-   4BA3 11 0A 00      [10]   82       ld    de,   #bullet_size         ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
-   4BA6 DD 19         [15]   83       add   ix,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
+   406E 11 0A 00      [10]   82       ld    de,   #bullet_size         ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
+   4071 DD 19         [15]   83       add   ix,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
                              84 
-   4BA8 3A 80 4B      [13]   85       ld     a,   (save_a)             ;; Recupero el valor de a
-   4BAB 3C            [ 4]   86       inc    a                         ;; A++
-   4BAC FE 02         [ 7]   87    cp #vector_size
-   4BAE 20 ED         [12]   88    jr nz, search_loop
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 56.
+   4073 3A 4B 40      [13]   85       ld     a,   (save_a)             ;; Recupero el valor de a
+   4076 3C            [ 4]   86       inc    a                         ;; A++
+   4077 FE 02         [ 7]   87    cp #vector_size
+   4079 20 ED         [12]   88    jr nz, search_loop
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 
 
-   4BB0 C9            [10]   89    ret
+   407B C9            [10]   89    ret
                              90 
                              91 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
                              92 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0
@@ -2781,11 +2767,11 @@ Hexadecimal [16-Bits]
                              94 ;; ENTRADA:    IX -> Puntero a entidad BULLET
                              95 ;; DESTRUYE:   A
                              96 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4BB1                      97 bullet_checkDraw:
-   4BB1 DD 7E 07      [19]   98    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-   4BB4 FE 00         [ 7]   99    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-   4BB6 C4 EC 4B      [17]  100    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
-   4BB9 C9            [10]  101    ret
+   407C                      97 bullet_checkDraw:
+   407C DD 7E 07      [19]   98    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
+   407F FE 00         [ 7]   99    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+   4081 C4 B7 40      [17]  100    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
+   4084 C9            [10]  101    ret
                             102 
                             103 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
                             104 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive = 0
@@ -2793,32 +2779,32 @@ Hexadecimal [16-Bits]
                             106 ;; ENTRADA:    IX -> Puntero a entidad BULLET
                             107 ;; DESTRUYE:   A
                             108 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4BBA                     109 bullet_checkInit:
-   4BBA 3A 81 4B      [13]  110    ld     a,   (flag_init)       ;; Si no se ha iniciado ninguna entidad bullet A==0
-   4BBD FE 00         [ 7]  111    cp    #0
-   4BBF C0            [11]  112    ret   nz                      ;; Si es 1 (1!=0), vuelve y no inicia mas entidades
+   4085                     109 bullet_checkInit:
+   4085 3A 4C 40      [13]  110    ld     a,   (flag_init)       ;; Si no se ha iniciado ninguna entidad bullet A==0
+   4088 FE 00         [ 7]  111    cp    #0
+   408A C0            [11]  112    ret   nz                      ;; Si es 1 (1!=0), vuelve y no inicia mas entidades
                             113 
                             114    ;; Comprueba el atributo alive
-   4BC0 DD 7E 07      [19]  115    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-   4BC3 FE 00         [ 7]  116    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-   4BC5 C0            [11]  117    ret   nz                      ;; Si ya esta inicializada, hago ret
+   408B DD 7E 07      [19]  115    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
+   408E FE 00         [ 7]  116    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+   4090 C0            [11]  117    ret   nz                      ;; Si ya esta inicializada, hago ret
                             118 
                             119    ;; Debo inicializar la entidad segun la posicion del jugador
-   4BC6 DD 36 00 14   [19]  120    ld       b_x(ix),    #20      ;; Posicion X
-   4BCA DD 36 01 14   [19]  121    ld       b_y(ix),    #20      ;; Posicion Y
-   4BCE DD 36 02 01   [19]  122    ld       b_w(ix),    #1      ;; Anchura
-   4BD2 DD 36 03 01   [19]  123    ld       b_h(ix),    #1      ;; Altura
-   4BD6 DD 36 04 01   [19]  124    ld      b_vx(ix),    #1       ;; Velocidad X
-   4BDA DD 36 05 01   [19]  125    ld      b_vy(ix),    #1       ;; Velocidad Y
-   4BDE DD 36 06 0F   [19]  126    ld     b_col(ix),    #0x0F    ;; Codigo de color/sprite
-   4BE2 DD 36 07 01   [19]  127    ld    b_alive(ix),   #1       ;; Flag Alive
+   4091 DD 36 00 14   [19]  120    ld       b_x(ix),    #20      ;; Posicion X
+   4095 DD 36 01 14   [19]  121    ld       b_y(ix),    #20      ;; Posicion Y
+   4099 DD 36 02 01   [19]  122    ld       b_w(ix),    #1      ;; Anchura
+   409D DD 36 03 01   [19]  123    ld       b_h(ix),    #1      ;; Altura
+   40A1 DD 36 04 01   [19]  124    ld      b_vx(ix),    #1       ;; Velocidad X
+   40A5 DD 36 05 01   [19]  125    ld      b_vy(ix),    #1       ;; Velocidad Y
+   40A9 DD 36 06 0F   [19]  126    ld     b_col(ix),    #0x0F    ;; Codigo de color/sprite
+   40AD DD 36 07 01   [19]  127    ld    b_alive(ix),   #1       ;; Flag Alive
                             128    ;;b_up_l(ix), #0xFF
                             129    ;;b_up_h(ix), #0xFF
                             130 
-   4BE6 3E 01         [ 7]  131    ld     a,   #1                ;; flag_init = 1
-   4BE8 32 81 4B      [13]  132    ld (flag_init), a             ;; YA NO SE PODRA INICIALIZAR NINGUNA ENTIDAD MAS
+   40B1 3E 01         [ 7]  131    ld     a,   #1                ;; flag_init = 1
+   40B3 32 4C 40      [13]  132    ld (flag_init), a             ;; YA NO SE PODRA INICIALIZAR NINGUNA ENTIDAD MAS
                             133                                  ;;   EN EL RECORRIDO DE ESTE BUCLE, AHORA MISMO
-   4BEB C9            [10]  134    ret
+   40B6 C9            [10]  134    ret
                             135 
                             136 
                             137 

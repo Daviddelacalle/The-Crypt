@@ -10,6 +10,8 @@
 .include "cpctelera.h.s"
 .include "cpcglbl.h.s"
 .include "struct.h.s"
+
+.globl CameraMinMax
 ;;======================================================================
 ;;======================================================================
 ;; DATOS PRIVADOS
@@ -33,8 +35,20 @@ dw_draw::
    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
 
    ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-   ld     c,   e_x(ix)      ;; x  [0-79]
-   ld     b,   e_y(ix)      ;; y  [0-199]
+   ld a, e_x(ix)
+   ld hl, #CameraMinMax
+   sub (hl)
+   cp #80
+   ret nc
+   ld     c,   a      ;; x  [0-79]
+
+   ld a, e_y(ix)
+   ld hl, #CameraMinMax+1
+   sub (hl)
+   cp #100
+   ret nc
+   add a
+   ld     b,   a      ;; y  [0-199]
    call cpct_getScreenPtr_asm
 
    ;; SIN SPRITE
@@ -51,6 +65,22 @@ dw_draw::
    ;; (1B B ) height	Sprite Height in bytes (>0)
    ;; cpct_drawSprite_asm
    ret
+
+
+;==================================
+; Clears the sprite (squeare now)
+;==================================
+dw_clear::
+  ld  a, e_col(ix)
+  ex af, af'            ;'
+
+  ld  e_col(ix), #0
+
+  call dw_draw
+  ex af, af'            ;'
+  ld e_col(ix), a
+
+ ret
 
 ;;======================================================================
 ;;======================================================================

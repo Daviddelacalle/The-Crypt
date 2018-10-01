@@ -1,16 +1,18 @@
 XL2
-H 2 areas 12 global symbols
+H 2 areas 14 global symbols
 M cpct_keyboard
 S cpct_setPalette_asm Ref0000
 S cpct_isKeyPressed_asm Ref0000
+S hero_update Ref0000
+S obs_draw Ref0000
 S cpct_etm_drawTileBox2x4_asm Ref0000
 S cpct_etm_setTileset2x4_asm Ref0000
 S _g_palette Ref0000
+S hero_clear Ref0000
 S bullet_draw Ref0000
-S _tileset Ref0000
 S bullet_init Ref0000
 S .__.ABS. Def0000
-S _nivel1 Ref0000
+S obs_clear Ref0000
 S cpct_waitVSYNC_asm Ref0000
 S cpct_setVideoMode_asm Ref0000
 S cpct_disableFirmware_asm Ref0000
@@ -18,28 +20,18 @@ S hero_draw Ref0000
 S cpct_drawSolidBox_asm Ref0000
 S cpct_scanKeyboard_asm Ref0000
 S cpct_getScreenPtr_asm Ref0000
-A _CODE size 49 flags 0 addr 0
-S _main Def002C
+A _CODE size 25 flags 0 addr 0
+S _main Def0000
 A _DATA size 0 flags 0 addr 0
 T 00 00
 R 00 00 00 00
 T 00 00 CD 00 00 0E 00 CD 00 00 21 00 00 11 10 00
-R 00 00 00 00 02 03 0C 00 02 08 0B 00 02 0B 04 00
-T 0E 00 CD 00 00 C9
+R 00 00 00 00 02 03 0E 00 02 08 0D 00 02 0B 06 00
+T 0E 00 CD 00 00
 R 00 00 00 00 02 03 00 00
-T 12 00
+T 11 00
 R 00 00 00 00
-T 12 00 21 00 00 CD 00 00 21 00 00 E5 21 00 C0 E5
-R 00 00 00 00 02 03 06 00 02 06 03 00 02 09 09 00
-T 20 00 01 00 00 11 28 32 3E 2D CD 00 00 C9
-R 00 00 00 00 02 0B 02 00
-T 2C 00
-R 00 00 00 00
-T 2C 00 CD 00 00 CD 12 00
-R 00 00 00 00 00 03 00 00 00 06 00 00
-T 32 00
-R 00 00 00 00
-T 32 00 CD 00 00 21 05 80 CD 00 00 C4 00 00 CD
-R 00 00 00 00 02 03 0F 00 02 09 01 00 02 0C 07 00
-T 3F 00 00 00 CD 00 00 CD 00 00 18 E9
-R 00 00 00 00 02 02 0D 00 02 05 05 00 02 08 0A 00
+T 11 00 CD 00 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 03 0B 00 02 06 07 00 02 09 02 00
+T 1B 00 00 00 CD 00 00 CD 00 00 18 EC
+R 00 00 00 00 02 02 0F 00 02 05 03 00 02 08 0C 00

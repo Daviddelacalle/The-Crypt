@@ -66,15 +66,16 @@ Symbol Table
   0 bullet_c   0050 R   |   0 bullet_d   0018 GR  |   0 bullet_i   001E GR
   0 bullet_s   002A R   |     bullet_s=  000A     |     cpct_pag=  0000 
     cpct_pag=  0010     |     cpct_pag=  0020     |     cpct_pag=  0030 
-    dw_draw    **** GX  |     e_col   =  0006     |     e_h     =  0003 
-    e_up_h  =  0008     |     e_up_l  =  0007     |     e_vx    =  0004 
-    e_vy    =  0005     |     e_w     =  0002     |     e_x     =  0000 
-    e_y     =  0001     |   0 f_custom=  0037 R   |   0 flag_ini   0017 R
-    opc_DI  =  00F3     |     opc_EI  =  00FB     |     opc_JR  =  0018 
-    opc_LD_D=  0016     |   0 save_a     0016 R   |   0 search_l   0033 R
-  0 vector_b   0002 R   |   0 vector_b   0002 R   |   0 vector_b   0006 R
-  0 vector_b   000C R   |   0 vector_b   000C R   |   0 vector_b   0010 R
-  0 vector_i   0000 R   |   0 vector_i   0002 R   |     vector_s=  0002 
+    dw_clear   **** GX  |     dw_draw    **** GX  |     e_col   =  0006 
+    e_h     =  0003     |     e_up_h  =  0008     |     e_up_l  =  0007 
+    e_vx    =  0004     |     e_vy    =  0005     |     e_w     =  0002 
+    e_x     =  0000     |     e_y     =  0001     |   0 f_custom=  0037 R
+  0 flag_ini   0017 R   |     opc_DI  =  00F3     |     opc_EI  =  00FB 
+    opc_JR  =  0018     |     opc_LD_D=  0016     |   0 save_a     0016 R
+  0 search_l   0033 R   |   0 vector_b   0002 R   |   0 vector_b   0002 R
+  0 vector_b   0006 R   |   0 vector_b   000C R   |   0 vector_b   000C R
+  0 vector_b   0010 R   |   0 vector_i   0000 R   |   0 vector_i   0002 R
+    vector_s=  0002 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]

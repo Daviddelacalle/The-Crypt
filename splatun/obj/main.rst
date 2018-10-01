@@ -2534,6 +2534,8 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl hero_draw
+                              6 .globl hero_clear
+                              7 .globl hero_update
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
@@ -2551,66 +2553,87 @@ Hexadecimal [16-Bits]
 
 
 
-                             12 
-                             13 .globl _g_palette
-                             14 .globl _tileset
-                             15 .globl _nivel1
-                             16 
-                             17 ;==========================================================;
-                             18 ;   Disable firmware to avoid configuration override
-                             19 ;   Load custom palette
-                             20 ;==========================================================;
-   4C16                      21 init:
-   4C16 CD 4F 4D      [17]   22     call cpct_disableFirmware_asm
-   4C19 0E 00         [ 7]   23     ld    c, #0
-   4C1B CD 3A 4D      [17]   24     call cpct_setVideoMode_asm
-                             25 
-   4C1E 21 5A 4B      [10]   26     ld hl, #_g_palette
-   4C21 11 10 00      [10]   27     ld de, #16
-   4C24 CD 6C 4C      [17]   28     call cpct_setPalette_asm
-   4C27 C9            [10]   29 ret
-                             30 
-                             31 ;==========================================================;
-                             32 ;   Draws the complete map
-                             33 ;==========================================================;
-   4C28                      34 drawMap:
-   4C28 21 CA 48      [10]   35     ld hl, #_tileset
-   4C2B CD 0B 4D      [17]   36     call cpct_etm_setTileset2x4_asm
-                             37 
-   4C2E 21 00 40      [10]   38     ld hl, #_nivel1
-   4C31 E5            [11]   39     push hl
-   4C32 21 00 C0      [10]   40     ld hl, #0xC000
-   4C35 E5            [11]   41     push hl
-   4C36 01 00 00      [10]   42     ld bc, #0000
-   4C39 11 28 32      [10]   43     ld de, #0x3228
-   4C3C 3E 2D         [ 7]   44     ld a, #45
-   4C3E CD 7F 4C      [17]   45     call cpct_etm_drawTileBox2x4_asm
-   4C41 C9            [10]   46 ret
-                             47 
-                             48 
-                             49 ;; Punto de entrada de la funcion main
-   4C42                      50 _main::
-                             51     ; --> Realocate stack memory <-- ;
-                             52     ;ld sp, #0x8000
-                             53 
-   4C42 CD 16 4C      [17]   54     call init
-   4C45 CD 28 4C      [17]   55     call drawMap
-                             56 
-                             57     ;; Comienza el bucle del juego
-   4C48                      58     loop:
-                             59        ;;call hero_check_inputs
-   4C48 CD 49 4E      [17]   60        call cpct_scanKeyboard_asm
-   4C4B 21 05 80      [10]   61        ld hl, #Key_Space
-   4C4E CD 60 4C      [17]   62        call cpct_isKeyPressed_asm
-   4C51 C4 88 4B      [17]   63        call nz, #bullet_init
-                             64 
-   4C54 CD 0F 4C      [17]   65        call hero_draw
-   4C57 CD 82 4B      [17]   66        call bullet_draw
+                             12 .include "map.h.s"
+                              1 .globl obs_draw
+                              2 .globl obs_clear
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
 
+                             13 
+                             14 .globl _g_palette
+                             15 ;.globl _tileset
+                             16 ;.globl _nivel1
+                             17 
+                             18 ;==========================================================;
+                             19 ;   Disable firmware to avoid configuration override
+                             20 ;   Load custom palette
+                             21 ;==========================================================;
+                             22 .macro init
+                             23     call cpct_disableFirmware_asm
+                             24     ld    c, #0
+                             25     call cpct_setVideoMode_asm
+                             26 
+                             27     ld hl, #_g_palette
+                             28     ld de, #16
+                             29     call cpct_setPalette_asm
+                             30 .endm
+                             31 
+                             32 ;==========================================================;
+                             33 ;   Draws the complete map
+                             34 ;==========================================================;
+                             35 ;drawMap:
+                             36 ;    ld hl, #_tileset
+                             37 ;    call cpct_etm_setTileset2x4_asm
+                             38 ;
+                             39 ;    ld hl, #_nivel1
+                             40 ;    push hl
+                             41 ;    ld hl, #0xC000
+                             42 ;    push hl
+                             43 ;    ld bc, #0000
+                             44 ;    ld de, #0x3228
+                             45 ;    ld a, #45
+                             46 ;    call cpct_etm_drawTileBox2x4_asm
+                             47 ;ret
+                             48 
+                             49 
+                             50 ;; Punto de entrada de la funcion main
+   4010                      51 _main::
+                             52     ; --> Realocate stack memory <-- ;
+                             53     ;ld sp, #0x8000
+                             54 
+   0000                      55     init
+   4010 CD 80 42      [17]    1     call cpct_disableFirmware_asm
+   4013 0E 00         [ 7]    2     ld    c, #0
+   4015 CD 6B 42      [17]    3     call cpct_setVideoMode_asm
+                              4 
+   4018 21 00 40      [10]    5     ld hl, #_g_palette
+   401B 11 10 00      [10]    6     ld de, #16
+   401E CD 9D 41      [17]    7     call cpct_setPalette_asm
+                             56     ;call drawMap
+                             57 
+                             58     ;; Comienza el bucle del juego
+   4021                      59     loop:
+                             60        ;;call hero_check_inputs
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
+Hexadecimal [16-Bits]
+
+
+
+                             61        ;call cpct_scanKeyboard_asm
+                             62        ;ld hl, #Key_Space
+                             63        ;call cpct_isKeyPressed_asm
+                             64        ;call nz, #bullet_init
+   4021 CD 89 41      [17]   65        call obs_clear
+   4024 CD 17 41      [17]   66        call hero_clear
                              67 
-   4C5A CD 47 4D      [17]   68        call cpct_waitVSYNC_asm
-   4C5D 18 E9         [12]   69 jr loop
+   4027 CD 1E 41      [17]   68        call hero_update
+   402A CD FB 40      [17]   69        call hero_draw
+                             70 
+   402D CD 82 41      [17]   71        call obs_draw
+   4030 CD 78 42      [17]   72        call cpct_waitVSYNC_asm
+                             73 
+                             74        ;call bullet_draw
+                             75 
+   4033 18 EC         [12]   76 jr loop

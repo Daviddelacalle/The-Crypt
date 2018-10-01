@@ -1,6 +1,7 @@
 XL2
-H 2 areas 4 global symbols
+H 2 areas 5 global symbols
 M cpct_keyboard
+S dw_clear Ref0000
 S .__.ABS. Def0000
 S dw_draw Ref0000
 A _CODE size 82 flags 0 addr 0
@@ -52,7 +53,7 @@ R 00 00 00 00
 T 47 00
 R 00 00 00 00
 T 47 00 DD 7E 07 FE 00 C4 00 00 C9
-R 00 00 00 00 02 08 01 00
+R 00 00 00 00 02 08 02 00
 T 50 00
 R 00 00 00 00
 T 50 00 3A 17 00 FE 00 C0 DD 7E 07 FE 00 C0 DD 36

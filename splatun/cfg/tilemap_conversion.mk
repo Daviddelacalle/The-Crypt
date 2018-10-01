@@ -38,15 +38,15 @@
 # Conversion
 #$(eval $(call TMX2DATA, CONVERT, tmxfile, array ))
 
-$(eval $(call TMX2DATA, SET_ASMVARPREFIX, yes       ))
-$(eval $(call TMX2DATA, SET_USEMACROS   , yes       ))
-$(eval $(call TMX2DATA, SET_OUTPUTS     , h c       ))
-$(eval $(call TMX2DATA, SET_BASE        , dec       ))
-$(eval $(call TMX2DATA, SET_BITSPERITEM , 8         ))
-$(eval $(call TMX2DATA, SET_FOLDER      , src/Mapas ))
-$(eval $(call TMX2DATA, SET_EXTRAPAR    ,           ))
-# Conversion
-$(eval $(call TMX2DATA, CONVERT, assets/Tiled/Mapa.tmx, nivel1 ))
+#$(eval $(call TMX2DATA, SET_ASMVARPREFIX, yes       ))
+#$(eval $(call TMX2DATA, SET_USEMACROS   , yes       ))
+#$(eval $(call TMX2DATA, SET_OUTPUTS     , h c       ))
+#$(eval $(call TMX2DATA, SET_BASE        , dec       ))
+#$(eval $(call TMX2DATA, SET_BITSPERITEM , 8         ))
+#$(eval $(call TMX2DATA, SET_FOLDER      , src/Mapas ))
+#$(eval $(call TMX2DATA, SET_EXTRAPAR    ,           ))
+## Conversion
+#$(eval $(call TMX2DATA, CONVERT, assets/Tiled/Mapa.tmx, nivel1 ))
 
 ##
 ## OLD MACROS (For compatibility)

@@ -2622,22 +2622,7 @@ Hexadecimal [16-Bits]
                             102 
                             103 
                             104 
-                            105 
-                            106 
-                            107 
-                            108 
-                            109 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
-Hexadecimal [16-Bits]
-
-
-
-                            110 
-                            111 
-                            112 
-                            113 
-                            114 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
@@ -2648,7 +2633,8 @@ Hexadecimal [16-Bits]
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               4 
                               5 .globl dw_draw
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
+                              6 .globl dw_clear
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
@@ -2708,7 +2694,7 @@ Hexadecimal [16-Bits]
                              31 ;;======================================================================
                              32 ;;======================================================================
                              33 ;; FUNCIONES PUBLICAS
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
@@ -2768,7 +2754,7 @@ Hexadecimal [16-Bits]
    0041 3C            [ 4]   86       inc    a                         ;; A++
    0042 FE 02         [ 7]   87    cp #vector_size
    0044 20 ED         [12]   88    jr nz, search_loop
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 56.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 

@@ -3,6 +3,15 @@ Hexadecimal [16-Bits]
 
 
 
+                              1 .area _DATA
+                              2 .area _CODE
+                              3 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+
+
+                              4 .include "struct.h.s"
                               1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                               2 ;; DEFINICION DE LAS MACROS PARA LA CREACION DE ENTIDADES ;;
                               3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -57,12 +66,12 @@ Hexadecimal [16-Bits]
                      0005    52   e_vx = 4     e_vy = 5
                      0006    53  e_col = 6
                      0008    54 e_up_l = 7   e_up_h = 8
-                             55 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 
 
+                             55 
                              56 ;;-----------------------------------------------------------------------------------------;;
                              57 ;; Entidad bullet
                              58 .macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _col, _alive, _upd
@@ -112,3 +121,58 @@ Hexadecimal [16-Bits]
                             102 
                             103 
                             104 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+Hexadecimal [16-Bits]
+
+
+
+                              5 .include "drawable.h.s"
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;; Cabecera con funciones de hero ;;
+                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              4 
+                              5 .globl dw_draw
+                              6 .globl dw_clear
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+Hexadecimal [16-Bits]
+
+
+
+                              6 
+   4177                       7 CameraMinMax::
+   4177 00 00                 8     .db #0, #0 ;Min X, Min Y
+                              9 
+                     0000    10 cam_min_x = 0
+                     0001    11 cam_max_x = 1
+                     0002    12 cam_min_y = 2
+                     0003    13 cam_max_y = 3
+                             14 
+                             15 
+   4179                      16 DefineEntity _obs, #10, #10, 0x04, 0x08, 0x00, 0x00, 0xFF, 0x0000
+   4179                       1 _obs:
+   0002                       2    DefineDrawableEnt _obs_dw, #10, #10, 0x04, 0x08                       ;;'
+   0002                       1 _obs_dw:
+   4179 0A 0A                 2    .db   #10, #10      ;; Posicion    (x,y)
+   417B 04 08                 3    .db   0x04, 0x08      ;; Dimensiones (w,h)
+   417D                       3    DefineMovableEnt  _obs_mv, 0x00, 0x00                             ;;'
+   0006                       1 _obs_mv:
+   417D 00 00                 2    .db   0x00, 0x00    ;; Variables de la velocidad
+                              4 ;; Si no tiene sprite
+   417F FF                    5    .db   0xFF        ;; Color
+                              6 ;; Si tiene sprite
+                              7 ;;.dw   _spr
+   4180 00 00                 8    .dw   0x0000        ;; Puntero a la funcion de update
+                              9 
+                             10 ;; Aqui falta saber el tamanyo de la entidad
+                     0009    11 e_size = . - (_obs)
+                             17 
+                             18 
+                             19 ;Disrupción alienígeca
+   4182                      20 obs_draw::
+   4182 DD 21 79 41   [14]   21     ld ix, #_obs
+   4186 C3 B7 40      [10]   22     jp dw_draw
+                             23 
+   4189                      24 obs_clear::
+   4189 DD 21 79 41   [14]   25     ld ix, #_obs
+   418D C3 E2 40      [10]   26     jp dw_clear
+                             27 

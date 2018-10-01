@@ -1,0 +1,26 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |   0 CameraMi   0000 GR  |   0 _obs       0002 R
+  0 _obs_dw    0002 R   |   0 _obs_mv    0006 R   |     b_alive =  0007 
+    b_col   =  0006     |     b_h     =  0003     |     b_up_h  =  0009 
+    b_up_l  =  0008     |     b_vx    =  0004     |     b_vy    =  0005 
+    b_w     =  0002     |     b_x     =  0000     |     b_y     =  0001 
+    cam_max_=  0001     |     cam_max_=  0003     |     cam_min_=  0000 
+    cam_min_=  0002     |     dw_clear   **** GX  |     dw_draw    **** GX
+    e_col   =  0006     |     e_h     =  0003     |     e_size  =  0009 
+    e_up_h  =  0008     |     e_up_l  =  0007     |     e_vx    =  0004 
+    e_vy    =  0005     |     e_w     =  0002     |     e_x     =  0000 
+    e_y     =  0001     |   0 obs_clea   0012 GR  |   0 obs_draw   000B GR
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size   19   flags    0
+   1 _DATA      size    0   flags    0
+

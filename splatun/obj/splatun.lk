@@ -7,10 +7,8 @@
 -k /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/tools/sdcc-3.6.8-r9946/share/sdcc/lib/z80
 -l /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
 -l z80
-obj/Mapas/Mapa.rel
-obj/Sprites/Tileset.rel
-obj/Sprites/g2_palette.rel
 obj/Sprites/g_palette.rel
+obj/main.rel
 obj/struct.h.rel
 obj/hero.h.rel
 obj/cpcglbl.h.rel
@@ -18,8 +16,9 @@ obj/bullet.rel
 obj/drawable.rel
 obj/hero.rel
 obj/drawable.h.rel
-obj/main.rel
+obj/map.rel
 obj/bullet.h.rel
+obj/map.h.rel
 obj/movable.rel
 
 -e
