@@ -1,19 +1,25 @@
+IMPORTANTE!: HACER make cleanall ANTES DE HACER COMMIT
+
 NOTA:
-   [x] -> ACABADO
+   [✔] -> ACABADO
    [-] -> EN PROCESO
+   [?] -> DUDA
 
 TODO:
-   MÍNIMO:
-   [-]   Scroll mapa                      DANNY
-   [ ]   Doble buffer                     DANNY
-   [ ]   Movimiento personajes            DD
-   [ ]   HUD                              DD
-   [-]   Disparos                         PABLO
-   [ ]   Reinicio de partida              PABLO
+   HECHO:
+   [✔]   Scroll mapa                      -> FALTA OPTIMIZACION
+   [✔]   Disparos                         -> ARREGLAR DIBUJADO
+   [✔]   Movimiento personajes
 
-   FULL GAME:
-   [ ]   Colisión con obstáculos
-   [ ]   Menú
+   FULL GAME MECHANIKS:
+   [-]   Colisiones (mapa y obstaculos)   DANNY
+   [-]   Enemigos en general              PABLO
+   [-]   Menú                             DD
+   [?]   Doble buffer
+   [ ]   Reinicio de partida
+
+   ESTÉTICO:
+   [ ]   HUD
    [ ]   Sprites
    [ ]   Música
    [ ]   Logo/Carátula
@@ -22,6 +28,7 @@ TODO:
    [ ]   Bombas de colorines que pinten
    [ ]   Power ups
    [ ]   % color del mapa actual
+   [ ]   Animacion inicial con camara
 
    NECESARIO:
    [-]   "Herencia de clases"             (Tipo lo de drawable)
