@@ -27,7 +27,7 @@ bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
 DefineNBullets vector_bullets, vector_size
-DefineBullet bullet_copy 0xFF, 0xFF, 1, 1, 0, 4, #0x0F, #20, bullet_checkUpdate
+DefineBullet bullet_copy 0xFF, 0xFF, #1, #4, 0, 4, #0x0F, #100, bullet_checkUpdate
 
 save_a:        .db #0x00            ;; Guarda el valor de A
 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
@@ -128,6 +128,38 @@ bullet_inputs::
       add   ix,   de                ;; IX + 4
       jr    loop
    end_loop:
+;
+;   ld    ix,   #vector_keys         ;; IX apunta al vector de codigos de teclado
+;
+;
+;   ld de, #vector_keys
+;   ex de, hl
+;   ld hl, (de)
+;   loop:
+;      call cpct_isKeyPressed_asm    ;; CPC
+;      ex de, hl
+;      inc hl
+;      inc hl
+;      ld (k_custom), hl
+;         k_custom = . + 1
+;         call nz, (0x0000)          ;; CUSTOM
+;         jr z, keep_looping         ;; Si no se ha pulsado ninguna tecla, pasa
+;            ld a, #1
+;            ld (flag_key), a        ;; flag_key = ON
+;      keep_looping:
+;      inc hl
+;      inc hl
+;      ex de, hl
+;      ld hl, (de)
+;
+;      ld     a,     l            ;; A = 0(ix)
+;      cp  #0xFF                     ;; El final del vector lo marca un FF
+;      jr     z,   end_loop          ;; Sale del bucle en caso que A == FF
+;
+;  jr    loop
+;
+;
+;   end_loop:
 
    ld a, (flag_key)                 ;; A = flag_key
    cp #0                            ;; Si A == 1: SE HA PULSADO ALGUNA DE LAS 4 TECLAS DE DISPARO
@@ -258,7 +290,7 @@ bullet_search:
 bullet_checkDraw:
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-   call  nz,   #dw_draw_movable          ;; Llama a la funcion de dibujado
+   call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;

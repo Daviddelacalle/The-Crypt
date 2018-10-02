@@ -67,21 +67,6 @@ dw_draw::
    ;; cpct_drawSprite_asm
    ret
 
-
-dw_draw_movable::
-       ld    de,   #0xC000     ;; Apunta al inicio de la memoria de video
-       ld     c,   e_x(ix)      ;; x  [0-79]
-       ld     b,   e_y(ix)      ;; y  [0-199]
-       call cpct_getScreenPtr_asm
-
-       ;; SIN SPRITE
-       ex    de,   hl          ;; Apunta a la posicion x,y
-       ld     a,   e_col(ix)    ;; Código de color
-       ld     c,   e_w(ix)      ;; Ancho
-       ld     b,   e_h(ix)      ;; Alto
-       call cpct_drawSolidBox_asm
-   ret
-
 ;==================================
 ; Clears the sprite (squeare now)
 ;==================================

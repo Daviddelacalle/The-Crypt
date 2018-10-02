@@ -11,6 +11,7 @@
 .include "cpcglbl.h.s"
 .include "struct.h.s"
 .include "drawable.h.s"
+.include "map.h.s"
 
 .globl CameraMinMax
 
@@ -22,7 +23,8 @@
 
 hero_x = .
 hero_y = . + 1
-DefineEntity hero, #40, #100, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+
 
 ;;======================================================================
 ;;======================================================================
@@ -35,7 +37,7 @@ DefineEntity hero, #40, #100, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 hero_draw::
     ld    ix,   #hero    ;; ix apunta a los datos del heroe
-    jp dw_draw_movable
+    jp dw_draw
 
 
 hero_clear::
@@ -47,42 +49,45 @@ hero_update::
     ld e_vy(ix), #0
 
     call cpct_scanKeyboard_asm
-    ld hl, #Key_A
+    ld hl, #Key_A                   ;; Comprueba tecla A
     call cpct_isKeyPressed_asm
-    jp z, a_no_pulsada
-        ld a, (CameraMinMax)
+    jr z, a_no_pulsada
+        call move_camera_left
+        ld a, e_x(ix)
         dec a
-        ld (CameraMinMax), a
-
+        ld e_x(ix), a
+        jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
 
     a_no_pulsada:
         call cpct_scanKeyboard_asm
-        ld hl, #Key_D
+        ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
-        jp z, d_no_pulsada
-            ld a, (CameraMinMax)
+        jr z, d_no_pulsada
+            call move_camera_right
+            ld a, e_x(ix)
             inc a
-            ld (CameraMinMax), a
+            ld e_x(ix), a
 
     d_no_pulsada:
         call cpct_scanKeyboard_asm
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
-        jp z, w_no_pulsada
-            ld a, (CameraMinMax+1)
-            ld b, #2
+        jr z, w_no_pulsada
+            call move_camera_up
+            ld a, e_y(ix)
             sub b
-            ld (CameraMinMax+1), a
+            ld e_y(ix), a
+            jr s_no_pulsada
 
     w_no_pulsada:
         call cpct_scanKeyboard_asm
         ld hl, #Key_S
         call cpct_isKeyPressed_asm
-        jp z, s_no_pulsada
-            ld a, (CameraMinMax+1)
-            ld b, #2
+        jr z, s_no_pulsada
+            call move_camera_down
+            ld a, e_y(ix)
             add b
-            ld (CameraMinMax+1), a
+            ld e_y(ix), a
 
     s_no_pulsada:
 
