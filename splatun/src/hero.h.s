@@ -3,7 +3,3 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .globl hero_draw
-
-.globl hero_get_position
-.globl hero_clear
-.globl hero_update

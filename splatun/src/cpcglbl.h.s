@@ -12,5 +12,6 @@
 .globl cpct_isAnyKeyPressed_asm
 
 .globl cpct_setPalette_asm
-.globl cpct_etm_setTileset2x4_asm
-.globl cpct_etm_drawTileBox2x4_asm
+
+.globl cpct_etm_setDrawTilemap4x8_ag_asm
+.globl cpct_etm_drawTilemap4x8_ag_asm

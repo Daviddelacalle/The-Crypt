@@ -12,8 +12,10 @@
 .include "map.h.s"
 
 .globl _g_palette
-;.globl _tileset
-;.globl _nivel1
+.globl _g_0
+.globl _nivel1
+
+; 0x40
 
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
@@ -32,19 +34,17 @@
 ;==========================================================;
 ;   Draws the complete map
 ;==========================================================;
-;drawMap:
-;    ld hl, #_tileset
-;    call cpct_etm_setTileset2x4_asm
-;
-;    ld hl, #_nivel1
-;    push hl
-;    ld hl, #0xC000
-;    push hl
-;    ld bc, #0000
-;    ld de, #0x3228
-;    ld a, #45
-;    call cpct_etm_drawTileBox2x4_asm
-;ret
+drawMap:
+    ld hl, #_g_0
+    ld c, #20       ;40
+    ld b, #25      ;100
+    ld de, #30
+    call cpct_etm_setDrawTilemap4x8_ag_asm
+
+    ld hl, #0xC000
+    ld de, #_nivel1
+    call cpct_etm_drawTilemap4x8_ag_asm
+ret
 
 
 ;; Punto de entrada de la funcion main
@@ -53,7 +53,7 @@ _main::
     ;ld sp, #0x8000
 
     init
-    ;call drawMap
+    call drawMap
 
     ;; Comienza el bucle del juego
     loop:

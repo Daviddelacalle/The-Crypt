@@ -8,8 +8,8 @@
 CameraMinMax::
     .db #0, #0 ;Min X, Min Y
 
-
-DefineEntity _obs, #10, #10, 0x04, 0x08, 0x00, 0x00, 0xFF, 0x0000
+                ;   X    Y   W     H     VX     VY    COL
+DefineEntity _obs, #10, #40, #0x04, #0x08, #0x00, #0x00, #0xFF, #0x0000
 
 
 ;Disrupción alienígeca
