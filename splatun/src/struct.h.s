@@ -91,8 +91,48 @@ _name:
 
 
 
+ ;;-----------------------------------------------------------------------------------------;;
+ ;; Entidad enemigo por defecto
+ .macro DefineEnemyDefault _name, _suf
+    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0, #0xFFFF, #0, #0, #0           ;;'
+ .endm
 
+ ;; Definir N entidades enemigo
+ .macro DefineNEnemies _name, _n
+    _c = 0
+    .rept _n
+       DefineEnemyDefault _name, \_c
+       _c = _c + 1
+    .endm
+ .endm
 
+ ;; Entidad enemigo
+ .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd, _goal_flag, _goal_x, _goal_y
+ _name:
+    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+ ;; Si no tiene sprite
+    .db  _col        ;; Color
+ ;; Si tiene sprite
+ ;;.dw   _spr
+    .dw  _upd        ;; Puntero a la funcion de update
+    .db  _goal_flag  ;; 0 -> No se ha
+    .db  _goal_x     ;; X de la posicion final
+    .db  _goal_y     ;; Y de la posicion final
+ ;; Aqui falta saber el tamanyo de la entidad
+ en_size = . - (_name)
+ .endm
+
+ ;;;;;;;;;;;;;;;;;;;
+ ;; Constantes de las entidades hero/enemy
+ ;;;;;;;;;;;;;;;;;;;
+      en_x = 0      en_y = 1
+      en_w = 2      en_h = 3
+     en_vx = 4     en_vy = 5
+    en_col = 6
+   en_up_l = 7   en_up_h = 8
+ en_g_flag = 9
+    en_g_x = 10  en_g_y = 11
 
 
 

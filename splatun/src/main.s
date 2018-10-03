@@ -5,6 +5,10 @@
 ;; INCLUDES
 ;;====================================
 
+;; ================================================================================================ ;;
+;; HAY QUE CAMBIAR LAS OPCIONES DE COMPILADO, PARA LOS .globl, Y EL INICIO DEL PROGRAMA A LA 0x0040 ;;
+;; ================================================================================================ ;;
+
 .include "cpctelera.h.s"
 .include "cpcglbl.h.s"
 .include "hero.h.s"
@@ -53,22 +57,26 @@ _main::
     ;ld sp, #0x8000
 
     init
-    call drawMap
+    ;;call drawMap
+    call enemy_create
 
     ;; Comienza el bucle del juego
     loop:
-
         call bullet_inputs
+
         ;; CLIAR
+        call enemy_clear_ALL
         call bullet_clear
         call obs_clear
         call hero_clear
 
         ;; UPDEIT
+        ;;call enemy_update_ALL
         call hero_update
         call bullet_update
 
         ;; DRO
+        call enemy_draw_ALL
         call hero_draw
         call bullet_draw
         call obs_draw

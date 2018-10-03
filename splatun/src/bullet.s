@@ -27,9 +27,9 @@ bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
 DefineNBullets vector_bullets, vector_size
+vector_end:    .db #0xFF
 DefineBullet bullet_copy 0xFF, 0xFF, #1, #4, 0, 4, #0x0F, #20, bullet_checkUpdate
 
-save_a:        .db #0x00            ;; Guarda el valor de A
 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
 
 vector_keys:
@@ -263,24 +263,18 @@ bullet_init:
 ;; DESTRUYE:   A, DE, IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_search:
-   ld     a,   #0                ;; Cargo en A el valor inicial 0
    ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
    search_loop:
-      ld (save_a),  a            ;; Guardo el valor de A, porque la llamada a la funcion puede destruirlo
+      ld     a,   0(ix)                ;; Compruebo que no he llegado al final del vector
+      cp    #0xFF                      ;; A - 0xFF
+      ret z                            ;; if(A==0xFF) -> Sale del vector
 
-      f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (valor arbitrario, puesto que siempre va a cambiar)
+      f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (siempre va a cambiar)
       call (0x0000)                    ;; LLAMADA A FUNCION PERSONALIZABLE
-
-      ld    de,   #bullet_size         ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
+      ld    de,   #bullet_size          ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
       add   ix,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
-
-      ld     a,   (save_a)             ;; Recupero el valor de a
-      inc    a                         ;; A++
-   cp #vector_size
-   jr nz, search_loop
-   ret
-
+   jr search_loop
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0
 ;; _______________________
