@@ -1,0 +1,137 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           cpct_keyboard
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__DATA                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     0000090A  l__CODE                         
+     00004000  s__CODE                         
+     0000490A  s__DATA                         
+     0000490A  s__GSFINAL                      
+     0000490A  s__GSINIT                       
+     0000490A  s__HOME                         
+     0000490A  s__INITIALIZED                  
+     0000490A  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000090A =        2314. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004000  _nivel1                            Mapa
+     00004384  _g_0                               Mapabyn
+     000043A4  _g_1                               Mapabyn
+     000043C4  _g_2                               Mapabyn
+     000043E4  _g_3                               Mapabyn
+     00004404  _g_4                               Mapabyn
+     00004424  _g_5                               Mapabyn
+     00004444  _g_palette                         g_palette
+     0000445D  hero_draw                          cpct_keyboard
+     00004464  hero_clear                         cpct_keyboard
+     0000446B  hero_update                        cpct_keyboard
+     000044C6  hero_get_position                  cpct_keyboard
+     00004523  bullet_draw                        cpct_keyboard
+     00004529  bullet_update                      cpct_keyboard
+     0000452F  bullet_clear                       cpct_keyboard
+     00004535  bullet_inputs                      cpct_keyboard
+     00004638  dw_draw                            cpct_keyboard
+     0000466E  dw_clear                           cpct_keyboard
+     00004680  _main                              cpct_keyboard
+     000046BF  obs_draw                           
+     000046C6  obs_clear                          
+     000046CD  inc_map_y                          
+     000046E4  drawMap                            
+     000046FC  mv_move                            cpct_keyboard
+     000046FD  cpct_setPalette_asm                cpct_video
+     00004710  _cpct_isKeyPressed                 cpct_keyboard
+     00004710  cpct_isKeyPressed_asm              cpct_keyboard
+     0000471C  cpct_etm_drawTilemap4x8_ag_asm     cpct_easytilemaps
+     0000471E  cpct_etm_dtm4x8_ag_asm_widthHeig   cpct_easytilemaps
+     00004734  cpct_etm_dtm4x8_ag_asm_tilesetPt   cpct_easytilemaps
+     0000479F  cpct_etm_dtm4x8_ag_asm_restoreI    cpct_easytilemaps
+     000047A5  cpct_etm_dtm4x8_ag_asm_increment   cpct_easytilemaps
+     000047AA  cpct_etm_dtm4x8_ag_asm_restoreWi   cpct_easytilemaps
+     000047AD  cpct_etm_dtm4x8_ag_asm_updateWid   cpct_easytilemaps
+     000047B5  _cpct_keyboardStatusBuffer         cpct_keyboard
+     000047BF  cpct_setVideoMode_asm              cpct_video
+     000047CC  _cpct_waitVSYNC                    cpct_video
+     000047CC  cpct_waitVSYNC_asm                 cpct_video
+     000047D4  _cpct_disableFirmware              cpct_firmware
+     000047D4  _cpct_removeInterruptHandler       cpct_firmware
+     000047D4  cpct_disableFirmware_asm           cpct_firmware
+     000047D4  cpct_removeInterruptHandler_asm    cpct_firmware
+     000047E4  cpct_drawSolidBox_asm              cpct_sprites
+     00004890  _cpct_mode_rom_status              cpct_firmware
+     00004891  cpct_etm_setDrawTilemap4x8_ag_as   cpct_easytilemaps
+     000048BD  cpct_getScreenPtr_asm              cpct_video
+     000048D9  _cpct_scanKeyboard                 cpct_keyboard
+     000048D9  cpct_scanKeyboard_asm              cpct_keyboard
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+
+Files Linked                              [ module(s) ]
+
+obj/Mapas/Mapa.rel                        [ Mapa ]
+obj/Sprites/Mapabyn.rel                   [ Mapabyn ]
+obj/Sprites/g_palette.rel                 [ g_palette ]
+obj/struct.h.rel                          [  ]
+obj/hero.rel                              [ cpct_keyboard ]
+obj/bullet.rel                            [ cpct_keyboard ]
+obj/drawable.rel                          [ cpct_keyboard ]
+obj/main.rel                              [ cpct_keyboard ]
+obj/map.rel                               [  ]
+obj/movable.rel                           [ cpct_keyboard ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPalette_asmbindings.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isKeyPressed.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_drawTilemap4x8_ag_asmbi ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ keyboard.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMode_asmbindings.re ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_waitVSYNC.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_removeInterruptHandler.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawSolidBox_asmbindings.re ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpc_mode_rom_status.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_setDrawTilemap4x8_ag_as ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_getScreenPtr_asmbindings.re ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_scanKeyboard.rel ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+
+User Base Address Definitions
+
+_CODE = 0x4000
+_DATA = 0x0000
+
+

@@ -10,7 +10,6 @@
 .include "cpctelera.h.s"
 .include "struct.h.s"
 
-.globl CameraMinMax
 ;;======================================================================
 ;;======================================================================
 ;; DATOS PRIVADOS
@@ -35,23 +34,29 @@ dw_draw::
 
    ld    de,   #0xC000                  ;; Apunta al inicio de la memoria de video
 
+   cp #0xFF                             ;; Compruebo si he llamado a draw desde el clear para no sumar la velocidad
+   jr nz, normal_dro                    ;; Si no he llamado desde el clear, salto
+    ;;Llamada desde el clear
+       ld a, e_x(ix)                    ;; Cargo la posicion X, que es del frame anterior
+       ld     c,   a                    ;; x  [0-79]
+       ld a, e_y(ix)                    ;; Cargo la posicion Y, tambien del frame anterior
+       jr dro                           ;; Salto a dro, para ahorrar un par de bytes, ya que a partir de ahi, el codigo es igual
+
+   normal_dro:                          ;; Dro normal
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
-   ;ld hl, #CameraMinMax                 ;; Cargo en HL la coordenada minima en X
-   ;sub (hl)                             ;; Le resto a A, esta coordenada
-   ;cp #80                               ;; Compruebo que esté entre 0 y 80
-   ;ret nc                               ;; Si está fuera del límite no la dibujo
-   ld     c,   a      ;; x  [0-79]
+       add e_vx(ix)                     ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
+       ld e_x(ix), a                    ;; Lo guardo en su registro
+   ld     c,   a                        ;; x  [0-79]
 
+   ld a, e_y(ix)                        ;; Repito para Y
+       add e_vy(ix)
+       ld e_y(ix), a
 
-   ld a, e_y(ix)
-   ;ld hl, #CameraMinMax+1
-   ;sub (hl)
-   ;cp #100
-   ;ret nc
-   add a
-   ld     b,   a      ;; y  [0-199]
+       dro:
+       add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
+   ld     b,   a                        ;; y  [0-199]
+
    call cpct_getScreenPtr_asm
-
    ;; SIN SPRITE
    ex    de,   hl          ;; Apunta a la posicion x,y
    ld     a,   e_col(ix)    ;; Código de color
@@ -65,41 +70,20 @@ dw_draw::
    ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
    ;; (1B B ) height	Sprite Height in bytes (>0)
    ;; cpct_drawSprite_asm
-   ret
+ret
 
 ;==================================
 ; Clears the sprite (squeare now)
 ;==================================
 dw_clear::
-    ;; Aquí resto la velocidad actual para ver la posicion
-    ;; del frame anterior y borrarlo
-
-
-    ld a, e_x(ix)
-    push af             ;;Antes de modificar la posicion, guardo la X
-    sub e_vx(ix)
-    ld e_x(ix), a
-
-    ld a, e_y(ix)
-    push af             ;;Y guardo la Y
-    sub e_vy(ix)
-    ld e_y(ix), a
-
     ld  a, e_col(ix)
     ex af, af'            ;'
 
     ld  e_col(ix), #0
-
+    ld a, #0xFF
     call dw_draw
     ex af, af'            ;'
     ld e_col(ix), a
-
-    ;; Despues de hacer clear, las retauro
-    pop af
-    ld e_y(ix), a
-    pop af
-    ld e_x(ix), a
-
  ret
 
 ;;======================================================================

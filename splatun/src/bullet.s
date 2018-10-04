@@ -371,17 +371,10 @@ bullet_checkUpdate:
 ;; DESTRUYE:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_checkClear:
-   ;; SI NO HAY SPRITES!!!!!
-   ld      a,  b_col(ix)            ;; Guardo el valor del color actual en A
-   ex    af',  af              ;;'  ;; Intercambio registros
-   ld b_col(ix),  #0                ;; Guardo el valor del color fondo en la entidad
-
-   call bullet_checkDraw            ;; Llamo al draw
-
-   ex    af',  af              ;;'  ;; Vuelvo a cargar el color anterior
-   ld b_col(ix),  a                 ;; Guardo el valor del color fondo original en la entidad
-   ret
-
+    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
+    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+    call nz, dw_clear
+ret
 
 
 

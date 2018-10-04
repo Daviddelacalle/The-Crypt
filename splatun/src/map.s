@@ -3,9 +3,7 @@
 
 .include "struct.h.s"
 
-CameraMinMax::
-    .db #0, #0 ;Min X, Min Y
-
+map_ptr:    .dw #_nivel1
                 ;   X    Y     W     H       VX     VY    COL
 DefineEntity _obs, #10, #40, #0x04, #0x08, #0x00, #0x00, #0xFF, #0x0000
 
@@ -19,25 +17,29 @@ obs_clear::
     ld ix, #_obs
     jp dw_clear
 
+;========================================================================;
+;   Inreases ptr to map
+;========================================================================;
+inc_map_y::
 
-;===========================================
-;   Move the camera
-;   Input: A = Axix (X=0, Y=1), B = Velocity
-;===========================================
-move_camera::
-    ld hl, #CameraMinMax
-    cp #0
-    jr z, not_y
-        inc hl
-    not_y:
-    ld a, (hl)
-    add a, b
-    ld (hl), a
+    ld hl, (map_ptr)
+
+    cp #1
+    jr nz, up
+        ld de, #60
+        jr continue
+    up:
+    ld de, #-60
+
+    continue:
+        add hl, de
+    ld (map_ptr), hl
+    call drawMap
 ret
 
-;==========================================================;
+;========================================================================;
 ;   Draws the complete map.in.include "drawable.h.s"clude "drawable.h.s"
-;==========================================================;
+;========================================================================;
 drawMap::
     ld hl, #_g_0
     ld c, #20       ;40
@@ -46,7 +48,7 @@ drawMap::
     call cpct_etm_setDrawTilemap4x8_ag_asm
 
     ld hl, #0xC000
-    ld de, #_nivel1
+    ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret
 

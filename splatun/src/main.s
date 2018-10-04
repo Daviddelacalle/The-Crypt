@@ -6,7 +6,6 @@
 ;;====================================
 
 .include "cpctelera.h.s"
-.include "bullet.h.s"
 
 .globl _g_palette
 .globl _g_0
@@ -37,20 +36,18 @@ _main::
 
     init
 
+    call drawMap
 
     ;; Comienza el bucle del juego
     loop:
 
-        ;call bullet_inputs
-
-
+        call bullet_inputs
 
         ;; UPDEIT
         call hero_update
         call bullet_update
 
         call cpct_waitVSYNC_asm
-
         ;; CLIAR
         call bullet_clear
         call obs_clear

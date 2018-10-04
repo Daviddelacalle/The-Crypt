@@ -10,8 +10,6 @@
 .include "cpctelera.h.s"
 .include "struct.h.s"
 
-.globl CameraMinMax
-
 ;;======================================================================
 ;;======================================================================
 ;; DATOS PRIVADOS
@@ -50,7 +48,6 @@ hero_update::
     ld hl, #Key_A                   ;; Comprueba tecla A
     call cpct_isKeyPressed_asm
     jr z, a_no_pulsada
-        ld a, #0
         ld b, #-1
         ;call move_camera
         ld e_vx(ix), b
@@ -61,7 +58,6 @@ hero_update::
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
-            ld a, #0
             ld b, #1
             ;call move_camera
             ld e_vx(ix), b
@@ -71,32 +67,28 @@ hero_update::
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
         jr z, w_no_pulsada
-            ld a, #1
             ld b, #-2
             ;call move_camera
             ld e_vy(ix), b
             jr s_no_pulsada
+            ld a, #0
+            call inc_map_y
 
     w_no_pulsada:
         call cpct_scanKeyboard_asm
         ld hl, #Key_S
         call cpct_isKeyPressed_asm
         jr z, s_no_pulsada
-            ld a, #1
             ld b, #2
             ;call move_camera
             ld e_vy(ix), b
+            ld a, #1
+            call inc_map_y
 
     s_no_pulsada:
 
 
-    ld a, e_y(ix)
-    add e_vy(ix)
-    ld e_y(ix), a
 
-    ld a, e_x(ix)
-    add e_vx(ix)
-    ld e_x(ix), a
 ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
