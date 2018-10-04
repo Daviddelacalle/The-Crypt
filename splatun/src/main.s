@@ -71,7 +71,7 @@ _main::
         call hero_clear
 
         ;; UPDEIT
-        ;;call enemy_update_ALL
+        call enemy_update_ALL
         call hero_update
         call bullet_update
 

@@ -17,7 +17,7 @@
 enemy_size = e_size           ;; Tamanyo parametrizado
 k_max_enemies = 1
 
-DefineEntity enemy_copy, #10, #10, #1, #4, #0, #0, #0x13, #enemy_randomGoal
+DefineEntity enemy_copy, #10, #10, #1, #4, #0, #0, #0x0F, #enemy_randomGoal
 
 vector_init:                  ;; Etiqueta de inicio del vector
 DefineNEntities enemy, k_max_enemies
@@ -81,7 +81,7 @@ enemy_search:
    search_loop:
       ld     a,   0(ix)                ;; Compruebo que no he llegado al final del vector
       cp    #0xFF                      ;; A - 0xFF
-      ret z                            ;; if(A==0xFF) -> Sale del vector
+      ret    z                         ;; if(A==0xFF) -> Sale del vector
 
       f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (siempre va a cambiar)
       call (0x0000)                    ;; LLAMADA A FUNCION PERSONALIZABLE
@@ -118,7 +118,7 @@ enemy_update:
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_randomGoal:
-   ;;call cpct_getRandom_mxor_u16_asm        ;; Lo devuelve en HL
+   ;call cpct_getRandom_mxor_u16_asm        ;; Lo devuelve en HL
    ret
 
 

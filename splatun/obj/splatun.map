@@ -1,0 +1,163 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           cpct_easytilemaps
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__DATA                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     0000097C  l__CODE                         
+     00004000  s__CODE                         
+     0000497C  s__DATA                         
+     0000497C  s__GSFINAL                      
+     0000497C  s__GSINIT                       
+     0000497C  s__HOME                         
+     0000497C  s__INITIALIZED                  
+     0000497C  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000097C =        2428. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004000  _nivel1                            Mapa
+     00004384  _g_0                               Mapabyn
+     000043A4  _g_1                               Mapabyn
+     000043C4  _g_2                               Mapabyn
+     000043E4  _g_3                               Mapabyn
+     00004404  _g_4                               Mapabyn
+     00004424  _g_5                               Mapabyn
+     00004444  _g_palette                         g_palette
+     000044A9  bullet_draw                        cpct_keyboard
+     000044AF  bullet_update                      cpct_keyboard
+     000044B5  bullet_clear                       cpct_keyboard
+     000044BB  bullet_inputs                      cpct_keyboard
+     000045BF  dw_draw                            cpct_keyboard
+     000045EA  dw_clear                           cpct_keyboard
+     00004603  hero_draw                          cpct_keyboard
+     0000460A  hero_clear                         cpct_keyboard
+     00004611  hero_update                        cpct_keyboard
+     00004672  hero_get_position                  cpct_keyboard
+     0000467A  CameraMinMax                       
+     00004685  obs_draw                           
+     0000468C  obs_clear                          
+     00004693  move_camera_right                  
+     0000469B  move_camera_left                   
+     000046A3  move_camera_up                     
+     000046AD  move_camera_down                   
+     000046CE  _main                              cpct_keyboard
+     0000471E  enemy_create                       cpct_keyboard
+     00004724  enemy_draw_ALL                     cpct_keyboard
+     0000472A  enemy_clear_ALL                    cpct_keyboard
+     00004730  enemy_update_ALL                   cpct_keyboard
+     00004761  mv_move                            cpct_keyboard
+     00004762  _cpct_isKeyPressed                 cpct_keyboard
+     00004762  cpct_isKeyPressed_asm              cpct_keyboard
+     0000476E  cpct_setPalette_asm                cpct_video
+     00004781  cpct_etm_drawTilemap4x8_ag_asm     cpct_easytilemaps
+     00004783  cpct_etm_dtm4x8_ag_asm_widthHeig   cpct_easytilemaps
+     00004799  cpct_etm_dtm4x8_ag_asm_tilesetPt   cpct_easytilemaps
+     00004804  cpct_etm_dtm4x8_ag_asm_restoreI    cpct_easytilemaps
+     0000480A  cpct_etm_dtm4x8_ag_asm_increment   cpct_easytilemaps
+     0000480F  cpct_etm_dtm4x8_ag_asm_restoreWi   cpct_easytilemaps
+     00004812  cpct_etm_dtm4x8_ag_asm_updateWid   cpct_easytilemaps
+     0000481A  _cpct_keyboardStatusBuffer         cpct_keyboard
+     00004824  _cpct_isAnyKeyPressed              cpct_keyboard
+     00004824  cpct_isAnyKeyPressed_asm           cpct_keyboard
+     00004831  cpct_setVideoMode_asm              cpct_video
+     0000483E  _cpct_waitVSYNC                    cpct_video
+     0000483E  cpct_waitVSYNC_asm                 cpct_video
+     00004846  _cpct_disableFirmware              cpct_firmware
+     00004846  _cpct_removeInterruptHandler       cpct_firmware
+     00004846  cpct_disableFirmware_asm           cpct_firmware
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000097C =        2428. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004846  cpct_removeInterruptHandler_asm    cpct_firmware
+     00004856  cpct_drawSolidBox_asm              cpct_sprites
+     00004902  _cpct_mode_rom_status              cpct_firmware
+     00004903  cpct_getScreenPtr_asm              cpct_video
+     0000491F  _cpct_scanKeyboard                 cpct_keyboard
+     0000491F  cpct_scanKeyboard_asm              cpct_keyboard
+     00004950  cpct_etm_setDrawTilemap4x8_ag_as   cpct_easytilemaps
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+
+Files Linked                              [ module(s) ]
+
+obj/Mapas/Mapa.rel                        [ Mapa ]
+obj/Sprites/Mapabyn.rel                   [ Mapabyn ]
+obj/Sprites/g_palette.rel                 [ g_palette ]
+obj/struct.h.rel                          [  ]
+obj/bullet.rel                            [ cpct_keyboard ]
+obj/hero.h.rel                            [  ]
+obj/cpcglbl.h.rel                         [  ]
+obj/bullet.h.rel                          [  ]
+obj/drawable.rel                          [ cpct_keyboard ]
+obj/hero.rel                              [ cpct_keyboard ]
+obj/map.rel                               [  ]
+obj/drawable.h.rel                        [  ]
+obj/main.rel                              [ cpct_keyboard ]
+obj/enemy.rel                             [ cpct_keyboard ]
+obj/map.h.rel                             [  ]
+obj/movable.rel                           [ cpct_keyboard ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isKeyPressed.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPalette_asmbindings.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_drawTilemap4x8_ag_asmbi ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ keyboard.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isAnyKeyPressed.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMode_asmbindings.re ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_waitVSYNC.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_removeInterruptHandler.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawSolidBox_asmbindings.re ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpc_mode_rom_status.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_getScreenPtr_asmbindings.re ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_scanKeyboard.rel ]
+/home/pablomanez/Documentos/GitHub/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_setDrawTilemap4x8_ag_as ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+
+User Base Address Definitions
+
+_CODE = 0x4000
+_DATA = 0x0000
+
+

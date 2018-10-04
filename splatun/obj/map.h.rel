@@ -1,0 +1,10 @@
+XL2
+H 1 areas 7 global symbols
+S move_camera_up Ref0000
+S move_camera_left Ref0000
+S obs_draw Ref0000
+S move_camera_down Ref0000
+S .__.ABS. Def0000
+S obs_clear Ref0000
+S move_camera_right Ref0000
+A _CODE size 0 flags 0 addr 0
