@@ -37,6 +37,7 @@ _main::
     init
 
     call drawMap
+    call enemy_create
 
     ;; Comienza el bucle del juego
     loop:
@@ -44,16 +45,20 @@ _main::
         call bullet_inputs
 
         ;; UPDEIT
+        call enemy_update_ALL
         call hero_update
         call bullet_update
 
         call cpct_waitVSYNC_asm
+
         ;; CLIAR
+        call enemy_clear_ALL
         call bullet_clear
         call obs_clear
         call hero_clear
 
         ;; DRO
+        call enemy_draw_ALL
         call bullet_draw
         call obs_draw
         call hero_draw
