@@ -17,19 +17,13 @@
 enemy_size = en_size           ;; Tamanyo parametrizado
 k_max_enemies = 1
 
-;DefineEntity enemy_copy, #10, #10, #1, #4, #0, #0, #0x0F, #enemy_randomGoal
-;
-;vector_init:                  ;; Etiqueta de inicio del vector
-;DefineNEntities enemy, k_max_enemies
-;vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
-
 DefineEnemy enemy_copy, #10, #10, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0
 
 vector_init:                  ;; Etiqueta de inicio del vector
 DefineNEnemies enemy, k_max_enemies
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
-flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
+flag_move:     .db #1        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
 
 ;;======================================================================
 ;;======================================================================
@@ -125,6 +119,13 @@ enemy_update:
 ;; _______________________
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+save_dX:    .db #0x0000    ;; Para Bresenham
+save_dY:    .db #0x0000    ;; Para Bresenham
+IncYr:      .db #0x00      ;; Serian el contrario de las VY de la entidad --> LLEVAR A DATOS PARAMETRIZABLES!!
+IncXr:      .db #0x00      ;; Serian el contrario de las VX de la entidad --> LLEVAR A DATOS PARAMETRIZABLES!!
+av:         .db #0x0000    ;; VALORES DE INICIALIZACION DEL ALGORITMO
+avR:        .dw #0x0000    ;; VALORES DE INICIALIZACION DEL ALGORITMO
+avI:        .dw #0x0000    ;; VALORES DE INICIALIZACION DEL ALGORITMO
 enemy_randomGoal:
    ld    a, (flag_move)          ;; Cargo en A un contador para que no busque todo el rato
    dec   a                       ;; A--
@@ -134,6 +135,7 @@ enemy_randomGoal:
    ld    a, #20                  ;; Inicio de nuevo el contador para despues
    ld (flag_move), a
 
+   ;; PARTE 1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;; X
    get_random_x:
       call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
@@ -144,14 +146,18 @@ enemy_randomGoal:
    ld en_g_x(ix), l                          ;; Cargo la posicion random en el enemigo
 
    ;; Saco vector VX del enemigo
-   ld    a, en_x(ix)             ;; Posicion X del enemigo
-   cp    en_g_x(ix)              ;; Resto la posicion X del goal
-   ;; Si C == 1, goal_x esta mas a la derecha
-   jr nc, vx_neg
+   ld    a,    l              ;; Posicion X del objetivo
+   sub   en_x(ix)             ;; Resto la posicion actual del enemigo
+   ld    (save_dX), a         ;; Guardo el valor para despues, en A guardo la DISTANCIA
+   cp    #80                  ;; |
+   jr nc, vx_neg               ;; Si C==1, la distancia es negativa
       ld    en_vx(ix), #1        ;; VX =  1
       jr continua_y
    vx_neg:
       ld    en_vx(ix), #-1       ;; VX = -1
+      cpl                        ;; Invierto bites de A, que guarda la distancia
+      inc   a                    ;; Le sumo 1 y entonces -> A = -A
+      ld (save_dX+1), a            ;; Lo guardo de nuevo
    continua_y:
 
    ;; Y
@@ -163,18 +169,116 @@ enemy_randomGoal:
 
    ld en_g_y(ix), l                          ;; Cargo la posicion random en el enemigo
 
-   ;; Saco vector VX del enemigo
-   ld    a, en_y(ix)             ;; Posicion X del enemigo
-   cp    en_g_y(ix)              ;; Resto la posicion X del goal
-   ;; Si C == 1, goal_y esta mas abajo
-   jr c, vy_pos
-      ld    en_vy(ix), #-1       ;; VX = -1
+   ;; Saco vector VY del enemigo
+   ld    a,    l                 ;; Posicion Y del objetivo
+   sub   a, en_y(ix)             ;; Posicion Y del enemigo
+   ld    (save_dY), a            ;; Guardo el valor para despues
+   cp    #200                    ;; |
+   jr nc, vy_neg                 ;; Si C==0 la distancia es negativa -> COMPROBAR EN EJECUCION
+         ld    en_vy(ix), #1        ;; VY =  1
+         cpl                        ;; Invierto bites de A, que guarda la distancia
+         inc   a                    ;; Le sumo 1 y entonces -> A = -A
+         ld (save_dY+1), a            ;; Lo guardo de nuevo
       jr continua_fin
-   vy_pos:
-      ld    en_vy(ix), #1        ;; VX =  1
+   vy_neg:
+      ld    en_vy(ix), #-1       ;; VY = -1
    continua_fin:
 
-   ;; Cambio update
+;;-------------------------------;
+
+   ;;; X
+   ;get_random_x:
+   ;   call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
+   ;   ld    a,    l                          ;; Cargo en A el random que se ha cargado en L
+   ;   cp    #80                              ;; Miro que este dentro del rango 0-80 (dec)
+   ;jr    nc, get_random_x                    ;; Si no esta dentro del rango, lo vuelve a buscar
+
+   ;ld en_g_x(ix), l                          ;; Cargo la posicion random en el enemigo
+
+   ;;; Saco vector VX del enemigo
+   ;ld    a, en_x(ix)             ;; Posicion X del enemigo
+   ;cp    en_g_x(ix)              ;; Resto la posicion X del goal
+   ;;; Si C == 1, goal_x esta mas a la derecha
+   ;jr nc, vx_neg
+   ;   ld    en_vx(ix), #1        ;; VX =  1
+   ;   jr continua_y
+   ;vx_neg:
+   ;   ld    en_vx(ix), #-1       ;; VX = -1
+   ;continua_y:
+
+   ;;; Y
+   ;get_random_y:
+   ;   call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
+   ;   ld    a,    l                          ;; Cargo en A el random que se ha cargado en L
+   ;   cp    #80                              ;; Miro que este dentro del rango 0-80 (dec)
+   ;jr    nc, get_random_y                    ;; Si no esta dentro del rango, lo vuelve a buscar
+
+   ;ld en_g_y(ix), l                          ;; Cargo la posicion random en el enemigo
+
+   ;;; Saco vector VX del enemigo
+   ;ld    a, en_y(ix)             ;; Posicion X del enemigo
+   ;cp    en_g_y(ix)              ;; Resto la posicion X del goal
+   ;;; Si C == 1, goal_y esta mas abajo
+   ;jr nc, vy_neg
+   ;   ld    en_vy(ix), #1        ;; VX =  1
+   ;   jr continua_fin
+   ;vy_neg:
+   ;   ld    en_vy(ix), #-1       ;; VX = -1
+   ;continua_fin:
+
+;;-------------------------------;
+
+   ;; PARTE 2 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ld    a, (save_dY)         ;; Cargo en A el valor de dY
+   ld    b,    a              ;; B = dY
+   ld    a, (save_dX)         ;; A = dX
+   cp    b                    ;; dX - dY
+   jr c, inc2                ;; Si dX>=dY -> C = 0
+      ;;if dX>=dY
+      ld    a,    #0          ;; A = 0
+      ld (IncYr), a           ;; --> IncYr = 0
+      ld    a, (en_vx)        ;; A = IncXi = VX
+      ld (IncXr), a           ;; --> IncXr = IncXi ----> IncXi = VX = INCREMENTO QUE SE APLICA A LAS SECCIONES CON AVANCE INCLINADO
+      jr continua_fin2
+   inc2:
+      ;;if dY>dX
+      ld    a,    #0          ;; A = 0
+      ld (IncXr), a           ;; -- IncXr = 0
+      ld    a, (en_vy)        ;; A = IncYi = VY
+      ld (IncYr), a           ;; -- IncYr = IncYi ----> IncYi = VY = INCREMENTO QUE SE APLICA A LAS SECCIONES CON AVANCE INCLINADO
+
+      ld    a, (save_dX)      ;; =============================== ;;
+      ld    b,    a           ;; INTERCAMBIO LOS VALORES dX y dY ;;
+      ld    a, (save_dY)      ;;             k  = dX             ;;
+      ld    (save_dX), a      ;;             dX = dY             ;;
+      ld    a,    b           ;;             dY =  k             ;;
+      ld    (save_dY), a      ;; =============================== ;;
+   continua_fin2:
+
+   ;; INICIALIZAR VALORES RAROS
+   ld    h,    #0             ;; H  = 0
+   ld    a,    (save_dY)      ;; A  = dY
+   ld    l,    a              ;; HL = (00**), donde ** == dY
+   add   hl,   hl             ;; HL + HL = 2 * dY
+   ld (avR),   hl             ;; --> avR = (2 * dY)
+
+   ;; Hay que negar dX y luego sumarlo
+   ;; En DE tendre el valor de dX y en HL ya he conseguido el valor de avR
+   ;; av = (HL + (-DE))
+   ld    d,    #0             ;; E  = 0
+   ld    a,    (save_dX)      ;; A  = dX
+   cpl                        ;; Invierto bites de A -> COMPLEMENTO A 1
+   inc   a                    ;; Le sumo 1 y entonces -> A = -A
+   ld    e,    a              ;; DE = (00**), donde ** = -dX
+   add   hl,   de             ;; avR + -(dX)
+   ld (av), hl                ;; --> av = (avR - dX)
+
+   ;; En HL ya tengo av y en DE tengo -dX
+   ;; Solo tengo que sumarlo
+   add   hl,   de             ;; av + -(dX)
+   ld (avI),   hl             ;; --> avI = (av - dX)
+
+   ;;; Cambio update
    ld hl, #enemy_checkGoal
    ld en_up_h(ix), h
    ld en_up_l(ix), l
