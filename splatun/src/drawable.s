@@ -53,7 +53,7 @@ dw_draw::
        ld e_y(ix), a
 
        dro:
-       add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
+       ;add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
    ld     b,   a                        ;; y  [0-199]
 
    call cpct_getScreenPtr_asm

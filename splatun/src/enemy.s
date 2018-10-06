@@ -17,10 +17,17 @@
 enemy_size = en_size           ;; Tamanyo parametrizado
 k_max_enemies = 1
 
-DefineEnemy enemy_copy, #10, #10, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0
+DefineEnemy enemy_copy, 39, 50, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0
 
+;; ANCHO:   0 - 79
+;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
+x_range  = 79
+y_range  = 100
+var_r_max    = 20
+var_r_min    = 10
 vector_init:                  ;; Etiqueta de inicio del vector
-DefineNEnemies enemy, k_max_enemies
+;DefineNEnemies enemy, k_max_enemies
+DefineEnemy enemy1, #0x27, #0x10, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
@@ -133,7 +140,7 @@ enemy_randomGoal:
    ld    (flag_move), a          ;; Lo actualizo
    ret   nz                      ;; Si no ha llegado a 0 hace ret
 
-   ld    a, #20                  ;; Inicio de nuevo el contador para despues
+   ld    a, #50                  ;; Inicio de nuevo el contador para despues
    ld (flag_move), a
 
    ;;RESET DE LOS VALORES
@@ -145,8 +152,8 @@ enemy_randomGoal:
    ld (av),       hl
    ld (avR),      hl
    ld (avI),      hl
-   ;ld en_vx(ix),  #0
-   ;ld en_vy(ix),  #0
+   ld en_vx(ix),  #0
+   ld en_vy(ix),  #0
 
 
    ;; PARTE 1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -154,17 +161,26 @@ enemy_randomGoal:
    get_random_x:
       call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
       ld    a,    l                          ;; Cargo en A el random que se ha cargado en L
-      cp    #80                              ;; Miro que este dentro del rango 0-80 (dec)
-   jr    nc, get_random_x                    ;; Si no esta dentro del rango, lo vuelve a buscar
+      cp    #x_range                         ;; Miro que este dentro del rango 0-80 (dec)
+
+      sub   en_x(ix)                         ;; Resto la posicion actual del enemigo
+      jr    nc, no_carry_x
+         cpl
+         inc a
+      no_carry_x:
+      ;; Ahora tengo la distancia arreglada
+      cp    #var_r_max
+   jr    nc, get_random_x                    ;; Si no esta dentro del rango max, lo vuelve a buscar
+      cp    #var_r_min
+   jr    c, get_random_x                     ;; Si esta dentro del rango min, lo vuelve a buscar
 
    ld en_g_x(ix), l                          ;; Cargo la posicion random en el enemigo
 
    ;; Saco vector VX del enemigo
    ld    a,    l              ;; Posicion X del objetivo
    sub   en_x(ix)             ;; Resto la posicion actual del enemigo
-   ld    (save_dX), a       ;; Guardo el valor para despues, en A guardo la DISTANCIA
-   ;cp    #80                  ;; |
-   jr c, vx_neg              ;; Si C==1, la distancia es negativa
+   ld    (save_dX), a         ;; GUARDO el valor de dX
+   jr c, vx_neg               ;; Si C==1, la distancia es negativa
       ld    en_vx(ix), #1        ;; VX =  1
       jr continua_y
    vx_neg:
@@ -172,7 +188,7 @@ enemy_randomGoal:
       cpl                        ;; Invierto bites de A, que guarda la distancia
       inc   a                    ;; Le sumo 1 y entonces -> A = -A
       ld (save_dX) , a         ;; Lo guardo de nuevo
-      ld    a,    #0xFF          ;; | A = 0xFF
+      ld    a,    #0x00          ;; | A = 0xFF
       ld (save_dX+1), a            ;; Ya que es negativo -> FF**
    continua_y:
 
@@ -180,8 +196,18 @@ enemy_randomGoal:
    get_random_y:
       call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
       ld    a,    l                          ;; Cargo en A el random que se ha cargado en L
-      cp    #200                             ;; Miro que este dentro del rango 0-200 (dec)
+      cp    #y_range                         ;; Miro que este dentro del rango 0-200 (dec)
+
+      sub   en_y(ix)                         ;; Resto la posicion actual del enemigo
+      jr    nc, no_carry_y
+         cpl
+         inc a
+      no_carry_y:
+      ;; Ahora tengo la distancia arreglada
+      cp    #var_r_max
    jr    nc, get_random_y                    ;; Si no esta dentro del rango, lo vuelve a buscar
+      cp    #var_r_min
+   jr    c, get_random_y                     ;; Si esta dentro del rango min, lo vuelve a buscar
 
    ld en_g_y(ix), l                          ;; Cargo la posicion random en el enemigo
 
@@ -191,15 +217,15 @@ enemy_randomGoal:
    ld    (save_dY), a            ;; Guardo el valor para despues
    ;cp    #200                    ;; |
    jr c, vy_neg                 ;; Si C==0 la distancia es negativa -> COMPROBAR EN EJECUCION
-         ld    en_vy(ix), #1        ;; VY =  1
-         cpl                        ;; Invierto bites de A, que guarda la distancia
-         inc   a                    ;; Le sumo 1 y entonces -> A = -A
-         ld (save_dY), a          ;; Lo guardo de nuevo
-         ld    a,    #0xFF          ;; | A = 0xFF
-         ld (save_dY+1), a            ;; Ya que es negativo -> FF**
+      ld    en_vy(ix), #1        ;; VY =  1
       jr continua_fin
    vy_neg:
       ld    en_vy(ix), #-1       ;; VY = -1
+      cpl                        ;; Invierto bites de A, que guarda la distancia
+      inc   a                    ;; Le sumo 1 y entonces -> A = -A
+      ld (save_dY), a          ;; Lo guardo de nuevo
+      ld    a,    #0x00          ;; | A = 0xFF
+      ld (save_dY+1), a            ;; Ya que es negativo -> FF**
    continua_fin:
 
 ;;-------------------------------;
@@ -246,14 +272,19 @@ enemy_randomGoal:
 ;;-------------------------------;
 
    ;; PARTE 2 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+   ;; Primero miro si los numeros estan en un valor absoluto
    ld    hl, (save_dY)        ;; Cargo en HL el valor de dY
+   call enemy_get_positive
    ex    de,   hl             ;; -- DE = dY
-   ld    hl, (save_dX)        ;; -- HL = dX
+   ld    hl, (save_dX)        ;; Cargo en HL el valor de dX
+   call enemy_get_positive    ;; -- HL = dX
+
    jr    nc, no_carry         ;; Si C = 0, no hago nada
       ccf                     ;; Si entra aqui, C = 1, entonces invierto -> C = 0
    no_carry:
    sbc   hl,   de             ;; HL - DE = dX - dY ---> AL UTILIZAR TAMBIEN EL CARRY FLAG, LO PONGO A 0 ANTES DE HACER NADA
-   jr nc, dy_es_mayor           ;;  >>--------------------->> MUCHA DUDA SOBRE ESTE nc <<---------------------<<
+   jr c, dy_es_mayor          ;; dX - dY = 0013 - 0000 = 13 -> dX ES MAYOR, C=0
       ;;if dX>=dY
       ld    a,    #0          ;; A = 0
       ld (IncYr), a           ;; --> IncYr = 0
@@ -283,32 +314,42 @@ enemy_randomGoal:
    ;; Hay que negar dX y luego sumarlo
    ;; En DE tendre el valor de dX y en HL ya he conseguido el valor de avR
    ;; av = (HL + (-DE))
-   ld    a,    (save_dX+1)    ;; Consigo el valor 'negado' 00/FF
-   cp    #0                   ;; A - 0
-   ld    d,    #0             ;; D = 0 -> PARA QUITAR COMPROBACIONES EXTRAS
-   jr    nz, dx_neg           ;; Si dX es 0, entro
-      ld    d,    #0xFF       ;; D = FF
-   dx_neg:
-   ld    a,    (save_dX)      ;; A  = dX
-   cpl                        ;; Invierto bites de A -> COMPLEMENTO A 1
-   inc   a                    ;; Le sumo 1 y entonces -> A = -A
-   ld    e,    a              ;; DE = (00**)/(FF**), donde ** = -dX
-   add   hl,   de             ;; avR + -(dX)
-   ld (av), hl                ;; --> av = (avR - dX)
+   ;; av = (avR - dX)
+   ld    hl,   (save_dX)      ;; HL =  dX
+   call enemy_get_negative    ;; HL = -dX
+   ex    de,   hl             ;; -- DE = -dX
+   ld    hl,   (avR)          ;; -- HL = avR
+   add   hl,   de             ;; HL + DE = avR - dX
+   ld    (av), hl             ;; av = avR - dX
+;ld    a,    (save_dX+1)    ;; Consigo el valor 'negado' 00/FF
+;cp    #0                   ;; A - 0
+;ld    d,    #0             ;; D = 0 -> PARA QUITAR COMPROBACIONES EXTRAS
+;jr    nz, dx_neg           ;; Si dX es 0, entro
+;   ld    d,    #0xFF       ;; D = FF
+;dx_neg:
+;ld    a,    (save_dX)      ;; A  = dX
+;cpl                        ;; Invierto bites de A -> COMPLEMENTO A 1
+;inc   a                    ;; Le sumo 1 y entonces -> A = -A
+;ld    e,    a              ;; DE = (00**)/(FF**), donde ** = -dX
+;add   hl,   de             ;; avR + -(dX)
+;ld (av), hl                ;; --> av = (avR - dX)
 
    ;; En HL ya tengo av y en DE tengo -dX
    ;; Solo tengo que sumarlo
    add   hl,   de             ;; av + -(dX)
    ld (avI),   hl             ;; --> avI = (av - dX)
 
+
+
+
    ;; 'DEBUG'
    ld    de, #0xC000          ;;Comienzo memoria de video
    ld     c, en_g_x(ix)       ;; C = Entity X
-   ld     b, en_g_y(ix)       ;; B = Entity Y
+   ld     b, en_g_y(ix)    ;; B = Entity Y
    call cpct_getScreenPtr_asm
    ;; SIN SPRITE
    ex    de,   hl             ;; Apunta a la posicion x,y
-   ld     a,   #0xDD          ;; Código de color
+   ld     a,   #0xEE          ;; Código de color
    ld     c,   #1             ;; Ancho
    ld     b,   #4             ;; Alto
    call cpct_drawSolidBox_asm
@@ -319,7 +360,8 @@ enemy_randomGoal:
    ld hl, #enemy_checkGoal
    ld en_up_h(ix), h
    ld en_up_l(ix), l
-   ret
+
+   jp enemy_checkGoal
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CHECKEA SI HA LLEGADO A SU DESTINO
@@ -344,12 +386,12 @@ enemy_checkGoal:
    ;; THE FINAL BOSS: Actualizo Bresenham
 
    ld    hl,   (av)           ;; HL = av
-   ld    de,   #0x7FFF        ;; DE = 7FFF
+   ld    de,   #0x8000        ;; DE = 7FFF
    jr    nc, no_carry2        ;; Si C = 0, no hago nada
       ccf                     ;; Si entra aqui, C = 1, entonces invierto -> C = 0
    no_carry2:
    sbc   hl,   de
-   jr    c,    av_negativo
+   jr    nc,    av_negativo
       ;; Aqui av, es positivo o 0
       ld    a,    (flag_vel)
       cp    #1
@@ -419,7 +461,31 @@ enemy_checkGoal:
    ret
 
 
+;; ENTRADA:    HL -> Valor de 2 bytes a llevar a valor positivo, en caso que sea negativo
+;; DESTRUYE:   A, HL
+;; SALIDA:     HL -> Valor negativo negado = valor positivo
+enemy_get_positive:
+   ld     a, h                ;; A = 00/FF
+   cp    #0                   ;; |
+   ret     z
+      ld    a, l              ;; A = -dY
+      cpl
+      inc a                   ;; A =  dY -> Aqui ya tengo dY en positivo
+      ld    h, #0             ;; H = 00
+      ld    l, a              ;; L = dY --> HL = 00**, donde ** = dY
+   ret
 
+;; Lo mismo que enemy_get_positive pero con negativos
+enemy_get_negative:
+   ld    a, h                ;; A = FF/00
+   cp    #0xFF               ;; |
+   ret   z
+      ld    a,    l          ;; A = -dY
+      cpl
+      inc   a                ;; A =  dY -> Aqui ya tengo dY en positivo
+      ld    h,    #0xFF      ;; H = FF
+      ld    l,    a          ;; L = dY --> HL = FF**, donde ** = dY
+   ret
 
 
 

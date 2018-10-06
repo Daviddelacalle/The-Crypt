@@ -37,7 +37,7 @@ _main::
     init
 
     call drawMap
-    call enemy_create
+    ;call enemy_create
 
     ;; Comienza el bucle del juego
     loop:
