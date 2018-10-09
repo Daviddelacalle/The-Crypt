@@ -94,7 +94,7 @@ _name:
  ;;-----------------------------------------------------------------------------------------;;
  ;; Entidad enemigo por defecto
  .macro DefineEnemyDefault _name, _suf
-    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0, #0xFFFF, #0, #0, #0           ;;'
+    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0, #0xFFFF, #0, #0, #0, #0, #0, #0, #0, #0, #0, #0, #1           ;;'
  .endm
 
  ;; Definir N entidades enemigo
@@ -107,7 +107,7 @@ _name:
  .endm
 
  ;; Entidad enemigo
- .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd, _goal_flag, _goal_x, _goal_y
+ .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd, _goal_flag, _goal_x, _goal_y, save_dX, save_dY, IncYr, IncXr, av, avR, avI, flag_vel
  _name:
     DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
     DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
@@ -119,6 +119,16 @@ _name:
     .db  _goal_flag  ;; 0 -> No se ha
     .db  _goal_x     ;; X de la posicion final
     .db  _goal_y     ;; Y de la posicion final
+
+    ;;BRESENHAM
+    .dw  save_dX     ;; Distancia en X del objetivo
+    .dw  save_dY     ;; Distancia en Y del objetivo
+    .db  IncYr       ;; Incremento recto en Y
+    .db  IncXr       ;; Incremento recto en X
+    .dw  av          ;; Avance
+    .dw  avR         ;; Avance recto
+    .dw  avI         ;; Avance inclinado
+    .db  flag_vel    ;; 1 = Esta utilizando IncYi/IncXi |------------| 0 = Esta utilizando IncYr/IncXr
  ;; Aqui falta saber el tamanyo de la entidad
  en_size = . - (_name)
  .endm
@@ -126,13 +136,21 @@ _name:
  ;;;;;;;;;;;;;;;;;;;
  ;; Constantes de las entidades hero/enemy
  ;;;;;;;;;;;;;;;;;;;
-      en_x = 0      en_y = 1
-      en_w = 2      en_h = 3
-     en_vx = 4     en_vy = 5
+      en_x = 0         en_y = 1
+      en_w = 2         en_h = 3
+     en_vx = 4        en_vy = 5
     en_col = 6
-   en_up_l = 7   en_up_h = 8
+   en_up_l = 7      en_up_h = 8
  en_g_flag = 9
-    en_g_x = 10  en_g_y = 11
+ ;;------------------------------BRESENHAM
+    en_g_x = 10      en_g_y = 11
+   en_dX_l = 12     en_dX_h = 13
+   en_dY_l = 14     en_dY_h = 15
+  en_incYr = 16    en_incXr = 17
+   en_av_l = 18     en_av_h = 19
+  en_avR_l = 20    en_avR_h = 21
+  en_avI_l = 22    en_avI_h = 23
+en_flagVel = 24
 
 
 

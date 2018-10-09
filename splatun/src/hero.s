@@ -54,7 +54,7 @@ hero_update::
         jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
 
     a_no_pulsada:
-        call cpct_scanKeyboard_asm
+
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
@@ -63,7 +63,7 @@ hero_update::
             ld e_vx(ix), b
 
     d_no_pulsada:
-        call cpct_scanKeyboard_asm
+
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
         jr z, w_no_pulsada
@@ -75,7 +75,7 @@ hero_update::
             call inc_map_y
 
     w_no_pulsada:
-        call cpct_scanKeyboard_asm
+
         ld hl, #Key_S
         call cpct_isKeyPressed_asm
         jr z, s_no_pulsada
