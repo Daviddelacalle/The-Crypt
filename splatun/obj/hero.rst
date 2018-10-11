@@ -2517,98 +2517,98 @@ Hexadecimal [16-Bits]
                               5 ;; Entidad drawable
                               6 .macro DefineDrawableEnt _name, _x, _y, _w, _h
                               7 _name:
-                              8    .db   _x, _y      ;; Posicion    (x,y)
-                              9    .db   _w, _h      ;; Dimensiones (w,h)
-                             10 .endm
-                             11 
-                             12 ;; Entidad movable
-                             13 .macro DefineMovableEnt _name, _vx, _vy
-                             14 _name:
-                             15    .db   _vx, _vy    ;; Variables de la velocidad
-                             16 .endm
-                             17 
-                             18 ;; Entidad por defecto
-                             19 .macro DefineEntityDefault _name, _suf
-                             20    DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0xFFFF           ;;'
-                             21 .endm
-                             22 
-                             23 ;; Definir N entidades
-                             24 .macro DefineNEntities _name, _n
-                             25    _c = 0
-                             26    .rept _n
-                             27       DefineEntityDefault _name, \_c
-                             28       _c = _c + 1
-                             29    .endm
-                             30 .endm
-                             31 
-                             32 ;; Entidad heroe/enemigo
-                             33 .macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
-                             34 _name:
-                             35    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
-                             36    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
-                             37 ;; Si no tiene sprite
-                             38    .db   _col        ;; Color
-                             39 ;; Si tiene sprite
-                             40 ;;.dw   _spr
-                             41    .dw   _upd        ;; Puntero a la funcion de update
-                             42 
-                             43 ;; Aqui falta saber el tamanyo de la entidad
-                             44 e_size = . - (_name)
-                             45 .endm
-                             46 
-                             47 ;;;;;;;;;;;;;;;;;;;
-                             48 ;; Constantes de las entidades hero/enemy
+                              8    .db   #0, #0
+                              9    .db   #0, #0
+                             10    .db   _x, _y      ;; Posicion    (x,y)
+                             11    .db   _w, _h      ;; Dimensiones (w,h)
+                             12 .endm
+                             13 
+                             14 ;; Entidad movable
+                             15 .macro DefineMovableEnt _name, _vx, _vy
+                             16 _name:
+                             17    .db   _vx, _vy    ;; Variables de la velocidad
+                             18 .endm
+                             19 
+                             20 ;; Entidad por defecto
+                             21 .macro DefineEntityDefault _name, _suf
+                             22    DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0xFFFF           ;;'
+                             23 .endm
+                             24 
+                             25 ;; Definir N entidades
+                             26 .macro DefineNEntities _name, _n
+                             27    _c = 0
+                             28    .rept _n
+                             29       DefineEntityDefault _name, \_c
+                             30       _c = _c + 1
+                             31    .endm
+                             32 .endm
+                             33 
+                             34 ;; Entidad heroe/enemigo
+                             35 .macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             36 _name:
+                             37    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                             38    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                             39 ;; Si no tiene sprite
+                             40    .db   _col        ;; Color
+                             41 ;; Si tiene sprite
+                             42 ;;.dw   _spr
+                             43    .dw   _upd        ;; Puntero a la funcion de update
+                             44 
+                             45 ;; Aqui falta saber el tamanyo de la entidad
+                             46 e_size = . - (_name)
+                             47 .endm
+                             48 
                              49 ;;;;;;;;;;;;;;;;;;;
-                     0001    50    e_x = 0      e_y = 1
-                     0003    51    e_w = 2      e_h = 3
-                     0005    52   e_vx = 4     e_vy = 5
-                     0006    53  e_col = 6
-                     0008    54 e_up_l = 7   e_up_h = 8
+                             50 ;; Constantes de las entidades hero/enemy
+                             51 ;;;;;;;;;;;;;;;;;;;
+                     0001    52  ppe_x = 0    ppe_y = 1
+                     0003    53   pe_x = 2     pe_y = 3
+                     0005    54    e_x = 0+4      e_y = 1+4
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
 
 
-                             55 
-                             56 ;;-----------------------------------------------------------------------------------------;;
-                             57 ;; Entidad bullet
-                             58 .macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _col, _alive, _upd
-                             59 _name:
-                             60    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
-                             61    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
-                             62    .db   _col        ;; Color / Sprite (cuando haya)
-                             63    .db   _alive      ;; _alive>0? Se actualiza/dibuja
-                             64    .dw   _upd        ;; Funcion de update
-                             65 
-                             66 ;; Saber tamanyo de entidad bala
-                             67 .endm
-                             68 
-                             69 ;; Entidad por defecto de bullet
-                             70 .macro DefineBulletDefault _name, _suf
-                             71    DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
-                             72 .endm
-                             73 
-                             74 ;; Bucle de crear entidades bullet
-                             75 .macro DefineNBullets _name, _n
-                             76    _c = 0
-                             77    .rept _n
-                             78       DefineBulletDefault _name, \_c
-                             79       _c = _c + 1
-                             80    .endm
-                             81 .endm
-                             82 
-                             83 ;;;;;;;;;;;;;;;;;;;
-                             84 ;; Constantes de las entidades bullet
-                             85 ;;;;;;;;;;;;;;;;;;;
-                     0001    86     b_x = 0      b_y = 1
-                     0003    87     b_w = 2      b_h = 3
-                     0005    88    b_vx = 4     b_vy = 5
-                     0007    89   b_col = 6  b_alive = 7
-                     0009    90  b_up_l = 8   b_up_h = 9
-                             91 
-                             92 
-                             93 
-                             94 
+                     0007    55    e_w = 2+4      e_h = 3+4
+                     0009    56   e_vx = 4+4     e_vy = 5+4
+                     000A    57  e_col = 6+4
+                     000C    58 e_up_l = 7+4   e_up_h = 8+4
+                             59 
+                             60 ;;-----------------------------------------------------------------------------------------;;
+                             61 ;; Entidad bullet
+                             62 .macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _col, _alive, _upd
+                             63 _name:
+                             64    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                             65    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                             66    .db   _col        ;; Color / Sprite (cuando haya)
+                             67    .db   _alive      ;; _alive>0? Se actualiza/dibuja
+                             68    .dw   _upd        ;; Funcion de update
+                             69 
+                             70 ;; Saber tamanyo de entidad bala
+                             71 .endm
+                             72 
+                             73 ;; Entidad por defecto de bullet
+                             74 .macro DefineBulletDefault _name, _suf
+                             75    DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+                             76 .endm
+                             77 
+                             78 ;; Bucle de crear entidades bullet
+                             79 .macro DefineNBullets _name, _n
+                             80    _c = 0
+                             81    .rept _n
+                             82       DefineBulletDefault _name, \_c
+                             83       _c = _c + 1
+                             84    .endm
+                             85 .endm
+                             86 
+                             87 ;;;;;;;;;;;;;;;;;;;
+                             88 ;; Constantes de las entidades bullet
+                             89 ;;;;;;;;;;;;;;;;;;;
+                     0005    90     b_x = 0+4      b_y = 1+4
+                     0007    91     b_w = 2+4      b_h = 3+4
+                     0009    92    b_vx = 4+4     b_vy = 5+4
+                     000B    93   b_col = 6+4  b_alive = 7+4
+                     000D    94  b_up_l = 8+4   b_up_h = 9+4
                              95 
                              96 
                              97 
@@ -2619,6 +2619,10 @@ Hexadecimal [16-Bits]
                             102 
                             103 
                             104 
+                            105 
+                            106 
+                            107 
+                            108 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
@@ -2633,23 +2637,25 @@ Hexadecimal [16-Bits]
                              18 
                      0000    19 hero_x = .
                      0001    20 hero_y = . + 1
-   4454                      21 DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
-   4454                       1 hero:
+   523C                      21 DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+   523C                       1 hero:
    0000                       2    DefineDrawableEnt hero_dw, #40, #50, 0x02, 0x08                       ;;'
    0000                       1 hero_dw:
-   4454 28 32                 2    .db   #40, #50      ;; Posicion    (x,y)
-   4456 02 08                 3    .db   0x02, 0x08      ;; Dimensiones (w,h)
-   4458                       3    DefineMovableEnt  hero_mv, 0x00, 0x00                             ;;'
-   0004                       1 hero_mv:
-   4458 00 00                 2    .db   0x00, 0x00    ;; Variables de la velocidad
+   523C 00 00                 2    .db   #0, #0
+   523E 00 00                 3    .db   #0, #0
+   5240 28 32                 4    .db   #40, #50      ;; Posicion    (x,y)
+   5242 02 08                 5    .db   0x02, 0x08      ;; Dimensiones (w,h)
+   5244                       3    DefineMovableEnt  hero_mv, 0x00, 0x00                             ;;'
+   0008                       1 hero_mv:
+   5244 00 00                 2    .db   0x00, 0x00    ;; Variables de la velocidad
                               4 ;; Si no tiene sprite
-   445A 0F                    5    .db   0x0F        ;; Color
+   5246 0F                    5    .db   0x0F        ;; Color
                               6 ;; Si tiene sprite
                               7 ;;.dw   _spr
-   445B 00 00                 8    .dw   0x0000        ;; Puntero a la funcion de update
+   5247 00 00                 8    .dw   0x0000        ;; Puntero a la funcion de update
                               9 
                              10 ;; Aqui falta saber el tamanyo de la entidad
-                     0009    11 e_size = . - (hero)
+                     000D    11 e_size = . - (hero)
                              22 
                              23 ;;======================================================================
                              24 ;;======================================================================
@@ -2657,101 +2663,120 @@ Hexadecimal [16-Bits]
                              26 ;;======================================================================
                              27 ;;======================================================================
                              28 
-                             29 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             30 ;; DIBUJADO DE LA ENTIDAD HERO
-                             31 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   445D                      32 hero_draw::
-   445D DD 21 54 44   [14]   33     ld    ix,   #hero    ;; ix apunta a los datos del heroe
-   4461 C3 38 46      [10]   34     jp dw_draw
-                             35 
-                             36 
-   4464                      37 hero_clear::
-   4464 DD 21 54 44   [14]   38     ld ix, #hero
-   4468 C3 6E 46      [10]   39     jp dw_clear
-                             40 
-   446B                      41 hero_update::
-   446B DD 21 54 44   [14]   42     ld    ix,   #hero   ; Se puede borrar si hero es el ultimo en hacer dro
-   446F DD 36 04 00   [19]   43     ld e_vx(ix), #0
-   4473 DD 36 05 00   [19]   44     ld e_vy(ix), #0
-                             45 
+                             29 
+   5249                      30 hero_init::
+   5249 DD 21 3C 52   [14]   31     ld ix, #hero
+   524D DD 7E 04      [19]   32     ld a, e_x(ix)
+   5250 DD 77 02      [19]   33     ld pe_x(ix), a
+   5253 DD 77 00      [19]   34     ld ppe_x(ix), a
+   5256 DD 7E 05      [19]   35     ld a, e_y(ix)
+   5259 DD 77 03      [19]   36     ld pe_y(ix), a
+   525C DD 77 01      [19]   37     ld ppe_y(ix), a
+   525F C9            [10]   38 ret
+                             39 
+                             40 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             41 ;; DIBUJADO DE LA ENTIDAD HERO
+                             42 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   5260                      43 hero_draw::
+   5260 DD 21 3C 52   [14]   44     ld    ix,   #hero    ;; ix apunta a los datos del heroe
+   5264 C3 42 54      [10]   45     jp dw_draw
                              46 
-   4477 CD D9 48      [17]   47     call cpct_scanKeyboard_asm
-   447A 21 08 20      [10]   48     ld hl, #Key_A                   ;; Comprueba tecla A
-   447D CD 10 47      [17]   49     call cpct_isKeyPressed_asm
-   4480 28 07         [12]   50     jr z, a_no_pulsada
+                             47 
+   5267                      48 hero_clear::
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
 
-   4482 06 FF         [ 7]   51         ld b, #-1
-                             52         ;call move_camera
-   4484 DD 70 04      [19]   53         ld e_vx(ix), b
-   4487 18 10         [12]   54         jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
-                             55 
-   4489                      56     a_no_pulsada:
-   4489 CD D9 48      [17]   57         call cpct_scanKeyboard_asm
-   448C 21 07 20      [10]   58         ld hl, #Key_D               ;; Comprueba tecla D
-   448F CD 10 47      [17]   59         call cpct_isKeyPressed_asm
-   4492 28 05         [12]   60         jr z, d_no_pulsada
-   4494 06 01         [ 7]   61             ld b, #1
-                             62             ;call move_camera
-   4496 DD 70 04      [19]   63             ld e_vx(ix), b
-                             64 
-   4499                      65     d_no_pulsada:
-   4499 CD D9 48      [17]   66         call cpct_scanKeyboard_asm
-   449C 21 07 08      [10]   67         ld hl, #Key_W
-   449F CD 10 47      [17]   68         call cpct_isKeyPressed_asm
-   44A2 28 0C         [12]   69         jr z, w_no_pulsada
-   44A4 06 FE         [ 7]   70             ld b, #-2
-                             71             ;call move_camera
-   44A6 DD 70 05      [19]   72             ld e_vy(ix), b
-   44A9 18 1A         [12]   73             jr s_no_pulsada
-   44AB 3E 00         [ 7]   74             ld a, #0
-   44AD CD CD 46      [17]   75             call inc_map_y
-                             76 
-   44B0                      77     w_no_pulsada:
-   44B0 CD D9 48      [17]   78         call cpct_scanKeyboard_asm
-   44B3 21 07 10      [10]   79         ld hl, #Key_S
-   44B6 CD 10 47      [17]   80         call cpct_isKeyPressed_asm
-   44B9 28 0A         [12]   81         jr z, s_no_pulsada
-   44BB 06 02         [ 7]   82             ld b, #2
-                             83             ;call move_camera
-   44BD DD 70 05      [19]   84             ld e_vy(ix), b
-   44C0 3E 01         [ 7]   85             ld a, #1
-   44C2 CD CD 46      [17]   86             call inc_map_y
-                             87 
-   44C5                      88     s_no_pulsada:
-                             89 
-                             90 
+   5267 DD 21 3C 52   [14]   49     ld ix, #hero
+   526B C3 61 54      [10]   50     jp dw_clear
+                             51 
+   526E                      52 hero_update::
+   526E DD 21 3C 52   [14]   53     ld    ix,   #hero   ; Se puede borrar si hero es el ultimo en hacer dro
+   5272 DD 36 08 00   [19]   54     ld e_vx(ix), #0
+   5276 DD 36 09 00   [19]   55     ld e_vy(ix), #0
+                             56 
+   527A DD 7E 04      [19]   57     ld a, e_x(ix)
+   527D DD 77 02      [19]   58     ld pe_x(ix), a
+   5280 DD 7E 05      [19]   59     ld a, e_y(ix)
+   5283 DD 77 03      [19]   60     ld pe_y(ix), a
+                             61 
+   5286 CD FB 56      [17]   62     call cpct_scanKeyboard_asm
+                             63 
+   5289 21 08 20      [10]   64     ld hl, #Key_A                   ;; Comprueba tecla A
+   528C CD 29 55      [17]   65     call cpct_isKeyPressed_asm
+   528F 28 08         [12]   66     jr z, a_no_pulsada
+                             67         ;ld b, #-1
+                             68         ;ld e_vx(ix), b
+   5291 11 FF FF      [10]   69         ld de, #-1
+   5294 CD FF 54      [17]   70         call inc_map
+   5297 18 0E         [12]   71         jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
+                             72 
+   5299                      73     a_no_pulsada:
+   5299 21 07 20      [10]   74         ld hl, #Key_D               ;; Comprueba tecla D
+   529C CD 29 55      [17]   75         call cpct_isKeyPressed_asm
+   529F 28 06         [12]   76         jr z, d_no_pulsada
+                             77             ;ld b, #1
+                             78             ;ld e_vx(ix), b
+   52A1 11 01 00      [10]   79             ld de, #1
+   52A4 CD FF 54      [17]   80             call inc_map
+                             81 
+   52A7                      82     d_no_pulsada:
+   52A7 21 07 08      [10]   83         ld hl, #Key_W
+   52AA CD 29 55      [17]   84         call cpct_isKeyPressed_asm
+   52AD 28 08         [12]   85         jr z, w_no_pulsada
+                             86             ;ld b, #-2
+                             87             ;ld e_vy(ix), b
+   52AF 11 E3 FF      [10]   88             ld de, #-29
+   52B2 CD FF 54      [17]   89             call inc_map
+   52B5 18 0E         [12]   90             jr s_no_pulsada
                              91 
-   44C5 C9            [10]   92 ret
-                             93 
-                             94 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             95 ;; CARGA EN LOS REGISTROS A,B LOS VALORES DE X,Y
-                             96 ;; _______________________
-                             97 ;; DESTRUYE: A, B
-                             98 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   44C6                      99 hero_get_position::
-   44C6 3A 55 44      [13]  100    ld    a,    (hero_y)
-   44C9 47            [ 4]  101    ld    b,    a
-   44CA 3A 54 44      [13]  102    ld    a,    (hero_x)
-   44CD C9            [10]  103    ret
-                            104 
-                            105 ;;======================================================================
+   52B7                      92     w_no_pulsada:
+   52B7 21 07 10      [10]   93         ld hl, #Key_S
+   52BA CD 29 55      [17]   94         call cpct_isKeyPressed_asm
+   52BD 28 06         [12]   95         jr z, s_no_pulsada
+                             96             ;ld b, #2
+                             97             ;ld e_vy(ix), b
+   52BF 11 1D 00      [10]   98             ld de, #29
+   52C2 CD FF 54      [17]   99             call inc_map
+                            100 
+   52C5                     101     s_no_pulsada:
+                            102 
+   52C5 DD 7E 04      [19]  103     ld a, e_x(ix)                    ;; Consigue la posicion del jugador
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
 
-                            106 ;;======================================================================
-                            107 ;; FUNCIONES PRIVADAS
-                            108 ;;======================================================================
-                            109 ;;======================================================================
+   52C8 DD 86 08      [19]  104     add e_vx(ix)                     ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
+   52CB DD 77 04      [19]  105     ld e_x(ix), a                    ;; Lo guardo en su registro
+                            106 
+   52CE DD 7E 05      [19]  107     ld a, e_y(ix)                    ;; Repito para Y
+   52D1 DD 86 09      [19]  108     add e_vy(ix)
+   52D4 DD 77 05      [19]  109     ld e_y(ix), a
                             110 
-                            111 
+   52D7 C9            [10]  111 ret
                             112 
-                            113 
-                            114 
-                            115 
-                            116 
+                            113 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                            114 ;; CARGA EN LOS REGISTROS A,B LOS VALORES DE X,Y
+                            115 ;; _______________________
+                            116 ;; DESTRUYE: A, B
+                            117 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   52D8                     118 hero_get_position::
+   52D8 3A 3D 52      [13]  119    ld    a,    (hero_y)
+   52DB 47            [ 4]  120    ld    b,    a
+   52DC 3A 3C 52      [13]  121    ld    a,    (hero_x)
+   52DF C9            [10]  122    ret
+                            123 
+                            124 ;;======================================================================
+                            125 ;;======================================================================
+                            126 ;; FUNCIONES PRIVADAS
+                            127 ;;======================================================================
+                            128 ;;======================================================================
+                            129 
+                            130 
+                            131 
+                            132 
+                            133 
+                            134 
+                            135 

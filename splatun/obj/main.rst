@@ -2508,67 +2508,103 @@ Hexadecimal [16-Bits]
 
 
                               9 
-                             10 .globl _g_palette
-                             11 .globl _g_0
-                             12 .globl _nivel1
-                             13 
-                             14 ; 0x40
-                             15 
-                             16 ;==========================================================;
-                             17 ;   Disable firmware to avoid configuration override
-                             18 ;   Load custom palette
-                             19 ;==========================================================;
-                             20 .macro init
-                             21     call cpct_disableFirmware_asm
-                             22     ld    c, #0
-                             23     call cpct_setVideoMode_asm
-                             24 
-                             25     ld hl, #_g_palette
-                             26     ld de, #16
-                             27     call cpct_setPalette_asm
-                             28 .endm
+                             10 .macro setBorder color
+                             11     ;ld hl, #0x'color'10
+                             12     ;call cpct_setPALColour_asm
+                             13 .endm
+                             14 
+                             15 ; 0x40
+                             16 
+                             17 ;==========================================================;
+                             18 ;   Disable firmware to avoid configuration override
+                             19 ;   Load custom palette
+                             20 ;==========================================================;
+                             21 .macro init
+                             22     call cpct_disableFirmware_asm
+                             23     ld    c, #0
+                             24     call cpct_setVideoMode_asm
+                             25 
+                             26     ld hl, #_g_palette
+                             27     ld de, #16
+                             28     call cpct_setPalette_asm
                              29 
-                             30 
-                             31 
-                             32 ;; Punto de entrada de la funcion main
-   4680                      33 _main::
-                             34     ; --> Realocate stack memory <-- ;
-                             35     ;ld sp, #0x8000
+                             30     ;; Clean 16K: 0x8000 -> 0xC000
+                             31     ld  hl,  #0x8000
+                             32     ld (hl), #0
+                             33     ld  de,  #0x8000 + 1
+                             34     ld  bc,  #0x4000 - 1
+                             35     ldir
                              36 
-   0000                      37     init
-   4680 CD D4 47      [17]    1     call cpct_disableFirmware_asm
-   4683 0E 00         [ 7]    2     ld    c, #0
-   4685 CD BF 47      [17]    3     call cpct_setVideoMode_asm
-                              4 
-   4688 21 44 44      [10]    5     ld hl, #_g_palette
-   468B 11 10 00      [10]    6     ld de, #16
-   468E CD FD 46      [17]    7     call cpct_setPalette_asm
-                             38 
-   4691 CD E4 46      [17]   39     call drawMap
-                             40 
-                             41     ;; Comienza el bucle del juego
-   4694                      42     loop:
-                             43 
-   4694 CD 35 45      [17]   44         call bullet_inputs
+                             37     call hero_init
+                             38     
+                             39     ld hl, #_g_000
+                             40     ld c, #20
+                             41     ld b, #25
+                             42     ld de, #29
+                             43     call cpct_etm_setDrawTilemap4x8_ag_asm
+                             44 .endm
                              45 
-                             46         ;; UPDEIT
-   4697 CD 6B 44      [17]   47         call hero_update
-   469A CD 29 45      [17]   48         call bullet_update
-                             49 
-   469D CD CC 47      [17]   50         call cpct_waitVSYNC_asm
-                             51         ;; CLIAR
-   46A0 CD 2F 45      [17]   52         call bullet_clear
-   46A3 CD C6 46      [17]   53         call obs_clear
-   46A6 CD 64 44      [17]   54         call hero_clear
-                             55 
-                             56         ;; DRO
+                             46 ;1 2 3 4 5
+                             47 ;6 7 8 9 9
+                             48 
+                             49 ;; Punto de entrada de la funcion main
+   5497                      50 _main::
+                             51     ; --> Realocate stack memory <-- ;
+   5497 31 00 80      [10]   52     ld sp, #0x8000
+                             53 
+   0003                      54     init
+   549A CD F6 55      [17]    1     call cpct_disableFirmware_asm
+   549D 0E 00         [ 7]    2     ld    c, #0
+   549F CD E1 55      [17]    3     call cpct_setVideoMode_asm
+                              4 
+   54A2 21 2C 52      [10]    5     ld hl, #_g_palette
+   54A5 11 10 00      [10]    6     ld de, #16
+   54A8 CD 16 55      [17]    7     call cpct_setPalette_asm
+                              8 
+                              9     ;; Clean 16K: 0x8000 -> 0xC000
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
 
 
-   46A9 CD 23 45      [17]   57         call bullet_draw
-   46AC CD BF 46      [17]   58         call obs_draw
-   46AF CD 5D 44      [17]   59         call hero_draw
+   54AB 21 00 80      [10]   10     ld  hl,  #0x8000
+   54AE 36 00         [10]   11     ld (hl), #0
+   54B0 11 01 80      [10]   12     ld  de,  #0x8000 + 1
+   54B3 01 FF 3F      [10]   13     ld  bc,  #0x4000 - 1
+   54B6 ED B0         [21]   14     ldir
+                             15 
+   54B8 CD 49 52      [17]   16     call hero_init
+                             17     
+   54BB 21 2C 43      [10]   18     ld hl, #_g_000
+   54BE 0E 14         [ 7]   19     ld c, #20
+   54C0 06 19         [ 7]   20     ld b, #25
+   54C2 11 1D 00      [10]   21     ld de, #29
+   54C5 CD B3 56      [17]   22     call cpct_etm_setDrawTilemap4x8_ag_asm
+                             55 
+   54C8 CD 07 55      [17]   56     call drawMap
+                             57 
+                             58     ;; Comienza el bucle del juego
+   54CB                      59     loop:
                              60 
-   46B2 18 E0         [12]   61 jr loop
+                             61         ;; CLIAR
+                             62         ;call bullet_clear
+                             63         ;call obs_clear
+   54CB CD 67 52      [17]   64         call hero_clear
+                             65 
+                             66 
+                             67         ;; DRO
+   54CE CD 07 55      [17]   68         call drawMap
+                             69         ;call bullet_inputs
+                             70         ;call bullet_draw
+                             71         ;call obs_draw
+   54D1 CD 60 52      [17]   72         call hero_draw
+                             73 
+                             74         ;; UPDEIT
+   54D4 CD 6E 52      [17]   75         call hero_update
+   54D7 CD 1B 53      [17]   76         call bullet_update
+                             77 
+   54DA CD EE 55      [17]   78         call cpct_waitVSYNC_asm
+   54DD CD 2C 54      [17]   79         call swapBuffers
+                             80 
+                             81 
+   54E0 18 E9         [12]   82 jr loop

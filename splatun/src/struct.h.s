@@ -5,6 +5,8 @@
 ;; Entidad drawable
 .macro DefineDrawableEnt _name, _x, _y, _w, _h
 _name:
+   .db   #0, #0
+   .db   #0, #0
    .db   _x, _y      ;; Posicion    (x,y)
    .db   _w, _h      ;; Dimensiones (w,h)
 .endm
@@ -47,11 +49,13 @@ e_size = . - (_name)
 ;;;;;;;;;;;;;;;;;;;
 ;; Constantes de las entidades hero/enemy
 ;;;;;;;;;;;;;;;;;;;
-   e_x = 0      e_y = 1
-   e_w = 2      e_h = 3
-  e_vx = 4     e_vy = 5
- e_col = 6
-e_up_l = 7   e_up_h = 8
+ ppe_x = 0    ppe_y = 1
+  pe_x = 2     pe_y = 3
+   e_x = 0+4      e_y = 1+4
+   e_w = 2+4      e_h = 3+4
+  e_vx = 4+4     e_vy = 5+4
+ e_col = 6+4
+e_up_l = 7+4   e_up_h = 8+4
 
 ;;-----------------------------------------------------------------------------------------;;
 ;; Entidad bullet
@@ -83,11 +87,11 @@ _name:
 ;;;;;;;;;;;;;;;;;;;
 ;; Constantes de las entidades bullet
 ;;;;;;;;;;;;;;;;;;;
-    b_x = 0      b_y = 1
-    b_w = 2      b_h = 3
-   b_vx = 4     b_vy = 5
-  b_col = 6  b_alive = 7
- b_up_l = 8   b_up_h = 9
+    b_x = 0+4      b_y = 1+4
+    b_w = 2+4      b_h = 3+4
+   b_vx = 4+4     b_vy = 5+4
+  b_col = 6+4  b_alive = 7+4
+ b_up_l = 8+4   b_up_h = 9+4
 
 
 

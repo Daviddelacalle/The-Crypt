@@ -2517,98 +2517,98 @@ Hexadecimal [16-Bits]
                               5 ;; Entidad drawable
                               6 .macro DefineDrawableEnt _name, _x, _y, _w, _h
                               7 _name:
-                              8    .db   _x, _y      ;; Posicion    (x,y)
-                              9    .db   _w, _h      ;; Dimensiones (w,h)
-                             10 .endm
-                             11 
-                             12 ;; Entidad movable
-                             13 .macro DefineMovableEnt _name, _vx, _vy
-                             14 _name:
-                             15    .db   _vx, _vy    ;; Variables de la velocidad
-                             16 .endm
-                             17 
-                             18 ;; Entidad por defecto
-                             19 .macro DefineEntityDefault _name, _suf
-                             20    DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0xFFFF           ;;'
-                             21 .endm
-                             22 
-                             23 ;; Definir N entidades
-                             24 .macro DefineNEntities _name, _n
-                             25    _c = 0
-                             26    .rept _n
-                             27       DefineEntityDefault _name, \_c
-                             28       _c = _c + 1
-                             29    .endm
-                             30 .endm
-                             31 
-                             32 ;; Entidad heroe/enemigo
-                             33 .macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
-                             34 _name:
-                             35    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
-                             36    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
-                             37 ;; Si no tiene sprite
-                             38    .db   _col        ;; Color
-                             39 ;; Si tiene sprite
-                             40 ;;.dw   _spr
-                             41    .dw   _upd        ;; Puntero a la funcion de update
-                             42 
-                             43 ;; Aqui falta saber el tamanyo de la entidad
-                             44 e_size = . - (_name)
-                             45 .endm
-                             46 
-                             47 ;;;;;;;;;;;;;;;;;;;
-                             48 ;; Constantes de las entidades hero/enemy
+                              8    .db   #0, #0
+                              9    .db   #0, #0
+                             10    .db   _x, _y      ;; Posicion    (x,y)
+                             11    .db   _w, _h      ;; Dimensiones (w,h)
+                             12 .endm
+                             13 
+                             14 ;; Entidad movable
+                             15 .macro DefineMovableEnt _name, _vx, _vy
+                             16 _name:
+                             17    .db   _vx, _vy    ;; Variables de la velocidad
+                             18 .endm
+                             19 
+                             20 ;; Entidad por defecto
+                             21 .macro DefineEntityDefault _name, _suf
+                             22    DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0xFFFF           ;;'
+                             23 .endm
+                             24 
+                             25 ;; Definir N entidades
+                             26 .macro DefineNEntities _name, _n
+                             27    _c = 0
+                             28    .rept _n
+                             29       DefineEntityDefault _name, \_c
+                             30       _c = _c + 1
+                             31    .endm
+                             32 .endm
+                             33 
+                             34 ;; Entidad heroe/enemigo
+                             35 .macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+                             36 _name:
+                             37    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                             38    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                             39 ;; Si no tiene sprite
+                             40    .db   _col        ;; Color
+                             41 ;; Si tiene sprite
+                             42 ;;.dw   _spr
+                             43    .dw   _upd        ;; Puntero a la funcion de update
+                             44 
+                             45 ;; Aqui falta saber el tamanyo de la entidad
+                             46 e_size = . - (_name)
+                             47 .endm
+                             48 
                              49 ;;;;;;;;;;;;;;;;;;;
-                     0001    50    e_x = 0      e_y = 1
-                     0003    51    e_w = 2      e_h = 3
-                     0005    52   e_vx = 4     e_vy = 5
-                     0006    53  e_col = 6
-                     0008    54 e_up_l = 7   e_up_h = 8
+                             50 ;; Constantes de las entidades hero/enemy
+                             51 ;;;;;;;;;;;;;;;;;;;
+                     0001    52  ppe_x = 0    ppe_y = 1
+                     0003    53   pe_x = 2     pe_y = 3
+                     0005    54    e_x = 0+4      e_y = 1+4
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
 
 
-                             55 
-                             56 ;;-----------------------------------------------------------------------------------------;;
-                             57 ;; Entidad bullet
-                             58 .macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _col, _alive, _upd
-                             59 _name:
-                             60    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
-                             61    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
-                             62    .db   _col        ;; Color / Sprite (cuando haya)
-                             63    .db   _alive      ;; _alive>0? Se actualiza/dibuja
-                             64    .dw   _upd        ;; Funcion de update
-                             65 
-                             66 ;; Saber tamanyo de entidad bala
-                             67 .endm
-                             68 
-                             69 ;; Entidad por defecto de bullet
-                             70 .macro DefineBulletDefault _name, _suf
-                             71    DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
-                             72 .endm
-                             73 
-                             74 ;; Bucle de crear entidades bullet
-                             75 .macro DefineNBullets _name, _n
-                             76    _c = 0
-                             77    .rept _n
-                             78       DefineBulletDefault _name, \_c
-                             79       _c = _c + 1
-                             80    .endm
-                             81 .endm
-                             82 
-                             83 ;;;;;;;;;;;;;;;;;;;
-                             84 ;; Constantes de las entidades bullet
-                             85 ;;;;;;;;;;;;;;;;;;;
-                     0001    86     b_x = 0      b_y = 1
-                     0003    87     b_w = 2      b_h = 3
-                     0005    88    b_vx = 4     b_vy = 5
-                     0007    89   b_col = 6  b_alive = 7
-                     0009    90  b_up_l = 8   b_up_h = 9
-                             91 
-                             92 
-                             93 
-                             94 
+                     0007    55    e_w = 2+4      e_h = 3+4
+                     0009    56   e_vx = 4+4     e_vy = 5+4
+                     000A    57  e_col = 6+4
+                     000C    58 e_up_l = 7+4   e_up_h = 8+4
+                             59 
+                             60 ;;-----------------------------------------------------------------------------------------;;
+                             61 ;; Entidad bullet
+                             62 .macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _col, _alive, _upd
+                             63 _name:
+                             64    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                             65    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                             66    .db   _col        ;; Color / Sprite (cuando haya)
+                             67    .db   _alive      ;; _alive>0? Se actualiza/dibuja
+                             68    .dw   _upd        ;; Funcion de update
+                             69 
+                             70 ;; Saber tamanyo de entidad bala
+                             71 .endm
+                             72 
+                             73 ;; Entidad por defecto de bullet
+                             74 .macro DefineBulletDefault _name, _suf
+                             75    DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+                             76 .endm
+                             77 
+                             78 ;; Bucle de crear entidades bullet
+                             79 .macro DefineNBullets _name, _n
+                             80    _c = 0
+                             81    .rept _n
+                             82       DefineBulletDefault _name, \_c
+                             83       _c = _c + 1
+                             84    .endm
+                             85 .endm
+                             86 
+                             87 ;;;;;;;;;;;;;;;;;;;
+                             88 ;; Constantes de las entidades bullet
+                             89 ;;;;;;;;;;;;;;;;;;;
+                     0005    90     b_x = 0+4      b_y = 1+4
+                     0007    91     b_w = 2+4      b_h = 3+4
+                     0009    92    b_vx = 4+4     b_vy = 5+4
+                     000B    93   b_col = 6+4  b_alive = 7+4
+                     000D    94  b_up_l = 8+4   b_up_h = 9+4
                              95 
                              96 
                              97 
@@ -2619,106 +2619,135 @@ Hexadecimal [16-Bits]
                             102 
                             103 
                             104 
+                            105 
+                            106 
+                            107 
+                            108 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
 
 
                              12 
-                             13 ;;======================================================================
-                             14 ;;======================================================================
-                             15 ;; DATOS PRIVADOS
+   542A C0                   13 front_buffer:   .db 0xC0
+   542B 80                   14 back_buffer::   .db 0x80
+                             15 
                              16 ;;======================================================================
                              17 ;;======================================================================
-                             18 
-                             19 
+                             18 ;; DATOS PRIVADOS
+                             19 ;;======================================================================
                              20 ;;======================================================================
-                             21 ;;======================================================================
-                             22 ;; FUNCIONES PUBLICAS
+                             21 
+                             22 
                              23 ;;======================================================================
                              24 ;;======================================================================
-                             25 
-                             26 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             27 ;; DIBUJADO DE UNA ENTIDAD
-                             28 ;; _______________________
-                             29 ;; ENTRADA: IX -> Puntero a entidad
-                             30 ;; DESTRUYE: AF, BC, DE, HL
-                             31 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   4638                      32 dw_draw::
-                             33    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
-                             34 
-   4638 11 00 C0      [10]   35    ld    de,   #0xC000                  ;; Apunta al inicio de la memoria de video
+                             25 ;; FUNCIONES PUBLICAS
+                             26 ;;======================================================================
+                             27 ;;======================================================================
+                             28 
+   542C                      29 swapBuffers::
+   542C 3A 2B 54      [13]   30     ld a, (back_buffer)
+   542F 47            [ 4]   31     ld b, a
+   5430 3A 2A 54      [13]   32     ld a, (front_buffer)
+   5433 32 2B 54      [13]   33     ld (back_buffer), a
+   5436 78            [ 4]   34     ld a, b
+   5437 32 2A 54      [13]   35     ld (front_buffer), a
                              36 
-   463B FE FF         [ 7]   37    cp #0xFF                             ;; Compruebo si he llamado a draw desde el clear para no sumar la velocidad
-   463D 20 09         [12]   38    jr nz, normal_dro                    ;; Si no he llamado desde el clear, salto
-                             39     ;;Llamada desde el clear
-   463F DD 7E 00      [19]   40        ld a, e_x(ix)                    ;; Cargo la posicion X, que es del frame anterior
-   4642 4F            [ 4]   41        ld     c,   a                    ;; x  [0-79]
-   4643 DD 7E 01      [19]   42        ld a, e_y(ix)                    ;; Cargo la posicion Y, tambien del frame anterior
-   4646 18 13         [12]   43        jr dro                           ;; Salto a dro, para ahorrar un par de bytes, ya que a partir de ahi, el codigo es igual
-                             44 
-   4648                      45    normal_dro:                          ;; Dro normal
-   4648 DD 7E 00      [19]   46    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
-   464B DD 86 04      [19]   47        add e_vx(ix)                     ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
-   464E DD 77 00      [19]   48        ld e_x(ix), a                    ;; Lo guardo en su registro
-   4651 4F            [ 4]   49    ld     c,   a                        ;; x  [0-79]
+   543A CB 38         [ 8]   37     srl b
+   543C CB 38         [ 8]   38     srl b
+   543E 68            [ 4]   39     ld l, b
+   543F C3 D8 55      [10]   40     jp cpct_setVideoMemoryPage_asm
+                             41 
+                             42 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                             43 ;; DIBUJADO DE UNA ENTIDAD
+                             44 ;; _______________________
+                             45 ;; ENTRADA: IX -> Puntero a entidad
+                             46 ;; DESTRUYE: AF, BC, DE, HL
+                             47 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   5442                      48 dw_draw::
+                             49    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
                              50 
-   4652 DD 7E 01      [19]   51    ld a, e_y(ix)                        ;; Repito para Y
-   4655 DD 86 05      [19]   52        add e_vy(ix)
-   4658 DD 77 01      [19]   53        ld e_y(ix), a
+   5442 3A 2B 54      [13]   51    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
+   5445 57            [ 4]   52    ld d, a
+   5446 1E 00         [ 7]   53    ld e, #0
                              54 
-   465B                      55        dro:
-   465B 87            [ 4]   56        add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
-   465C 47            [ 4]   57    ld     b,   a                        ;; y  [0-199]
-                             58 
-   465D CD BD 48      [17]   59    call cpct_getScreenPtr_asm
-                             60    ;; SIN SPRITE
-   4660 EB            [ 4]   61    ex    de,   hl          ;; Apunta a la posicion x,y
-   4661 DD 7E 06      [19]   62    ld     a,   e_col(ix)    ;; Código de color
-   4664 DD 4E 02      [19]   63    ld     c,   e_w(ix)      ;; Ancho
-   4667 DD 46 03      [19]   64    ld     b,   e_h(ix)      ;; Alto
-   466A CD E4 47      [17]   65    call cpct_drawSolidBox_asm
-                             66 
+   5448 DD 7E 04      [19]   55    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
+   544B 4F            [ 4]   56    ld     c,   a                        ;; x  [0-79]
+                             57 
+   544C DD 7E 05      [19]   58    ld a, e_y(ix)                        ;; Repito para Y
+                             59    ;add a                                ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
+   544F 47            [ 4]   60    ld     b,   a                        ;; y  [0-199]
+                             61 
+   5450 CD DF 56      [17]   62    call cpct_getScreenPtr_asm
+                             63    ;; SIN SPRITE
+   5453 EB            [ 4]   64    ex    de,   hl          ;; Apunta a la posicion x,y
+   5454 DD 7E 0A      [19]   65    ld     a,   e_col(ix)    ;; Código de color
+   5457 DD 4E 06      [19]   66    ld     c,   e_w(ix)      ;; Ancho
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
 
-                             67    ;; CON SPRITE
-                             68    ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
-                             69    ;; (2B DE) memory	Destination video memory pointer
-                             70    ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
-                             71    ;; (1B B ) height	Sprite Height in bytes (>0)
-                             72    ;; cpct_drawSprite_asm
-   466D C9            [10]   73 ret
-                             74 
-                             75 ;==================================
-                             76 ; Clears the sprite (squeare now)
-                             77 ;==================================
-   466E                      78 dw_clear::
-   466E DD 7E 06      [19]   79     ld  a, e_col(ix)
-   4671 08            [ 4]   80     ex af, af'            ;'
-                             81 
-   4672 DD 36 06 00   [19]   82     ld  e_col(ix), #0
-   4676 3E FF         [ 7]   83     ld a, #0xFF
-   4678 CD 38 46      [17]   84     call dw_draw
-   467B 08            [ 4]   85     ex af, af'            ;'
-   467C DD 77 06      [19]   86     ld e_col(ix), a
-   467F C9            [10]   87  ret
-                             88 
-                             89 ;;======================================================================
-                             90 ;;======================================================================
-                             91 ;; FUNCIONES PRIVADAS
-                             92 ;;======================================================================
-                             93 ;;======================================================================
-                             94 
-                             95 
-                             96 
-                             97 
+   545A DD 46 07      [19]   67    ld     b,   e_h(ix)      ;; Alto
+   545D CD 06 56      [17]   68    call cpct_drawSolidBox_asm
+                             69 
+                             70    ;; CON SPRITE
+                             71    ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
+                             72    ;; (2B DE) memory	Destination video memory pointer
+                             73    ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
+                             74    ;; (1B B ) height	Sprite Height in bytes (>0)
+                             75    ;; cpct_drawSprite_asm
+   5460 C9            [10]   76 ret
+                             77 
+                             78 ;==================================
+                             79 ; Clears the sprite (squeare now)
+                             80 ;==================================
+   5461                      81 dw_clear::
+   5461 DD 46 04      [19]   82     ld b, e_x(ix)
+   5464 DD 5E 05      [19]   83     ld e, e_y(ix)
+   5467 D9            [ 4]   84     exx
+                             85 
+   5468 DD 7E 00      [19]   86     ld a, ppe_x(ix)
+   546B DD 77 04      [19]   87     ld e_x(ix), a
+   546E DD 7E 01      [19]   88     ld a, ppe_y(ix)
+   5471 DD 77 05      [19]   89     ld e_y(ix), a
+                             90 
+   5474 DD 7E 0A      [19]   91     ld  a, e_col(ix)
+   5477 08            [ 4]   92     ex af, af'            ;'
+                             93 
+   5478 DD 36 0A 00   [19]   94     ld  e_col(ix), #0
+   547C CD 42 54      [17]   95     call dw_draw
+   547F 08            [ 4]   96     ex af, af'            ;'
+   5480 DD 77 0A      [19]   97     ld e_col(ix), a
                              98 
-                             99 
-                            100 
-                            101 
+   5483 D9            [ 4]   99     exx
+   5484 DD 70 04      [19]  100     ld e_x(ix), b
+   5487 DD 73 05      [19]  101     ld e_y(ix), e
                             102 
-                            103 
-                            104 
+   548A DD 7E 02      [19]  103     ld a, pe_x(ix)
+   548D DD 77 00      [19]  104     ld ppe_x(ix), a
+   5490 DD 7E 03      [19]  105     ld a, pe_y(ix)
+   5493 DD 77 01      [19]  106     ld ppe_y(ix), a
+   5496 C9            [10]  107  ret
+                            108 
+                            109 ;;======================================================================
+                            110 ;;======================================================================
+                            111 ;; FUNCIONES PRIVADAS
+                            112 ;;======================================================================
+                            113 ;;======================================================================
+                            114 
+                            115 
+                            116 
+                            117 
+                            118 
+                            119 
+                            120 
+                            121 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
+Hexadecimal [16-Bits]
+
+
+
+                            122 
+                            123 
+                            124 

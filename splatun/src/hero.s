@@ -26,6 +26,17 @@ DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 ;;======================================================================
 ;;======================================================================
 
+
+hero_init::
+    ld ix, #hero
+    ld a, e_x(ix)
+    ld pe_x(ix), a
+    ld ppe_x(ix), a
+    ld a, e_y(ix)
+    ld pe_y(ix), a
+    ld ppe_y(ix), a
+ret
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DIBUJADO DE LA ENTIDAD HERO
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -43,51 +54,59 @@ hero_update::
     ld e_vx(ix), #0
     ld e_vy(ix), #0
 
+    ld a, e_x(ix)
+    ld pe_x(ix), a
+    ld a, e_y(ix)
+    ld pe_y(ix), a
 
     call cpct_scanKeyboard_asm
+
     ld hl, #Key_A                   ;; Comprueba tecla A
     call cpct_isKeyPressed_asm
     jr z, a_no_pulsada
-        ld b, #-1
-        ;call move_camera
-        ld e_vx(ix), b
+        ;ld b, #-1
+        ;ld e_vx(ix), b
+        ld de, #-1
+        call inc_map
         jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
 
     a_no_pulsada:
-        call cpct_scanKeyboard_asm
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
-            ld b, #1
-            ;call move_camera
-            ld e_vx(ix), b
+            ;ld b, #1
+            ;ld e_vx(ix), b
+            ld de, #1
+            call inc_map
 
     d_no_pulsada:
-        call cpct_scanKeyboard_asm
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
         jr z, w_no_pulsada
-            ld b, #-2
-            ;call move_camera
-            ld e_vy(ix), b
+            ;ld b, #-2
+            ;ld e_vy(ix), b
+            ld de, #-29
+            call inc_map
             jr s_no_pulsada
-            ld a, #0
-            call inc_map_y
 
     w_no_pulsada:
-        call cpct_scanKeyboard_asm
         ld hl, #Key_S
         call cpct_isKeyPressed_asm
         jr z, s_no_pulsada
-            ld b, #2
-            ;call move_camera
-            ld e_vy(ix), b
-            ld a, #1
-            call inc_map_y
+            ;ld b, #2
+            ;ld e_vy(ix), b
+            ld de, #29
+            call inc_map
 
     s_no_pulsada:
 
+    ld a, e_x(ix)                    ;; Consigue la posicion del jugador
+    add e_vx(ix)                     ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
+    ld e_x(ix), a                    ;; Lo guardo en su registro
 
+    ld a, e_y(ix)                    ;; Repito para Y
+    add e_vy(ix)
+    ld e_y(ix), a
 
 ret
 

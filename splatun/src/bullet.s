@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 5
+vector_size = 1
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 vector_index:  .dw #0x0000
@@ -125,38 +125,7 @@ bullet_inputs::
       add   ix,   de                ;; IX + 4
       jr    loop
    end_loop:
-;
-;   ld    ix,   #vector_keys         ;; IX apunta al vector de codigos de teclado
-;
-;
-;   ld de, #vector_keys
-;   ex de, hl
-;   ld hl, (de)
-;   loop:
-;      call cpct_isKeyPressed_asm    ;; CPC
-;      ex de, hl
-;      inc hl
-;      inc hl
-;      ld (k_custom), hl
-;         k_custom = . + 1
-;         call nz, (0x0000)          ;; CUSTOM
-;         jr z, keep_looping         ;; Si no se ha pulsado ninguna tecla, pasa
-;            ld a, #1
-;            ld (flag_key), a        ;; flag_key = ON
-;      keep_looping:
-;      inc hl
-;      inc hl
-;      ex de, hl
-;      ld hl, (de)
-;
-;      ld     a,     l            ;; A = 0(ix)
-;      cp  #0xFF                     ;; El final del vector lo marca un FF
-;      jr     z,   end_loop          ;; Sale del bucle en caso que A == FF
-;
-;  jr    loop
-;
-;
-;   end_loop:
+
 
    ld a, (flag_key)                 ;; A = flag_key
    cp #0                            ;; Si A == 1: SE HA PULSADO ALGUNA DE LAS 4 TECLAS DE DISPARO

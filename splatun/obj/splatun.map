@@ -18,78 +18,225 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     0000090A  l__CODE                         
+     0000172C  l__CODE                         
      00004000  s__CODE                         
-     0000490A  s__DATA                         
-     0000490A  s__GSFINAL                      
-     0000490A  s__GSINIT                       
-     0000490A  s__HOME                         
-     0000490A  s__INITIALIZED                  
-     0000490A  s__INITIALIZER                  
+     0000572C  s__DATA                         
+     0000572C  s__GSFINAL                      
+     0000572C  s__GSINIT                       
+     0000572C  s__HOME                         
+     0000572C  s__INITIALIZED                  
+     0000572C  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    0000090A =        2314. bytes (REL,CON)
+_CODE                               00004000    0000172C =        5932. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00004000  _nivel1                            Mapa
-     00004384  _g_0                               Mapabyn
-     000043A4  _g_1                               Mapabyn
-     000043C4  _g_2                               Mapabyn
-     000043E4  _g_3                               Mapabyn
-     00004404  _g_4                               Mapabyn
-     00004424  _g_5                               Mapabyn
-     00004444  _g_palette                         g_palette
-     0000445D  hero_draw                          cpct_keyboard
-     00004464  hero_clear                         cpct_keyboard
-     0000446B  hero_update                        cpct_keyboard
-     000044C6  hero_get_position                  cpct_keyboard
-     00004523  bullet_draw                        cpct_keyboard
-     00004529  bullet_update                      cpct_keyboard
-     0000452F  bullet_clear                       cpct_keyboard
-     00004535  bullet_inputs                      cpct_keyboard
-     00004638  dw_draw                            cpct_keyboard
-     0000466E  dw_clear                           cpct_keyboard
-     00004680  _main                              cpct_keyboard
-     000046BF  obs_draw                           
-     000046C6  obs_clear                          
-     000046CD  inc_map_y                          
-     000046E4  drawMap                            
-     000046FC  mv_move                            cpct_keyboard
-     000046FD  cpct_setPalette_asm                cpct_video
-     00004710  _cpct_isKeyPressed                 cpct_keyboard
-     00004710  cpct_isKeyPressed_asm              cpct_keyboard
-     0000471C  cpct_etm_drawTilemap4x8_ag_asm     cpct_easytilemaps
-     0000471E  cpct_etm_dtm4x8_ag_asm_widthHeig   cpct_easytilemaps
-     00004734  cpct_etm_dtm4x8_ag_asm_tilesetPt   cpct_easytilemaps
-     0000479F  cpct_etm_dtm4x8_ag_asm_restoreI    cpct_easytilemaps
-     000047A5  cpct_etm_dtm4x8_ag_asm_increment   cpct_easytilemaps
-     000047AA  cpct_etm_dtm4x8_ag_asm_restoreWi   cpct_easytilemaps
-     000047AD  cpct_etm_dtm4x8_ag_asm_updateWid   cpct_easytilemaps
-     000047B5  _cpct_keyboardStatusBuffer         cpct_keyboard
-     000047BF  cpct_setVideoMode_asm              cpct_video
-     000047CC  _cpct_waitVSYNC                    cpct_video
-     000047CC  cpct_waitVSYNC_asm                 cpct_video
-     000047D4  _cpct_disableFirmware              cpct_firmware
-     000047D4  _cpct_removeInterruptHandler       cpct_firmware
-     000047D4  cpct_disableFirmware_asm           cpct_firmware
-     000047D4  cpct_removeInterruptHandler_asm    cpct_firmware
-     000047E4  cpct_drawSolidBox_asm              cpct_sprites
-     00004890  _cpct_mode_rom_status              cpct_firmware
-     00004891  cpct_etm_setDrawTilemap4x8_ag_as   cpct_easytilemaps
-     000048BD  cpct_getScreenPtr_asm              cpct_video
-     000048D9  _cpct_scanKeyboard                 cpct_keyboard
-     000048D9  cpct_scanKeyboard_asm              cpct_keyboard
+     0000432C  _g_000                             tile
+     0000434C  _g_001                             tile
+     0000436C  _g_002                             tile
+     0000438C  _g_003                             tile
+     000043AC  _g_004                             tile
+     000043CC  _g_005                             tile
+     000043EC  _g_006                             tile
+     0000440C  _g_007                             tile
+     0000442C  _g_008                             tile
+     0000444C  _g_009                             tile
+     0000446C  _g_010                             tile
+     0000448C  _g_011                             tile
+     000044AC  _g_012                             tile
+     000044CC  _g_013                             tile
+     000044EC  _g_014                             tile
+     0000450C  _g_015                             tile
+     0000452C  _g_016                             tile
+     0000454C  _g_017                             tile
+     0000456C  _g_018                             tile
+     0000458C  _g_019                             tile
+     000045AC  _g_020                             tile
+     000045CC  _g_021                             tile
+     000045EC  _g_022                             tile
+     0000460C  _g_023                             tile
+     0000462C  _g_024                             tile
+     0000464C  _g_025                             tile
+     0000466C  _g_026                             tile
+     0000468C  _g_027                             tile
+     000046AC  _g_028                             tile
+     000046CC  _g_029                             tile
+     000046EC  _g_030                             tile
+     0000470C  _g_031                             tile
+     0000472C  _g_032                             tile
+     0000474C  _g_033                             tile
+     0000476C  _g_034                             tile
+     0000478C  _g_035                             tile
+     000047AC  _g_036                             tile
+     000047CC  _g_037                             tile
+     000047EC  _g_038                             tile
+     0000480C  _g_039                             tile
+     0000482C  _g_040                             tile
+     0000484C  _g_041                             tile
+     0000486C  _g_042                             tile
+     0000488C  _g_043                             tile
+     000048AC  _g_044                             tile
+     000048CC  _g_045                             tile
+     000048EC  _g_046                             tile
+     0000490C  _g_047                             tile
+     0000492C  _g_048                             tile
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000172C =        5932. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000494C  _g_049                             tile
+     0000496C  _g_050                             tile
+     0000498C  _g_051                             tile
+     000049AC  _g_052                             tile
+     000049CC  _g_053                             tile
+     000049EC  _g_054                             tile
+     00004A0C  _g_055                             tile
+     00004A2C  _g_056                             tile
+     00004A4C  _g_057                             tile
+     00004A6C  _g_058                             tile
+     00004A8C  _g_059                             tile
+     00004AAC  _g_060                             tile
+     00004ACC  _g_061                             tile
+     00004AEC  _g_062                             tile
+     00004B0C  _g_063                             tile
+     00004B2C  _g_064                             tile
+     00004B4C  _g_065                             tile
+     00004B6C  _g_066                             tile
+     00004B8C  _g_067                             tile
+     00004BAC  _g_068                             tile
+     00004BCC  _g_069                             tile
+     00004BEC  _g_070                             tile
+     00004C0C  _g_071                             tile
+     00004C2C  _g_072                             tile
+     00004C4C  _g_073                             tile
+     00004C6C  _g_074                             tile
+     00004C8C  _g_075                             tile
+     00004CAC  _g_076                             tile
+     00004CCC  _g_077                             tile
+     00004CEC  _g_078                             tile
+     00004D0C  _g_079                             tile
+     00004D2C  _g_080                             tile
+     00004D4C  _g_081                             tile
+     00004D6C  _g_082                             tile
+     00004D8C  _g_083                             tile
+     00004DAC  _g_084                             tile
+     00004DCC  _g_085                             tile
+     00004DEC  _g_086                             tile
+     00004E0C  _g_087                             tile
+     00004E2C  _g_088                             tile
+     00004E4C  _g_089                             tile
+     00004E6C  _g_090                             tile
+     00004E8C  _g_091                             tile
+     00004EAC  _g_092                             tile
+     00004ECC  _g_093                             tile
+     00004EEC  _g_094                             tile
+     00004F0C  _g_095                             tile
+     00004F2C  _g_096                             tile
+     00004F4C  _g_097                             tile
+     00004F6C  _g_098                             tile
+     00004F8C  _g_099                             tile
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000172C =        5932. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004FAC  _g_100                             tile
+     00004FCC  _g_101                             tile
+     00004FEC  _g_102                             tile
+     0000500C  _g_103                             tile
+     0000502C  _g_104                             tile
+     0000504C  _g_105                             tile
+     0000506C  _g_106                             tile
+     0000508C  _g_107                             tile
+     000050AC  _g_108                             tile
+     000050CC  _g_109                             tile
+     000050EC  _g_110                             tile
+     0000510C  _g_111                             tile
+     0000512C  _g_112                             tile
+     0000514C  _g_113                             tile
+     0000516C  _g_114                             tile
+     0000518C  _g_115                             tile
+     000051AC  _g_116                             tile
+     000051CC  _g_117                             tile
+     000051EC  _g_118                             tile
+     0000520C  _g_119                             tile
+     0000522C  _g_palette                         g_palette
+     00005249  hero_init                          cpct_keyboard
+     00005260  hero_draw                          cpct_keyboard
+     00005267  hero_clear                         cpct_keyboard
+     0000526E  hero_update                        cpct_keyboard
+     000052D8  hero_get_position                  cpct_keyboard
+     00005315  bullet_draw                        cpct_keyboard
+     0000531B  bullet_update                      cpct_keyboard
+     00005321  bullet_clear                       cpct_keyboard
+     00005327  bullet_inputs                      cpct_keyboard
+     0000542B  back_buffer                        cpct_keyboard
+     0000542C  swapBuffers                        cpct_keyboard
+     00005442  dw_draw                            cpct_keyboard
+     00005461  dw_clear                           cpct_keyboard
+     00005497  _main                              cpct_keyboard
+     000054F1  obs_draw                           
+     000054F8  obs_clear                          
+     000054FF  inc_map                            
+     00005507  drawMap                            
+     00005515  mv_move                            cpct_keyboard
+     00005516  cpct_setPalette_asm                cpct_video
+     00005529  _cpct_isKeyPressed                 cpct_keyboard
+     00005529  cpct_isKeyPressed_asm              cpct_keyboard
+     00005535  cpct_etm_drawTilemap4x8_ag_asm     cpct_easytilemaps
+     00005537  cpct_etm_dtm4x8_ag_asm_widthHeig   cpct_easytilemaps
+     0000554D  cpct_etm_dtm4x8_ag_asm_tilesetPt   cpct_easytilemaps
+     000055B8  cpct_etm_dtm4x8_ag_asm_restoreI    cpct_easytilemaps
+     000055BE  cpct_etm_dtm4x8_ag_asm_increment   cpct_easytilemaps
+     000055C3  cpct_etm_dtm4x8_ag_asm_restoreWi   cpct_easytilemaps
+     000055C6  cpct_etm_dtm4x8_ag_asm_updateWid   cpct_easytilemaps
+     000055CE  _cpct_keyboardStatusBuffer         cpct_keyboard
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000172C =        5932. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000055D8  _cpct_setVideoMemoryPage           cpct_video
+     000055D8  cpct_setVideoMemoryPage_asm        cpct_video
+     000055E1  cpct_setVideoMode_asm              cpct_video
+     000055EE  _cpct_waitVSYNC                    cpct_video
+     000055EE  cpct_waitVSYNC_asm                 cpct_video
+     000055F6  _cpct_disableFirmware              cpct_firmware
+     000055F6  _cpct_removeInterruptHandler       cpct_firmware
+     000055F6  cpct_disableFirmware_asm           cpct_firmware
+     000055F6  cpct_removeInterruptHandler_asm    cpct_firmware
+     00005606  cpct_drawSolidBox_asm              cpct_sprites
+     000056B2  _cpct_mode_rom_status              cpct_firmware
+     000056B3  cpct_etm_setDrawTilemap4x8_ag_as   cpct_easytilemaps
+     000056DF  cpct_getScreenPtr_asm              cpct_video
+     000056FB  _cpct_scanKeyboard                 cpct_keyboard
+     000056FB  cpct_scanKeyboard_asm              cpct_keyboard
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
 
 Files Linked                              [ module(s) ]
 
 obj/Mapas/Mapa.rel                        [ Mapa ]
-obj/Sprites/Mapabyn.rel                   [ Mapabyn ]
+obj/Sprites/tile.rel                      [ tile ]
 obj/Sprites/g_palette.rel                 [ g_palette ]
 obj/struct.h.rel                          [  ]
 obj/hero.rel                              [ cpct_keyboard ]
@@ -111,6 +258,8 @@ Libraries Linked                          [ object file ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
                                           [ keyboard.rel ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMemoryPage.rel ]
+/home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setVideoMode_asmbindings.re ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_waitVSYNC.rel ]
@@ -127,7 +276,7 @@ Libraries Linked                          [ object file ]
 /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_scanKeyboard.rel ]
 
-ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
 
 User Base Address Definitions
 

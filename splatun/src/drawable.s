@@ -10,6 +10,9 @@
 .include "cpctelera.h.s"
 .include "struct.h.s"
 
+front_buffer:   .db 0xC0
+back_buffer::   .db 0x80
+
 ;;======================================================================
 ;;======================================================================
 ;; DATOS PRIVADOS
@@ -23,6 +26,19 @@
 ;;======================================================================
 ;;======================================================================
 
+swapBuffers::
+    ld a, (back_buffer)
+    ld b, a
+    ld a, (front_buffer)
+    ld (back_buffer), a
+    ld a, b
+    ld (front_buffer), a
+
+    srl b
+    srl b
+    ld l, b
+    jp cpct_setVideoMemoryPage_asm
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DIBUJADO DE UNA ENTIDAD
 ;; _______________________
@@ -32,28 +48,15 @@
 dw_draw::
    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
 
-   ld    de,   #0xC000                  ;; Apunta al inicio de la memoria de video
+   ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
+   ld d, a
+   ld e, #0
 
-   cp #0xFF                             ;; Compruebo si he llamado a draw desde el clear para no sumar la velocidad
-   jr nz, normal_dro                    ;; Si no he llamado desde el clear, salto
-    ;;Llamada desde el clear
-       ld a, e_x(ix)                    ;; Cargo la posicion X, que es del frame anterior
-       ld     c,   a                    ;; x  [0-79]
-       ld a, e_y(ix)                    ;; Cargo la posicion Y, tambien del frame anterior
-       jr dro                           ;; Salto a dro, para ahorrar un par de bytes, ya que a partir de ahi, el codigo es igual
-
-   normal_dro:                          ;; Dro normal
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
-       add e_vx(ix)                     ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
-       ld e_x(ix), a                    ;; Lo guardo en su registro
    ld     c,   a                        ;; x  [0-79]
 
    ld a, e_y(ix)                        ;; Repito para Y
-       add e_vy(ix)
-       ld e_y(ix), a
-
-       dro:
-       add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
+   ;add a                                ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
    ld     b,   a                        ;; y  [0-199]
 
    call cpct_getScreenPtr_asm
@@ -76,14 +79,31 @@ ret
 ; Clears the sprite (squeare now)
 ;==================================
 dw_clear::
+    ld b, e_x(ix)
+    ld e, e_y(ix)
+    exx
+
+    ld a, ppe_x(ix)
+    ld e_x(ix), a
+    ld a, ppe_y(ix)
+    ld e_y(ix), a
+
     ld  a, e_col(ix)
     ex af, af'            ;'
 
     ld  e_col(ix), #0
-    ld a, #0xFF
     call dw_draw
     ex af, af'            ;'
     ld e_col(ix), a
+
+    exx
+    ld e_x(ix), b
+    ld e_y(ix), e
+
+    ld a, pe_x(ix)
+    ld ppe_x(ix), a
+    ld a, pe_y(ix)
+    ld ppe_y(ix), a
  ret
 
 ;;======================================================================

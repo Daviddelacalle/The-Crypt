@@ -19,35 +19,22 @@ obs_clear::
 
 ;========================================================================;
 ;   Inreases ptr to map
+;   Input: DE = Incremento
 ;========================================================================;
-inc_map_y::
-
+inc_map::
     ld hl, (map_ptr)
-
-    cp #1
-    jr nz, up
-        ld de, #60
-        jr continue
-    up:
-    ld de, #-60
-
-    continue:
-        add hl, de
+    add hl, de
     ld (map_ptr), hl
-    call drawMap
 ret
 
 ;========================================================================;
 ;   Draws the complete map.in.include "drawable.h.s"clude "drawable.h.s"
 ;========================================================================;
 drawMap::
-    ld hl, #_g_0
-    ld c, #20       ;40
-    ld b, #25      ;100
-    ld de, #30
-    call cpct_etm_setDrawTilemap4x8_ag_asm
 
-    ld hl, #0xC000
+    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
+    ld h, a
+    ld l, #0
     ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret

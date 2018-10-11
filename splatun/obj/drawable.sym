@@ -54,28 +54,30 @@ Symbol Table
     Key_U   =  0405     |     Key_V   =  8006     |     Key_W   =  0807 
     Key_X   =  8007     |     Key_Y   =  0805     |     Key_Z   =  8008 
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
-    b_alive =  0007     |     b_col   =  0006     |     b_h     =  0003 
-    b_up_h  =  0009     |     b_up_l  =  0008     |     b_vx    =  0004 
-    b_vy    =  0005     |     b_w     =  0002     |     b_x     =  0000 
-    b_y     =  0001     |     cpct_dra   **** GX  |     cpct_get   **** GX
+    b_alive =  000B     |     b_col   =  000A     |     b_h     =  0007 
+    b_up_h  =  000D     |     b_up_l  =  000C     |     b_vx    =  0008 
+    b_vy    =  0009     |     b_w     =  0006     |     b_x     =  0004 
+    b_y     =  0005     |   0 back_buf   0001 GR  |     cpct_dra   **** GX
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Symbol Table
 
-    cpct_pag=  0000     |     cpct_pag=  0010     |     cpct_pag=  0020 
-    cpct_pag=  0030     |   0 dro        0023 R   |   0 dw_clear   0036 GR
-  0 dw_draw    0000 GR  |     e_col   =  0006     |     e_h     =  0003 
-    e_up_h  =  0008     |     e_up_l  =  0007     |     e_vx    =  0004 
-    e_vy    =  0005     |     e_w     =  0002     |     e_x     =  0000 
-    e_y     =  0001     |   0 normal_d   0010 R   |     opc_DI  =  00F3 
-    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
+    cpct_get   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
+    cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_set   **** GX
+  0 dw_clear   0037 GR  |   0 dw_draw    0018 GR  |     e_col   =  000A 
+    e_h     =  0007     |     e_up_h  =  000C     |     e_up_l  =  000B 
+    e_vx    =  0008     |     e_vy    =  0009     |     e_w     =  0006 
+    e_x     =  0004     |     e_y     =  0005     |   0 front_bu   0000 R
+    opc_DI  =  00F3     |     opc_EI  =  00FB     |     opc_JR  =  0018 
+    opc_LD_D=  0016     |     pe_x    =  0002     |     pe_y    =  0003 
+    ppe_x   =  0000     |     ppe_y   =  0001     |   0 swapBuff   0002 GR
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   48   flags    0
+   0 _CODE      size   6D   flags    0
    1 _DATA      size    0   flags    0
 

@@ -8,7 +8,7 @@
 -l /home/dan-sensei/Escritorio/Videojuegos_I/cpctelera/cpctelera/cpctelera.lib
 -l z80
 obj/Mapas/Mapa.rel
-obj/Sprites/Mapabyn.rel
+obj/Sprites/tile.rel
 obj/Sprites/g_palette.rel
 obj/struct.h.rel
 obj/hero.rel
