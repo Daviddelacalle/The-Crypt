@@ -35,7 +35,7 @@
     ldir
 
     call hero_init
-    
+
     ld hl, #_g_000
     ld c, #20
     ld b, #25
@@ -78,22 +78,7 @@ _main::
         call bullet_update
 
         call cpct_waitVSYNC_asm
-<<<<<<< HEAD
+
         call swapBuffers
-
-=======
-
-        ;; CLIAR
-        call enemy_clear_ALL
-        call bullet_clear
-        call obs_clear
-        call hero_clear
-
-        ;; DRO
-        call enemy_draw_ALL
-        call bullet_draw
-        call obs_draw
-        call hero_draw
->>>>>>> 2acca47970c5e61d6eef8e18d4dc69a41bf01afa
 
 jr loop

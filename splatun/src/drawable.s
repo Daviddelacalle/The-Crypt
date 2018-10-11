@@ -56,15 +56,7 @@ dw_draw::
    ld     c,   a                        ;; x  [0-79]
 
    ld a, e_y(ix)                        ;; Repito para Y
-<<<<<<< HEAD
-   ;add a                                ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
-=======
-       add e_vy(ix)
-       ld e_y(ix), a
-
-       dro:
-       ;add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
->>>>>>> 2acca47970c5e61d6eef8e18d4dc69a41bf01afa
+   ;add a
    ld     b,   a                        ;; y  [0-199]
 
    call cpct_getScreenPtr_asm
@@ -87,11 +79,11 @@ ret
 ; Clears the sprite (squeare now)
 ;==================================
 dw_clear::
-    ld b, e_x(ix)
+    ld b, e_x(ix)       ;; Guardo la posicion actual en BE'
     ld e, e_y(ix)
     exx
 
-    ld a, ppe_x(ix)
+    ld a, ppe_x(ix)     ;; Cargo en la posicion de hace 2 frames, para borrarla
     ld e_x(ix), a
     ld a, ppe_y(ix)
     ld e_y(ix), a
@@ -104,11 +96,11 @@ dw_clear::
     ex af, af'            ;'
     ld e_col(ix), a
 
-    exx
+    exx             ;; Restaura la posicion original
     ld e_x(ix), b
     ld e_y(ix), e
 
-    ld a, pe_x(ix)
+    ld a, pe_x(ix)  ;; Copio la posicion del frame anterior, a la posicion de hace 2 frames
     ld ppe_x(ix), a
     ld a, pe_y(ix)
     ld ppe_y(ix), a
