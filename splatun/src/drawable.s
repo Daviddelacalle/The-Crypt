@@ -56,7 +56,15 @@ dw_draw::
    ld     c,   a                        ;; x  [0-79]
 
    ld a, e_y(ix)                        ;; Repito para Y
+<<<<<<< HEAD
    ;add a                                ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
+=======
+       add e_vy(ix)
+       ld e_y(ix), a
+
+       dro:
+       ;add a                            ;; Antes de guadarlo en el registro b para dibujar lo duplico, para tener más rango de scroll [-255, 255]
+>>>>>>> 2acca47970c5e61d6eef8e18d4dc69a41bf01afa
    ld     b,   a                        ;; y  [0-199]
 
    call cpct_getScreenPtr_asm

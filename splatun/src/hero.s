@@ -71,6 +71,10 @@ hero_update::
         jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
 
     a_no_pulsada:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2acca47970c5e61d6eef8e18d4dc69a41bf01afa
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
@@ -80,6 +84,10 @@ hero_update::
             call inc_map
 
     d_no_pulsada:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2acca47970c5e61d6eef8e18d4dc69a41bf01afa
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
         jr z, w_no_pulsada
@@ -90,6 +98,10 @@ hero_update::
             jr s_no_pulsada
 
     w_no_pulsada:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2acca47970c5e61d6eef8e18d4dc69a41bf01afa
         ld hl, #Key_S
         call cpct_isKeyPressed_asm
         jr z, s_no_pulsada
