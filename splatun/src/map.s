@@ -3,6 +3,11 @@
 
 .include "struct.h.s"
 
+CameraMinX::  .db #0
+CameraMinY::  .db #0
+OffsetX::     .db #0
+OffsetY::     .db #0
+
 map_ptr:    .dw #_nivel1
                 ;   X    Y     W     H       VX     VY    COL
 DefineEntity _obs, #10, #40, #0x04, #0x08, #0x00, #0x00, #0xFF, #0x0000
@@ -31,10 +36,9 @@ ret
 ;   Draws the complete map.in.include "drawable.h.s"clude "drawable.h.s"
 ;========================================================================;
 drawMap::
-
     ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
     ld h, a
-    ld l, #4
+    ld l, #0
     ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret

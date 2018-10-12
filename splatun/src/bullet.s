@@ -144,7 +144,7 @@ bullet_inputs::
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyUp_ON:
-   ld a, #-1
+   ld a, #-8
    ld (flag_vy), a
    ret
 
@@ -154,7 +154,7 @@ keyUp_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyDown_ON:
-   ld a, #1
+   ld a, #8
    ld (flag_vy), a
    ret
 
@@ -164,7 +164,7 @@ keyDown_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyRight_ON:
-   ld a, #1
+   ld a, #2
    ld (flag_vx), a
    ret
 
@@ -174,7 +174,7 @@ keyRight_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyLeft_ON:
-   ld a, #-1
+   ld a, #-2
    ld (flag_vx), a
    ret
 

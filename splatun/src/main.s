@@ -36,7 +36,7 @@
 
 
     ld hl, #_g_0
-    ld c, #18        ;; Ancho
+    ld c, #20        ;; Ancho
     ld b, #20        ;; Alto
     ld de, #30
     call cpct_etm_setDrawTilemap4x8_ag_asm

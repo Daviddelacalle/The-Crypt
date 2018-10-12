@@ -16,9 +16,11 @@
 ;;======================================================================
 ;;======================================================================
 
+
+
 hero_x = .
 hero_y = . + 1
-DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+DefineEntity hero, #40, #70, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 
 ;;======================================================================
 ;;======================================================================
@@ -35,7 +37,6 @@ hero_draw::
     ld    ix,   #hero    ;; ix apunta a los datos del heroe
     jp dw_draw
 
-
 hero_clear::
     ld ix, #hero
     jp dw_clear
@@ -47,42 +48,122 @@ hero_update::
 
     call cpct_scanKeyboard_asm
 
+    ld b, #-2
+    ld b, #-2
     ld hl, #Key_A                   ;; Comprueba tecla A
     call cpct_isKeyPressed_asm
     jr z, a_no_pulsada
-        ;ld b, #-1
-        ;ld e_vx(ix), b
-        ld de, #-1
-        call inc_map
-        jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
+        ld a, (OffsetX)
+        cp #0
+        jr nz, move_the_character_A
+
+        ld a, (CameraMinX)
+        cp #0
+        jr nz, move_the_map_A
+
+        move_the_character_A:
+            ld b, #-2
+            ld e_vx(ix), b
+            ld a, (OffsetX)
+            add b
+            ld (OffsetX), a
+        jr d_no_pulsada
+
+        move_the_map_A:
+            ld de, #-1
+            call inc_map
+            ld b, #-4
+            add b
+            ld (CameraMinX), a
+
+    jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
 
     a_no_pulsada:
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
-            ;ld b, #1
-            ;ld e_vx(ix), b
+
+        ld a, (OffsetX)
+        cp #0
+        jr nz, move_the_character_D
+
+        ld a, (CameraMinX)
+        cp #40
+        jr nz, move_the_map_D
+
+        move_the_character_D:
+            ld b, #2
+            ld e_vx(ix), b
+            ld a, (OffsetX)
+            add b
+            ld (OffsetX), a
+        jr d_no_pulsada
+
+        move_the_map_D:
             ld de, #1
             call inc_map
+            ld b, #4
+            add b
+            ld (CameraMinX), a
+
 
     d_no_pulsada:
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
         jr z, w_no_pulsada
-            ;ld b, #-2
-            ;ld e_vy(ix), b
-            ld de, #-30
-            call inc_map
+
+            ld a, (OffsetY)
+            cp #0
+            jr nz, move_the_character_W
+
+            ld a, (CameraMinY)
+            cp #0
+            jr nz, move_the_map_W
+
+            move_the_character_W:
+                ld b, #-4
+                ld e_vy(ix), b
+                ld a, (OffsetY)
+                add b
+                ld (OffsetY), a
             jr s_no_pulsada
+
+            move_the_map_W:
+                ld de, #-30
+                call inc_map
+                ld b, #-8
+                add b
+                ld (CameraMinY), a
+
+        jr s_no_pulsada
 
     w_no_pulsada:
         ld hl, #Key_S
         call cpct_isKeyPressed_asm
         jr z, s_no_pulsada
-            ;ld b, #2
-            ;ld e_vy(ix), b
-            ld de, #30
-            call inc_map
+
+            ld a, (OffsetY)
+            cp #0
+            jr nz, move_the_character_S
+
+            ld a, (CameraMinY)
+            cp #80
+            jr nz, move_the_map_S
+
+            move_the_character_S:
+                ld b, #4
+                ld e_vy(ix), b
+                ld a, (OffsetY)
+                add b
+                ld (OffsetY), a
+            jr s_no_pulsada
+
+            move_the_map_S:
+                ld de, #30
+                call inc_map
+                ld b, #8
+                add b
+                ld (CameraMinY), a
 
     s_no_pulsada:
 
