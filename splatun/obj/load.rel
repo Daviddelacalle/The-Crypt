@@ -1,0 +1,24 @@
+XL2
+H 2 areas 9 global symbols
+M cpct_keyboard
+S cpct_isKeyPressed_asm Ref0000
+S map_start Ref0000
+S cpct_drawSprite_asm Ref0000
+S .__.ABS. Def0000
+S _m_PRESSA2_0 Ref0000
+S _m_PRESSA2_1 Ref0000
+S cpct_scanKeyboard_asm Ref0000
+A _CODE size 26 flags 0 addr 0
+S load_control Def0000
+S drawMenu Def000B
+A _DATA size 0 flags 0 addr 0
+T 00 00
+R 00 00 00 00
+T 00 00 CD 00 00 21 08 20 CD 00 00 20 00 00
+R 00 00 00 00 02 03 06 00 02 09 00 00 0F 0C 01 00
+T 0B 00
+R 00 00 00 00
+T 0B 00 21 00 00 11 80 C2 0E 28 06 42 CD 00 00 21
+R 00 00 00 00 02 03 04 00 02 0D 02 00
+T 19 00 00 00 11 A8 C2 0E 28 06 42 CD 00 00 C9
+R 00 00 00 00 02 02 05 00 02 0C 02 00

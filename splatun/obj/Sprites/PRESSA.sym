@@ -1,0 +1,570 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+  0 _m_000                                                         0000 GR
+  0 _m_001                                                         0020 GR
+  0 _m_002                                                         0040 GR
+  0 _m_003                                                         0060 GR
+  0 _m_004                                                         0080 GR
+  0 _m_005                                                         00A0 GR
+  0 _m_006                                                         00C0 GR
+  0 _m_007                                                         00E0 GR
+  0 _m_008                                                         0100 GR
+  0 _m_009                                                         0120 GR
+  0 _m_010                                                         0140 GR
+  0 _m_011                                                         0160 GR
+  0 _m_012                                                         0180 GR
+  0 _m_013                                                         01A0 GR
+  0 _m_014                                                         01C0 GR
+  0 _m_015                                                         01E0 GR
+  0 _m_016                                                         0200 GR
+  0 _m_017                                                         0220 GR
+  0 _m_018                                                         0240 GR
+  0 _m_019                                                         0260 GR
+  0 _m_020                                                         0280 GR
+  0 _m_021                                                         02A0 GR
+  0 _m_022                                                         02C0 GR
+  0 _m_023                                                         02E0 GR
+  0 _m_024                                                         0300 GR
+  0 _m_025                                                         0320 GR
+  0 _m_026                                                         0340 GR
+  0 _m_027                                                         0360 GR
+  0 _m_028                                                         0380 GR
+  0 _m_029                                                         03A0 GR
+  0 _m_030                                                         03C0 GR
+  0 _m_031                                                         03E0 GR
+  0 _m_032                                                         0400 GR
+  0 _m_033                                                         0420 GR
+  0 _m_034                                                         0440 GR
+  0 _m_035                                                         0460 GR
+  0 _m_036                                                         0480 GR
+  0 _m_037                                                         04A0 GR
+  0 _m_038                                                         04C0 GR
+  0 _m_039                                                         04E0 GR
+  0 _m_040                                                         0500 GR
+  0 _m_041                                                         0520 GR
+  0 _m_042                                                         0540 GR
+  0 _m_043                                                         0560 GR
+  0 _m_044                                                         0580 GR
+  0 _m_045                                                         05A0 GR
+  0 _m_046                                                         05C0 GR
+  0 _m_047                                                         05E0 GR
+  0 _m_048                                                         0600 GR
+  0 _m_049                                                         0620 GR
+  0 _m_050                                                         0640 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_051                                                         0660 GR
+  0 _m_052                                                         0680 GR
+  0 _m_053                                                         06A0 GR
+  0 _m_054                                                         06C0 GR
+  0 _m_055                                                         06E0 GR
+  0 _m_056                                                         0700 GR
+  0 _m_057                                                         0720 GR
+  0 _m_058                                                         0740 GR
+  0 _m_059                                                         0760 GR
+  0 _m_060                                                         0780 GR
+  0 _m_061                                                         07A0 GR
+  0 _m_062                                                         07C0 GR
+  0 _m_063                                                         07E0 GR
+  0 _m_064                                                         0800 GR
+  0 _m_065                                                         0820 GR
+  0 _m_066                                                         0840 GR
+  0 _m_067                                                         0860 GR
+  0 _m_068                                                         0880 GR
+  0 _m_069                                                         08A0 GR
+  0 _m_070                                                         08C0 GR
+  0 _m_071                                                         08E0 GR
+  0 _m_072                                                         0900 GR
+  0 _m_073                                                         0920 GR
+  0 _m_074                                                         0940 GR
+  0 _m_075                                                         0960 GR
+  0 _m_076                                                         0980 GR
+  0 _m_077                                                         09A0 GR
+  0 _m_078                                                         09C0 GR
+  0 _m_079                                                         09E0 GR
+  0 _m_080                                                         0A00 GR
+  0 _m_081                                                         0A20 GR
+  0 _m_082                                                         0A40 GR
+  0 _m_083                                                         0A60 GR
+  0 _m_084                                                         0A80 GR
+  0 _m_085                                                         0AA0 GR
+  0 _m_086                                                         0AC0 GR
+  0 _m_087                                                         0AE0 GR
+  0 _m_088                                                         0B00 GR
+  0 _m_089                                                         0B20 GR
+  0 _m_090                                                         0B40 GR
+  0 _m_091                                                         0B60 GR
+  0 _m_092                                                         0B80 GR
+  0 _m_093                                                         0BA0 GR
+  0 _m_094                                                         0BC0 GR
+  0 _m_095                                                         0BE0 GR
+  0 _m_096                                                         0C00 GR
+  0 _m_097                                                         0C20 GR
+  0 _m_098                                                         0C40 GR
+  0 _m_099                                                         0C60 GR
+  0 _m_100                                                         0C80 GR
+  0 _m_101                                                         0CA0 GR
+  0 _m_102                                                         0CC0 GR
+  0 _m_103                                                         0CE0 GR
+  0 _m_104                                                         0D00 GR
+  0 _m_105                                                         0D20 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_106                                                         0D40 GR
+  0 _m_107                                                         0D60 GR
+  0 _m_108                                                         0D80 GR
+  0 _m_109                                                         0DA0 GR
+  0 _m_110                                                         0DC0 GR
+  0 _m_111                                                         0DE0 GR
+  0 _m_112                                                         0E00 GR
+  0 _m_113                                                         0E20 GR
+  0 _m_114                                                         0E40 GR
+  0 _m_115                                                         0E60 GR
+  0 _m_116                                                         0E80 GR
+  0 _m_117                                                         0EA0 GR
+  0 _m_118                                                         0EC0 GR
+  0 _m_119                                                         0EE0 GR
+  0 _m_120                                                         0F00 GR
+  0 _m_121                                                         0F20 GR
+  0 _m_122                                                         0F40 GR
+  0 _m_123                                                         0F60 GR
+  0 _m_124                                                         0F80 GR
+  0 _m_125                                                         0FA0 GR
+  0 _m_126                                                         0FC0 GR
+  0 _m_127                                                         0FE0 GR
+  0 _m_128                                                         1000 GR
+  0 _m_129                                                         1020 GR
+  0 _m_130                                                         1040 GR
+  0 _m_131                                                         1060 GR
+  0 _m_132                                                         1080 GR
+  0 _m_133                                                         10A0 GR
+  0 _m_134                                                         10C0 GR
+  0 _m_135                                                         10E0 GR
+  0 _m_136                                                         1100 GR
+  0 _m_137                                                         1120 GR
+  0 _m_138                                                         1140 GR
+  0 _m_139                                                         1160 GR
+  0 _m_140                                                         1180 GR
+  0 _m_141                                                         11A0 GR
+  0 _m_142                                                         11C0 GR
+  0 _m_143                                                         11E0 GR
+  0 _m_144                                                         1200 GR
+  0 _m_145                                                         1220 GR
+  0 _m_146                                                         1240 GR
+  0 _m_147                                                         1260 GR
+  0 _m_148                                                         1280 GR
+  0 _m_149                                                         12A0 GR
+  0 _m_150                                                         12C0 GR
+  0 _m_151                                                         12E0 GR
+  0 _m_152                                                         1300 GR
+  0 _m_153                                                         1320 GR
+  0 _m_154                                                         1340 GR
+  0 _m_155                                                         1360 GR
+  0 _m_156                                                         1380 GR
+  0 _m_157                                                         13A0 GR
+  0 _m_158                                                         13C0 GR
+  0 _m_159                                                         13E0 GR
+  0 _m_160                                                         1400 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_161                                                         1420 GR
+  0 _m_162                                                         1440 GR
+  0 _m_163                                                         1460 GR
+  0 _m_164                                                         1480 GR
+  0 _m_165                                                         14A0 GR
+  0 _m_166                                                         14C0 GR
+  0 _m_167                                                         14E0 GR
+  0 _m_168                                                         1500 GR
+  0 _m_169                                                         1520 GR
+  0 _m_170                                                         1540 GR
+  0 _m_171                                                         1560 GR
+  0 _m_172                                                         1580 GR
+  0 _m_173                                                         15A0 GR
+  0 _m_174                                                         15C0 GR
+  0 _m_175                                                         15E0 GR
+  0 _m_176                                                         1600 GR
+  0 _m_177                                                         1620 GR
+  0 _m_178                                                         1640 GR
+  0 _m_179                                                         1660 GR
+  0 _m_180                                                         1680 GR
+  0 _m_181                                                         16A0 GR
+  0 _m_182                                                         16C0 GR
+  0 _m_183                                                         16E0 GR
+  0 _m_184                                                         1700 GR
+  0 _m_185                                                         1720 GR
+  0 _m_186                                                         1740 GR
+  0 _m_187                                                         1760 GR
+  0 _m_188                                                         1780 GR
+  0 _m_189                                                         17A0 GR
+  0 _m_190                                                         17C0 GR
+  0 _m_191                                                         17E0 GR
+  0 _m_192                                                         1800 GR
+  0 _m_193                                                         1820 GR
+  0 _m_194                                                         1840 GR
+  0 _m_195                                                         1860 GR
+  0 _m_196                                                         1880 GR
+  0 _m_197                                                         18A0 GR
+  0 _m_198                                                         18C0 GR
+  0 _m_199                                                         18E0 GR
+  0 _m_200                                                         1900 GR
+  0 _m_201                                                         1920 GR
+  0 _m_202                                                         1940 GR
+  0 _m_203                                                         1960 GR
+  0 _m_204                                                         1980 GR
+  0 _m_205                                                         19A0 GR
+  0 _m_206                                                         19C0 GR
+  0 _m_207                                                         19E0 GR
+  0 _m_208                                                         1A00 GR
+  0 _m_209                                                         1A20 GR
+  0 _m_210                                                         1A40 GR
+  0 _m_211                                                         1A60 GR
+  0 _m_212                                                         1A80 GR
+  0 _m_213                                                         1AA0 GR
+  0 _m_214                                                         1AC0 GR
+  0 _m_215                                                         1AE0 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_216                                                         1B00 GR
+  0 _m_217                                                         1B20 GR
+  0 _m_218                                                         1B40 GR
+  0 _m_219                                                         1B60 GR
+  0 _m_220                                                         1B80 GR
+  0 _m_221                                                         1BA0 GR
+  0 _m_222                                                         1BC0 GR
+  0 _m_223                                                         1BE0 GR
+  0 _m_224                                                         1C00 GR
+  0 _m_225                                                         1C20 GR
+  0 _m_226                                                         1C40 GR
+  0 _m_227                                                         1C60 GR
+  0 _m_228                                                         1C80 GR
+  0 _m_229                                                         1CA0 GR
+  0 _m_230                                                         1CC0 GR
+  0 _m_231                                                         1CE0 GR
+  0 _m_232                                                         1D00 GR
+  0 _m_233                                                         1D20 GR
+  0 _m_234                                                         1D40 GR
+  0 _m_235                                                         1D60 GR
+  0 _m_236                                                         1D80 GR
+  0 _m_237                                                         1DA0 GR
+  0 _m_238                                                         1DC0 GR
+  0 _m_239                                                         1DE0 GR
+  0 _m_240                                                         1E00 GR
+  0 _m_241                                                         1E20 GR
+  0 _m_242                                                         1E40 GR
+  0 _m_243                                                         1E60 GR
+  0 _m_244                                                         1E80 GR
+  0 _m_245                                                         1EA0 GR
+  0 _m_246                                                         1EC0 GR
+  0 _m_247                                                         1EE0 GR
+  0 _m_248                                                         1F00 GR
+  0 _m_249                                                         1F20 GR
+  0 _m_250                                                         1F40 GR
+  0 _m_251                                                         1F60 GR
+  0 _m_252                                                         1F80 GR
+  0 _m_253                                                         1FA0 GR
+  0 _m_254                                                         1FC0 GR
+  0 _m_255                                                         1FE0 GR
+  0 _m_256                                                         2000 GR
+  0 _m_257                                                         2020 GR
+  0 _m_258                                                         2040 GR
+  0 _m_259                                                         2060 GR
+  0 _m_260                                                         2080 GR
+  0 _m_261                                                         20A0 GR
+  0 _m_262                                                         20C0 GR
+  0 _m_263                                                         20E0 GR
+  0 _m_264                                                         2100 GR
+  0 _m_265                                                         2120 GR
+  0 _m_266                                                         2140 GR
+  0 _m_267                                                         2160 GR
+  0 _m_268                                                         2180 GR
+  0 _m_269                                                         21A0 GR
+  0 _m_270                                                         21C0 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_271                                                         21E0 GR
+  0 _m_272                                                         2200 GR
+  0 _m_273                                                         2220 GR
+  0 _m_274                                                         2240 GR
+  0 _m_275                                                         2260 GR
+  0 _m_276                                                         2280 GR
+  0 _m_277                                                         22A0 GR
+  0 _m_278                                                         22C0 GR
+  0 _m_279                                                         22E0 GR
+  0 _m_280                                                         2300 GR
+  0 _m_281                                                         2320 GR
+  0 _m_282                                                         2340 GR
+  0 _m_283                                                         2360 GR
+  0 _m_284                                                         2380 GR
+  0 _m_285                                                         23A0 GR
+  0 _m_286                                                         23C0 GR
+  0 _m_287                                                         23E0 GR
+  0 _m_288                                                         2400 GR
+  0 _m_289                                                         2420 GR
+  0 _m_290                                                         2440 GR
+  0 _m_291                                                         2460 GR
+  0 _m_292                                                         2480 GR
+  0 _m_293                                                         24A0 GR
+  0 _m_294                                                         24C0 GR
+  0 _m_295                                                         24E0 GR
+  0 _m_296                                                         2500 GR
+  0 _m_297                                                         2520 GR
+  0 _m_298                                                         2540 GR
+  0 _m_299                                                         2560 GR
+  0 _m_300                                                         2580 GR
+  0 _m_301                                                         25A0 GR
+  0 _m_302                                                         25C0 GR
+  0 _m_303                                                         25E0 GR
+  0 _m_304                                                         2600 GR
+  0 _m_305                                                         2620 GR
+  0 _m_306                                                         2640 GR
+  0 _m_307                                                         2660 GR
+  0 _m_308                                                         2680 GR
+  0 _m_309                                                         26A0 GR
+  0 _m_310                                                         26C0 GR
+  0 _m_311                                                         26E0 GR
+  0 _m_312                                                         2700 GR
+  0 _m_313                                                         2720 GR
+  0 _m_314                                                         2740 GR
+  0 _m_315                                                         2760 GR
+  0 _m_316                                                         2780 GR
+  0 _m_317                                                         27A0 GR
+  0 _m_318                                                         27C0 GR
+  0 _m_319                                                         27E0 GR
+  0 _m_320                                                         2800 GR
+  0 _m_321                                                         2820 GR
+  0 _m_322                                                         2840 GR
+  0 _m_323                                                         2860 GR
+  0 _m_324                                                         2880 GR
+  0 _m_325                                                         28A0 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_326                                                         28C0 GR
+  0 _m_327                                                         28E0 GR
+  0 _m_328                                                         2900 GR
+  0 _m_329                                                         2920 GR
+  0 _m_330                                                         2940 GR
+  0 _m_331                                                         2960 GR
+  0 _m_332                                                         2980 GR
+  0 _m_333                                                         29A0 GR
+  0 _m_334                                                         29C0 GR
+  0 _m_335                                                         29E0 GR
+  0 _m_336                                                         2A00 GR
+  0 _m_337                                                         2A20 GR
+  0 _m_338                                                         2A40 GR
+  0 _m_339                                                         2A60 GR
+  0 _m_340                                                         2A80 GR
+  0 _m_341                                                         2AA0 GR
+  0 _m_342                                                         2AC0 GR
+  0 _m_343                                                         2AE0 GR
+  0 _m_344                                                         2B00 GR
+  0 _m_345                                                         2B20 GR
+  0 _m_346                                                         2B40 GR
+  0 _m_347                                                         2B60 GR
+  0 _m_348                                                         2B80 GR
+  0 _m_349                                                         2BA0 GR
+  0 _m_350                                                         2BC0 GR
+  0 _m_351                                                         2BE0 GR
+  0 _m_352                                                         2C00 GR
+  0 _m_353                                                         2C20 GR
+  0 _m_354                                                         2C40 GR
+  0 _m_355                                                         2C60 GR
+  0 _m_356                                                         2C80 GR
+  0 _m_357                                                         2CA0 GR
+  0 _m_358                                                         2CC0 GR
+  0 _m_359                                                         2CE0 GR
+  0 _m_360                                                         2D00 GR
+  0 _m_361                                                         2D20 GR
+  0 _m_362                                                         2D40 GR
+  0 _m_363                                                         2D60 GR
+  0 _m_364                                                         2D80 GR
+  0 _m_365                                                         2DA0 GR
+  0 _m_366                                                         2DC0 GR
+  0 _m_367                                                         2DE0 GR
+  0 _m_368                                                         2E00 GR
+  0 _m_369                                                         2E20 GR
+  0 _m_370                                                         2E40 GR
+  0 _m_371                                                         2E60 GR
+  0 _m_372                                                         2E80 GR
+  0 _m_373                                                         2EA0 GR
+  0 _m_374                                                         2EC0 GR
+  0 _m_375                                                         2EE0 GR
+  0 _m_376                                                         2F00 GR
+  0 _m_377                                                         2F20 GR
+  0 _m_378                                                         2F40 GR
+  0 _m_379                                                         2F60 GR
+  0 _m_380                                                         2F80 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 8.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_381                                                         2FA0 GR
+  0 _m_382                                                         2FC0 GR
+  0 _m_383                                                         2FE0 GR
+  0 _m_384                                                         3000 GR
+  0 _m_385                                                         3020 GR
+  0 _m_386                                                         3040 GR
+  0 _m_387                                                         3060 GR
+  0 _m_388                                                         3080 GR
+  0 _m_389                                                         30A0 GR
+  0 _m_390                                                         30C0 GR
+  0 _m_391                                                         30E0 GR
+  0 _m_392                                                         3100 GR
+  0 _m_393                                                         3120 GR
+  0 _m_394                                                         3140 GR
+  0 _m_395                                                         3160 GR
+  0 _m_396                                                         3180 GR
+  0 _m_397                                                         31A0 GR
+  0 _m_398                                                         31C0 GR
+  0 _m_399                                                         31E0 GR
+  0 _m_400                                                         3200 GR
+  0 _m_401                                                         3220 GR
+  0 _m_402                                                         3240 GR
+  0 _m_403                                                         3260 GR
+  0 _m_404                                                         3280 GR
+  0 _m_405                                                         32A0 GR
+  0 _m_406                                                         32C0 GR
+  0 _m_407                                                         32E0 GR
+  0 _m_408                                                         3300 GR
+  0 _m_409                                                         3320 GR
+  0 _m_410                                                         3340 GR
+  0 _m_411                                                         3360 GR
+  0 _m_412                                                         3380 GR
+  0 _m_413                                                         33A0 GR
+  0 _m_414                                                         33C0 GR
+  0 _m_415                                                         33E0 GR
+  0 _m_416                                                         3400 GR
+  0 _m_417                                                         3420 GR
+  0 _m_418                                                         3440 GR
+  0 _m_419                                                         3460 GR
+  0 _m_420                                                         3480 GR
+  0 _m_421                                                         34A0 GR
+  0 _m_422                                                         34C0 GR
+  0 _m_423                                                         34E0 GR
+  0 _m_424                                                         3500 GR
+  0 _m_425                                                         3520 GR
+  0 _m_426                                                         3540 GR
+  0 _m_427                                                         3560 GR
+  0 _m_428                                                         3580 GR
+  0 _m_429                                                         35A0 GR
+  0 _m_430                                                         35C0 GR
+  0 _m_431                                                         35E0 GR
+  0 _m_432                                                         3600 GR
+  0 _m_433                                                         3620 GR
+  0 _m_434                                                         3640 GR
+  0 _m_435                                                         3660 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 9.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_436                                                         3680 GR
+  0 _m_437                                                         36A0 GR
+  0 _m_438                                                         36C0 GR
+  0 _m_439                                                         36E0 GR
+  0 _m_440                                                         3700 GR
+  0 _m_441                                                         3720 GR
+  0 _m_442                                                         3740 GR
+  0 _m_443                                                         3760 GR
+  0 _m_444                                                         3780 GR
+  0 _m_445                                                         37A0 GR
+  0 _m_446                                                         37C0 GR
+  0 _m_447                                                         37E0 GR
+  0 _m_448                                                         3800 GR
+  0 _m_449                                                         3820 GR
+  0 _m_450                                                         3840 GR
+  0 _m_451                                                         3860 GR
+  0 _m_452                                                         3880 GR
+  0 _m_453                                                         38A0 GR
+  0 _m_454                                                         38C0 GR
+  0 _m_455                                                         38E0 GR
+  0 _m_456                                                         3900 GR
+  0 _m_457                                                         3920 GR
+  0 _m_458                                                         3940 GR
+  0 _m_459                                                         3960 GR
+  0 _m_460                                                         3980 GR
+  0 _m_461                                                         39A0 GR
+  0 _m_462                                                         39C0 GR
+  0 _m_463                                                         39E0 GR
+  0 _m_464                                                         3A00 GR
+  0 _m_465                                                         3A20 GR
+  0 _m_466                                                         3A40 GR
+  0 _m_467                                                         3A60 GR
+  0 _m_468                                                         3A80 GR
+  0 _m_469                                                         3AA0 GR
+  0 _m_470                                                         3AC0 GR
+  0 _m_471                                                         3AE0 GR
+  0 _m_472                                                         3B00 GR
+  0 _m_473                                                         3B20 GR
+  0 _m_474                                                         3B40 GR
+  0 _m_475                                                         3B60 GR
+  0 _m_476                                                         3B80 GR
+  0 _m_477                                                         3BA0 GR
+  0 _m_478                                                         3BC0 GR
+  0 _m_479                                                         3BE0 GR
+  0 _m_480                                                         3C00 GR
+  0 _m_481                                                         3C20 GR
+  0 _m_482                                                         3C40 GR
+  0 _m_483                                                         3C60 GR
+  0 _m_484                                                         3C80 GR
+  0 _m_485                                                         3CA0 GR
+  0 _m_486                                                         3CC0 GR
+  0 _m_487                                                         3CE0 GR
+  0 _m_488                                                         3D00 GR
+  0 _m_489                                                         3D20 GR
+  0 _m_490                                                         3D40 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 10.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+  0 _m_491                                                         3D60 GR
+  0 _m_492                                                         3D80 GR
+  0 _m_493                                                         3DA0 GR
+  0 _m_494                                                         3DC0 GR
+  0 _m_495                                                         3DE0 GR
+  0 _m_496                                                         3E00 GR
+  0 _m_497                                                         3E20 GR
+  0 _m_498                                                         3E40 GR
+  0 _m_499                                                         3E60 GR
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 11.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE                                      size 3E80   flags    0
+   1 _DATA                                      size    0   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

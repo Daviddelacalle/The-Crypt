@@ -1,0 +1,767 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           cpct_random
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__DATA                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     00004000  s__CODE                         
+     00005FBC  l__CODE                         
+     00009FBC  s__DATA                         
+     00009FBC  s__GSFINAL                      
+     00009FBC  s__GSINIT                       
+     00009FBC  s__HOME                         
+     00009FBC  s__INITIALIZED                  
+     00009FBC  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004000  _nivel1                            Mapa
+     00004384  _m_PRESSA2_0                       PRESSA2
+     00004DD4  _m_PRESSA2_1                       PRESSA2
+     00005824  _g_0                               Mapabyn
+     00005844  _g_1                               Mapabyn
+     00005864  _g_2                               Mapabyn
+     00005884  _g_3                               Mapabyn
+     000058A4  _g_4                               Mapabyn
+     000058C4  _g_5                               Mapabyn
+     000058E4  _g_palette                         g_palette
+     000058F4  _m_000                             PRESSA
+     00005914  _m_001                             PRESSA
+     00005934  _m_002                             PRESSA
+     00005954  _m_003                             PRESSA
+     00005974  _m_004                             PRESSA
+     00005994  _m_005                             PRESSA
+     000059B4  _m_006                             PRESSA
+     000059D4  _m_007                             PRESSA
+     000059F4  _m_008                             PRESSA
+     00005A14  _m_009                             PRESSA
+     00005A34  _m_010                             PRESSA
+     00005A54  _m_011                             PRESSA
+     00005A74  _m_012                             PRESSA
+     00005A94  _m_013                             PRESSA
+     00005AB4  _m_014                             PRESSA
+     00005AD4  _m_015                             PRESSA
+     00005AF4  _m_016                             PRESSA
+     00005B14  _m_017                             PRESSA
+     00005B34  _m_018                             PRESSA
+     00005B54  _m_019                             PRESSA
+     00005B74  _m_020                             PRESSA
+     00005B94  _m_021                             PRESSA
+     00005BB4  _m_022                             PRESSA
+     00005BD4  _m_023                             PRESSA
+     00005BF4  _m_024                             PRESSA
+     00005C14  _m_025                             PRESSA
+     00005C34  _m_026                             PRESSA
+     00005C54  _m_027                             PRESSA
+     00005C74  _m_028                             PRESSA
+     00005C94  _m_029                             PRESSA
+     00005CB4  _m_030                             PRESSA
+     00005CD4  _m_031                             PRESSA
+     00005CF4  _m_032                             PRESSA
+     00005D14  _m_033                             PRESSA
+     00005D34  _m_034                             PRESSA
+     00005D54  _m_035                             PRESSA
+     00005D74  _m_036                             PRESSA
+     00005D94  _m_037                             PRESSA
+     00005DB4  _m_038                             PRESSA
+     00005DD4  _m_039                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00005DF4  _m_040                             PRESSA
+     00005E14  _m_041                             PRESSA
+     00005E34  _m_042                             PRESSA
+     00005E54  _m_043                             PRESSA
+     00005E74  _m_044                             PRESSA
+     00005E94  _m_045                             PRESSA
+     00005EB4  _m_046                             PRESSA
+     00005ED4  _m_047                             PRESSA
+     00005EF4  _m_048                             PRESSA
+     00005F14  _m_049                             PRESSA
+     00005F34  _m_050                             PRESSA
+     00005F54  _m_051                             PRESSA
+     00005F74  _m_052                             PRESSA
+     00005F94  _m_053                             PRESSA
+     00005FB4  _m_054                             PRESSA
+     00005FD4  _m_055                             PRESSA
+     00005FF4  _m_056                             PRESSA
+     00006014  _m_057                             PRESSA
+     00006034  _m_058                             PRESSA
+     00006054  _m_059                             PRESSA
+     00006074  _m_060                             PRESSA
+     00006094  _m_061                             PRESSA
+     000060B4  _m_062                             PRESSA
+     000060D4  _m_063                             PRESSA
+     000060F4  _m_064                             PRESSA
+     00006114  _m_065                             PRESSA
+     00006134  _m_066                             PRESSA
+     00006154  _m_067                             PRESSA
+     00006174  _m_068                             PRESSA
+     00006194  _m_069                             PRESSA
+     000061B4  _m_070                             PRESSA
+     000061D4  _m_071                             PRESSA
+     000061F4  _m_072                             PRESSA
+     00006214  _m_073                             PRESSA
+     00006234  _m_074                             PRESSA
+     00006254  _m_075                             PRESSA
+     00006274  _m_076                             PRESSA
+     00006294  _m_077                             PRESSA
+     000062B4  _m_078                             PRESSA
+     000062D4  _m_079                             PRESSA
+     000062F4  _m_080                             PRESSA
+     00006314  _m_081                             PRESSA
+     00006334  _m_082                             PRESSA
+     00006354  _m_083                             PRESSA
+     00006374  _m_084                             PRESSA
+     00006394  _m_085                             PRESSA
+     000063B4  _m_086                             PRESSA
+     000063D4  _m_087                             PRESSA
+     000063F4  _m_088                             PRESSA
+     00006414  _m_089                             PRESSA
+     00006434  _m_090                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00006454  _m_091                             PRESSA
+     00006474  _m_092                             PRESSA
+     00006494  _m_093                             PRESSA
+     000064B4  _m_094                             PRESSA
+     000064D4  _m_095                             PRESSA
+     000064F4  _m_096                             PRESSA
+     00006514  _m_097                             PRESSA
+     00006534  _m_098                             PRESSA
+     00006554  _m_099                             PRESSA
+     00006574  _m_100                             PRESSA
+     00006594  _m_101                             PRESSA
+     000065B4  _m_102                             PRESSA
+     000065D4  _m_103                             PRESSA
+     000065F4  _m_104                             PRESSA
+     00006614  _m_105                             PRESSA
+     00006634  _m_106                             PRESSA
+     00006654  _m_107                             PRESSA
+     00006674  _m_108                             PRESSA
+     00006694  _m_109                             PRESSA
+     000066B4  _m_110                             PRESSA
+     000066D4  _m_111                             PRESSA
+     000066F4  _m_112                             PRESSA
+     00006714  _m_113                             PRESSA
+     00006734  _m_114                             PRESSA
+     00006754  _m_115                             PRESSA
+     00006774  _m_116                             PRESSA
+     00006794  _m_117                             PRESSA
+     000067B4  _m_118                             PRESSA
+     000067D4  _m_119                             PRESSA
+     000067F4  _m_120                             PRESSA
+     00006814  _m_121                             PRESSA
+     00006834  _m_122                             PRESSA
+     00006854  _m_123                             PRESSA
+     00006874  _m_124                             PRESSA
+     00006894  _m_125                             PRESSA
+     000068B4  _m_126                             PRESSA
+     000068D4  _m_127                             PRESSA
+     000068F4  _m_128                             PRESSA
+     00006914  _m_129                             PRESSA
+     00006934  _m_130                             PRESSA
+     00006954  _m_131                             PRESSA
+     00006974  _m_132                             PRESSA
+     00006994  _m_133                             PRESSA
+     000069B4  _m_134                             PRESSA
+     000069D4  _m_135                             PRESSA
+     000069F4  _m_136                             PRESSA
+     00006A14  _m_137                             PRESSA
+     00006A34  _m_138                             PRESSA
+     00006A54  _m_139                             PRESSA
+     00006A74  _m_140                             PRESSA
+     00006A94  _m_141                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00006AB4  _m_142                             PRESSA
+     00006AD4  _m_143                             PRESSA
+     00006AF4  _m_144                             PRESSA
+     00006B14  _m_145                             PRESSA
+     00006B34  _m_146                             PRESSA
+     00006B54  _m_147                             PRESSA
+     00006B74  _m_148                             PRESSA
+     00006B94  _m_149                             PRESSA
+     00006BB4  _m_150                             PRESSA
+     00006BD4  _m_151                             PRESSA
+     00006BF4  _m_152                             PRESSA
+     00006C14  _m_153                             PRESSA
+     00006C34  _m_154                             PRESSA
+     00006C54  _m_155                             PRESSA
+     00006C74  _m_156                             PRESSA
+     00006C94  _m_157                             PRESSA
+     00006CB4  _m_158                             PRESSA
+     00006CD4  _m_159                             PRESSA
+     00006CF4  _m_160                             PRESSA
+     00006D14  _m_161                             PRESSA
+     00006D34  _m_162                             PRESSA
+     00006D54  _m_163                             PRESSA
+     00006D74  _m_164                             PRESSA
+     00006D94  _m_165                             PRESSA
+     00006DB4  _m_166                             PRESSA
+     00006DD4  _m_167                             PRESSA
+     00006DF4  _m_168                             PRESSA
+     00006E14  _m_169                             PRESSA
+     00006E34  _m_170                             PRESSA
+     00006E54  _m_171                             PRESSA
+     00006E74  _m_172                             PRESSA
+     00006E94  _m_173                             PRESSA
+     00006EB4  _m_174                             PRESSA
+     00006ED4  _m_175                             PRESSA
+     00006EF4  _m_176                             PRESSA
+     00006F14  _m_177                             PRESSA
+     00006F34  _m_178                             PRESSA
+     00006F54  _m_179                             PRESSA
+     00006F74  _m_180                             PRESSA
+     00006F94  _m_181                             PRESSA
+     00006FB4  _m_182                             PRESSA
+     00006FD4  _m_183                             PRESSA
+     00006FF4  _m_184                             PRESSA
+     00007014  _m_185                             PRESSA
+     00007034  _m_186                             PRESSA
+     00007054  _m_187                             PRESSA
+     00007074  _m_188                             PRESSA
+     00007094  _m_189                             PRESSA
+     000070B4  _m_190                             PRESSA
+     000070D4  _m_191                             PRESSA
+     000070F4  _m_192                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00007114  _m_193                             PRESSA
+     00007134  _m_194                             PRESSA
+     00007154  _m_195                             PRESSA
+     00007174  _m_196                             PRESSA
+     00007194  _m_197                             PRESSA
+     000071B4  _m_198                             PRESSA
+     000071D4  _m_199                             PRESSA
+     000071F4  _m_200                             PRESSA
+     00007214  _m_201                             PRESSA
+     00007234  _m_202                             PRESSA
+     00007254  _m_203                             PRESSA
+     00007274  _m_204                             PRESSA
+     00007294  _m_205                             PRESSA
+     000072B4  _m_206                             PRESSA
+     000072D4  _m_207                             PRESSA
+     000072F4  _m_208                             PRESSA
+     00007314  _m_209                             PRESSA
+     00007334  _m_210                             PRESSA
+     00007354  _m_211                             PRESSA
+     00007374  _m_212                             PRESSA
+     00007394  _m_213                             PRESSA
+     000073B4  _m_214                             PRESSA
+     000073D4  _m_215                             PRESSA
+     000073F4  _m_216                             PRESSA
+     00007414  _m_217                             PRESSA
+     00007434  _m_218                             PRESSA
+     00007454  _m_219                             PRESSA
+     00007474  _m_220                             PRESSA
+     00007494  _m_221                             PRESSA
+     000074B4  _m_222                             PRESSA
+     000074D4  _m_223                             PRESSA
+     000074F4  _m_224                             PRESSA
+     00007514  _m_225                             PRESSA
+     00007534  _m_226                             PRESSA
+     00007554  _m_227                             PRESSA
+     00007574  _m_228                             PRESSA
+     00007594  _m_229                             PRESSA
+     000075B4  _m_230                             PRESSA
+     000075D4  _m_231                             PRESSA
+     000075F4  _m_232                             PRESSA
+     00007614  _m_233                             PRESSA
+     00007634  _m_234                             PRESSA
+     00007654  _m_235                             PRESSA
+     00007674  _m_236                             PRESSA
+     00007694  _m_237                             PRESSA
+     000076B4  _m_238                             PRESSA
+     000076D4  _m_239                             PRESSA
+     000076F4  _m_240                             PRESSA
+     00007714  _m_241                             PRESSA
+     00007734  _m_242                             PRESSA
+     00007754  _m_243                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00007774  _m_244                             PRESSA
+     00007794  _m_245                             PRESSA
+     000077B4  _m_246                             PRESSA
+     000077D4  _m_247                             PRESSA
+     000077F4  _m_248                             PRESSA
+     00007814  _m_249                             PRESSA
+     00007834  _m_250                             PRESSA
+     00007854  _m_251                             PRESSA
+     00007874  _m_252                             PRESSA
+     00007894  _m_253                             PRESSA
+     000078B4  _m_254                             PRESSA
+     000078D4  _m_255                             PRESSA
+     000078F4  _m_256                             PRESSA
+     00007914  _m_257                             PRESSA
+     00007934  _m_258                             PRESSA
+     00007954  _m_259                             PRESSA
+     00007974  _m_260                             PRESSA
+     00007994  _m_261                             PRESSA
+     000079B4  _m_262                             PRESSA
+     000079D4  _m_263                             PRESSA
+     000079F4  _m_264                             PRESSA
+     00007A14  _m_265                             PRESSA
+     00007A34  _m_266                             PRESSA
+     00007A54  _m_267                             PRESSA
+     00007A74  _m_268                             PRESSA
+     00007A94  _m_269                             PRESSA
+     00007AB4  _m_270                             PRESSA
+     00007AD4  _m_271                             PRESSA
+     00007AF4  _m_272                             PRESSA
+     00007B14  _m_273                             PRESSA
+     00007B34  _m_274                             PRESSA
+     00007B54  _m_275                             PRESSA
+     00007B74  _m_276                             PRESSA
+     00007B94  _m_277                             PRESSA
+     00007BB4  _m_278                             PRESSA
+     00007BD4  _m_279                             PRESSA
+     00007BF4  _m_280                             PRESSA
+     00007C14  _m_281                             PRESSA
+     00007C34  _m_282                             PRESSA
+     00007C54  _m_283                             PRESSA
+     00007C74  _m_284                             PRESSA
+     00007C94  _m_285                             PRESSA
+     00007CB4  _m_286                             PRESSA
+     00007CD4  _m_287                             PRESSA
+     00007CF4  _m_288                             PRESSA
+     00007D14  _m_289                             PRESSA
+     00007D34  _m_290                             PRESSA
+     00007D54  _m_291                             PRESSA
+     00007D74  _m_292                             PRESSA
+     00007D94  _m_293                             PRESSA
+     00007DB4  _m_294                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00007DD4  _m_295                             PRESSA
+     00007DF4  _m_296                             PRESSA
+     00007E14  _m_297                             PRESSA
+     00007E34  _m_298                             PRESSA
+     00007E54  _m_299                             PRESSA
+     00007E74  _m_300                             PRESSA
+     00007E94  _m_301                             PRESSA
+     00007EB4  _m_302                             PRESSA
+     00007ED4  _m_303                             PRESSA
+     00007EF4  _m_304                             PRESSA
+     00007F14  _m_305                             PRESSA
+     00007F34  _m_306                             PRESSA
+     00007F54  _m_307                             PRESSA
+     00007F74  _m_308                             PRESSA
+     00007F94  _m_309                             PRESSA
+     00007FB4  _m_310                             PRESSA
+     00007FD4  _m_311                             PRESSA
+     00007FF4  _m_312                             PRESSA
+     00008014  _m_313                             PRESSA
+     00008034  _m_314                             PRESSA
+     00008054  _m_315                             PRESSA
+     00008074  _m_316                             PRESSA
+     00008094  _m_317                             PRESSA
+     000080B4  _m_318                             PRESSA
+     000080D4  _m_319                             PRESSA
+     000080F4  _m_320                             PRESSA
+     00008114  _m_321                             PRESSA
+     00008134  _m_322                             PRESSA
+     00008154  _m_323                             PRESSA
+     00008174  _m_324                             PRESSA
+     00008194  _m_325                             PRESSA
+     000081B4  _m_326                             PRESSA
+     000081D4  _m_327                             PRESSA
+     000081F4  _m_328                             PRESSA
+     00008214  _m_329                             PRESSA
+     00008234  _m_330                             PRESSA
+     00008254  _m_331                             PRESSA
+     00008274  _m_332                             PRESSA
+     00008294  _m_333                             PRESSA
+     000082B4  _m_334                             PRESSA
+     000082D4  _m_335                             PRESSA
+     000082F4  _m_336                             PRESSA
+     00008314  _m_337                             PRESSA
+     00008334  _m_338                             PRESSA
+     00008354  _m_339                             PRESSA
+     00008374  _m_340                             PRESSA
+     00008394  _m_341                             PRESSA
+     000083B4  _m_342                             PRESSA
+     000083D4  _m_343                             PRESSA
+     000083F4  _m_344                             PRESSA
+     00008414  _m_345                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00008434  _m_346                             PRESSA
+     00008454  _m_347                             PRESSA
+     00008474  _m_348                             PRESSA
+     00008494  _m_349                             PRESSA
+     000084B4  _m_350                             PRESSA
+     000084D4  _m_351                             PRESSA
+     000084F4  _m_352                             PRESSA
+     00008514  _m_353                             PRESSA
+     00008534  _m_354                             PRESSA
+     00008554  _m_355                             PRESSA
+     00008574  _m_356                             PRESSA
+     00008594  _m_357                             PRESSA
+     000085B4  _m_358                             PRESSA
+     000085D4  _m_359                             PRESSA
+     000085F4  _m_360                             PRESSA
+     00008614  _m_361                             PRESSA
+     00008634  _m_362                             PRESSA
+     00008654  _m_363                             PRESSA
+     00008674  _m_364                             PRESSA
+     00008694  _m_365                             PRESSA
+     000086B4  _m_366                             PRESSA
+     000086D4  _m_367                             PRESSA
+     000086F4  _m_368                             PRESSA
+     00008714  _m_369                             PRESSA
+     00008734  _m_370                             PRESSA
+     00008754  _m_371                             PRESSA
+     00008774  _m_372                             PRESSA
+     00008794  _m_373                             PRESSA
+     000087B4  _m_374                             PRESSA
+     000087D4  _m_375                             PRESSA
+     000087F4  _m_376                             PRESSA
+     00008814  _m_377                             PRESSA
+     00008834  _m_378                             PRESSA
+     00008854  _m_379                             PRESSA
+     00008874  _m_380                             PRESSA
+     00008894  _m_381                             PRESSA
+     000088B4  _m_382                             PRESSA
+     000088D4  _m_383                             PRESSA
+     000088F4  _m_384                             PRESSA
+     00008914  _m_385                             PRESSA
+     00008934  _m_386                             PRESSA
+     00008954  _m_387                             PRESSA
+     00008974  _m_388                             PRESSA
+     00008994  _m_389                             PRESSA
+     000089B4  _m_390                             PRESSA
+     000089D4  _m_391                             PRESSA
+     000089F4  _m_392                             PRESSA
+     00008A14  _m_393                             PRESSA
+     00008A34  _m_394                             PRESSA
+     00008A54  _m_395                             PRESSA
+     00008A74  _m_396                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00008A94  _m_397                             PRESSA
+     00008AB4  _m_398                             PRESSA
+     00008AD4  _m_399                             PRESSA
+     00008AF4  _m_400                             PRESSA
+     00008B14  _m_401                             PRESSA
+     00008B34  _m_402                             PRESSA
+     00008B54  _m_403                             PRESSA
+     00008B74  _m_404                             PRESSA
+     00008B94  _m_405                             PRESSA
+     00008BB4  _m_406                             PRESSA
+     00008BD4  _m_407                             PRESSA
+     00008BF4  _m_408                             PRESSA
+     00008C14  _m_409                             PRESSA
+     00008C34  _m_410                             PRESSA
+     00008C54  _m_411                             PRESSA
+     00008C74  _m_412                             PRESSA
+     00008C94  _m_413                             PRESSA
+     00008CB4  _m_414                             PRESSA
+     00008CD4  _m_415                             PRESSA
+     00008CF4  _m_416                             PRESSA
+     00008D14  _m_417                             PRESSA
+     00008D34  _m_418                             PRESSA
+     00008D54  _m_419                             PRESSA
+     00008D74  _m_420                             PRESSA
+     00008D94  _m_421                             PRESSA
+     00008DB4  _m_422                             PRESSA
+     00008DD4  _m_423                             PRESSA
+     00008DF4  _m_424                             PRESSA
+     00008E14  _m_425                             PRESSA
+     00008E34  _m_426                             PRESSA
+     00008E54  _m_427                             PRESSA
+     00008E74  _m_428                             PRESSA
+     00008E94  _m_429                             PRESSA
+     00008EB4  _m_430                             PRESSA
+     00008ED4  _m_431                             PRESSA
+     00008EF4  _m_432                             PRESSA
+     00008F14  _m_433                             PRESSA
+     00008F34  _m_434                             PRESSA
+     00008F54  _m_435                             PRESSA
+     00008F74  _m_436                             PRESSA
+     00008F94  _m_437                             PRESSA
+     00008FB4  _m_438                             PRESSA
+     00008FD4  _m_439                             PRESSA
+     00008FF4  _m_440                             PRESSA
+     00009014  _m_441                             PRESSA
+     00009034  _m_442                             PRESSA
+     00009054  _m_443                             PRESSA
+     00009074  _m_444                             PRESSA
+     00009094  _m_445                             PRESSA
+     000090B4  _m_446                             PRESSA
+     000090D4  _m_447                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000090F4  _m_448                             PRESSA
+     00009114  _m_449                             PRESSA
+     00009134  _m_450                             PRESSA
+     00009154  _m_451                             PRESSA
+     00009174  _m_452                             PRESSA
+     00009194  _m_453                             PRESSA
+     000091B4  _m_454                             PRESSA
+     000091D4  _m_455                             PRESSA
+     000091F4  _m_456                             PRESSA
+     00009214  _m_457                             PRESSA
+     00009234  _m_458                             PRESSA
+     00009254  _m_459                             PRESSA
+     00009274  _m_460                             PRESSA
+     00009294  _m_461                             PRESSA
+     000092B4  _m_462                             PRESSA
+     000092D4  _m_463                             PRESSA
+     000092F4  _m_464                             PRESSA
+     00009314  _m_465                             PRESSA
+     00009334  _m_466                             PRESSA
+     00009354  _m_467                             PRESSA
+     00009374  _m_468                             PRESSA
+     00009394  _m_469                             PRESSA
+     000093B4  _m_470                             PRESSA
+     000093D4  _m_471                             PRESSA
+     000093F4  _m_472                             PRESSA
+     00009414  _m_473                             PRESSA
+     00009434  _m_474                             PRESSA
+     00009454  _m_475                             PRESSA
+     00009474  _m_476                             PRESSA
+     00009494  _m_477                             PRESSA
+     000094B4  _m_478                             PRESSA
+     000094D4  _m_479                             PRESSA
+     000094F4  _m_480                             PRESSA
+     00009514  _m_481                             PRESSA
+     00009534  _m_482                             PRESSA
+     00009554  _m_483                             PRESSA
+     00009574  _m_484                             PRESSA
+     00009594  _m_485                             PRESSA
+     000095B4  _m_486                             PRESSA
+     000095D4  _m_487                             PRESSA
+     000095F4  _m_488                             PRESSA
+     00009614  _m_489                             PRESSA
+     00009634  _m_490                             PRESSA
+     00009654  _m_491                             PRESSA
+     00009674  _m_492                             PRESSA
+     00009694  _m_493                             PRESSA
+     000096B4  _m_494                             PRESSA
+     000096D4  _m_495                             PRESSA
+     000096F4  _m_496                             PRESSA
+     00009714  _m_497                             PRESSA
+     00009734  _m_498                             PRESSA
+ASxxxx Linker V03.00 + NoICE + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00009754  _m_499                             PRESSA
+     0000977D  hero_draw                          cpct_keyboard
+     00009784  hero_clear                         cpct_keyboard
+     0000978B  hero_update                        cpct_keyboard
+     000097DD  hero_get_position                  cpct_keyboard
+     0000983A  bullet_draw                        cpct_keyboard
+     00009840  bullet_update                      cpct_keyboard
+     00009846  bullet_clear                       cpct_keyboard
+     0000984C  bullet_inputs                      cpct_keyboard
+     0000994F  load_control                       cpct_keyboard
+     0000995A  drawMenu                           cpct_keyboard
+     00009975  dw_draw                            cpct_keyboard
+     000099AA  dw_clear                           cpct_keyboard
+     000099BC  _main                              cpct_keyboard
+     000099D0  loop_load                          cpct_keyboard
+     000099D5  map_start                          cpct_keyboard
+     000099D8  loop                               cpct_keyboard
+     00009A35  enemy_create                       cpct_keyboard
+     00009A3B  enemy_draw_ALL                     cpct_keyboard
+     00009A41  enemy_clear_ALL                    cpct_keyboard
+     00009A47  enemy_update_ALL                   cpct_keyboard
+     00009C85  obs_draw                           
+     00009C8C  obs_clear                          
+     00009C93  inc_map_y                          
+     00009CAA  drawMap                            
+     00009CC2  mv_move                            cpct_keyboard
+     00009CC3  cpct_setPalette_asm                cpct_video
+     00009CD6  _cpct_isKeyPressed                 cpct_keyboard
+     00009CD6  cpct_isKeyPressed_asm              cpct_keyboard
+     00009CE2  cpct_drawSprite_asm                cpct_sprites
+     00009D82  cpct_etm_drawTilemap4x8_ag_asm     cpct_easytilemaps
+     00009D84  cpct_etm_dtm4x8_ag_asm_widthHeig   cpct_easytilemaps
+     00009D9A  cpct_etm_dtm4x8_ag_asm_tilesetPt   cpct_easytilemaps
+     00009E05  cpct_etm_dtm4x8_ag_asm_restoreI    cpct_easytilemaps
+     00009E0B  cpct_etm_dtm4x8_ag_asm_increment   cpct_easytilemaps
+     00009E10  cpct_etm_dtm4x8_ag_asm_restoreWi   cpct_easytilemaps
+     00009E13  cpct_etm_dtm4x8_ag_asm_updateWid   cpct_easytilemaps
+     00009E1B  _cpct_keyboardStatusBuffer         cpct_keyboard
+     00009E25  cpct_setVideoMode_asm              cpct_video
+     00009E32  _cpct_waitVSYNC                    cpct_video
+     00009E32  cpct_waitVSYNC_asm                 cpct_video
+     00009E3A  _cpct_disableFirmware              cpct_firmware
+     00009E3A  _cpct_removeInterruptHandler       cpct_firmware
+     00009E3A  cpct_disableFirmware_asm           cpct_firmware
+     00009E3A  cpct_removeInterruptHandler_asm    cpct_firmware
+     00009E4A  _cpct_getRandom_mxor_u8            cpct_random
+     00009E4A  cpct_getRandom_mxor_u8_asm         cpct_random
+     00009E4B  cpct_randomIdx_mxor_u8             cpct_random
+     00009E6F  cpct_drawSolidBox_asm              cpct_sprites
+     00009F1B  _cpct_mode_rom_status              cpct_firmware
+     00009F1C  cpct_etm_setDrawTilemap4x8_ag_as   cpct_easytilemaps
+ASxxxx Linker V03.00 + NoICE + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00005FBC =       24508. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00009F48  cpct_getScreenPtr_asm              cpct_video
+     00009F64  _cpct_scanKeyboard                 cpct_keyboard
+     00009F64  cpct_scanKeyboard_asm              cpct_keyboard
+     00009F95  _cpct_mxor32_seed                  cpct_random
+     00009F99  _cpct_nextRandom_mxor_u32          cpct_random
+     00009F99  cpct_nextRandom_mxor_u32_asm       cpct_random
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 14.
+
+Files Linked                              [ module(s) ]
+
+obj/Mapas/Mapa.rel                        [ Mapa ]
+obj/PRESSA2.rel                           [ PRESSA2 ]
+obj/Sprites/Mapabyn.rel                   [ Mapabyn ]
+obj/Sprites/g_palette.rel                 [ g_palette ]
+obj/Sprites/PRESSA.rel                    [ PRESSA ]
+obj/struct.h.rel                          [  ]
+obj/hero.rel                              [ cpct_keyboard ]
+obj/bullet.rel                            [ cpct_keyboard ]
+obj/load.rel                              [ cpct_keyboard ]
+obj/drawable.rel                          [ cpct_keyboard ]
+obj/main.rel                              [ cpct_keyboard ]
+obj/enemy.rel                             [ cpct_keyboard ]
+obj/map.rel                               [  ]
+obj/movable.rel                           [ cpct_keyboard ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPalette_asmbindings.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isKeyPressed.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawSprite_asmbindings.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_drawTilemap4x8_ag_asmbi ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ keyboard.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMode_asmbindings.re ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_waitVSYNC.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_removeInterruptHandler.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_getRandom_mxor_u8.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_drawSolidBox_asmbindings.re ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpc_mode_rom_status.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_etm_setDrawTilemap4x8_ag_as ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_getScreenPtr_asmbindings.re ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_scanKeyboard.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_mxor32_seed.rel ]
+/home/david/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_nextRandom_mxor_u32.rel ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 15.
+
+User Base Address Definitions
+
+_CODE = 0x4000
+_DATA = 0x0000
+
+
