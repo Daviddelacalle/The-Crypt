@@ -34,7 +34,7 @@ drawMap::
 
     ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
     ld h, a
-    ld l, #4
+    ld l, #0
     ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret

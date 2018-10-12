@@ -32,7 +32,8 @@ DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 ;; DIBUJADO DE LA ENTIDAD HERO
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 hero_draw::
-    ld    ix,   #hero    ;; ix apunta a los datos del heroe
+    ld   ix,   #hero    ;; ix apunta a los datos del heroe
+    ; ld   a, #0         ;; Por si las moscas
     jp dw_draw
 
 

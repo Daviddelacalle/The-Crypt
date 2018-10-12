@@ -23,11 +23,14 @@ DefineEnemy enemy_copy, 39, 50, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0
 ;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
 x_range  = 79
 y_range  = 200
+; x_range = 19
+; y_range = 19
 var_r_max    = 20
-var_r_min    = 10
+; var_r_max   = 11
+var_r_min   = 10
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #0x27, #0x10, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #1, #2, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
@@ -52,8 +55,12 @@ enemy_create::
 ;; DESTRUYE:   HL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_draw_ALL::
-   ld hl, #dw_draw
+   ld hl, #enemy_call_draw
    jp enemy_search
+
+enemy_call_draw:
+   ld a, #0xAA
+   jp dw_draw
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ASIGNA LA FUNCION DE CLEAR EN HL Y RECORRE EL BUCLE
