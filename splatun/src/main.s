@@ -35,10 +35,10 @@
     ldir
 
 
-    ld hl, #_g_000
-    ld c, #16
-    ld b, #16
-    ld de, #29
+    ld hl, #_g_0
+    ld c, #18        ;; Ancho
+    ld b, #20        ;; Alto
+    ld de, #30
     call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm
 

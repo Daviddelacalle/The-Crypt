@@ -71,7 +71,7 @@ hero_update::
         jr z, w_no_pulsada
             ;ld b, #-2
             ;ld e_vy(ix), b
-            ld de, #-29
+            ld de, #-30
             call inc_map
             jr s_no_pulsada
 
@@ -81,7 +81,7 @@ hero_update::
         jr z, s_no_pulsada
             ;ld b, #2
             ;ld e_vy(ix), b
-            ld de, #29
+            ld de, #30
             call inc_map
 
     s_no_pulsada:
