@@ -29,6 +29,52 @@ save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
 ;; FUNCIONES PUBLICAS
 ;;======================================================================
 ;;======================================================================
+update_cam::
+   ;; Check E
+   ld a, e
+   cp #1       ;; Derecha     (x++)
+   jr nz, cam_check_izq
+      ld    a, (cam_min)
+      inc a
+      ld    (cam_min), a
+
+      ld    a, (cam_max)
+      inc a
+      ld    (cam_max), a
+      ret
+   cam_check_izq:
+   cp #-1      ;; Izquierda   (x--)
+   jr nz, cam_check_ab
+      ld    a, (cam_min)
+      dec a
+      ld    (cam_min), a
+
+      ld    a, (cam_max)
+      dec a
+      ld    (cam_max), a
+      ret
+   cam_check_ab:
+   cp #30      ;; Abajo       (y++)
+   jr nz, cam_check_arr
+      ld    a, (cam_min+1)
+      inc a
+      ld    (cam_min+1), a
+
+      ld    a, (cam_max+1)
+      inc a
+      ld    (cam_max+1), a
+      ret
+   cam_check_arr:
+   cp #-30     ;; Arriba      (y--)
+   ret nz
+      ld    a, (cam_min+1)
+      dec   a
+      ld    (cam_min+1), a
+
+      ld    a, (cam_max+1)
+      dec   a
+      ld    (cam_max+1), a
+   ret
 
 swapBuffers::
     ld a, (back_buffer)
@@ -77,7 +123,30 @@ dw_draw::
    ret   nc                   ;; Si A < y_max <----> C = 1
 
    ;; Si llega aqui significa que esta dentro de los limites
-   call mapa_a_tile
+   ;; Corregir offset de la camara
+      ;; HAY QUE COGER UNAS COORDENADAS RELATIVAS A LA POSICION DE LA CAMARA
+      ;; SINO SIEMPRE LA CAMARA ESTARA EN min(0,0) Y max(20,20)
+
+   ;; Cargar las coordenadas en HL
+   ld l, e_x(ix)           ;; L = X
+   ld h, e_y(ix)           ;; H = Y
+
+
+   ;; Hay offset en X?
+   ld a, (cam_min)
+   cpl                  ;; Revierto los bits de A
+   inc   a              ;; A++ -> Tengo el negativo de A
+   add   l
+   ld    l,    a        ;; L tiene la coordenada X corregida
+
+   ;; Hay offset en Y?
+   ld a, (cam_min+1)
+   cpl                  ;; Revierto los bits de A
+   inc   a              ;; A++ -> Tengo el negativo de A
+   add   h
+   ld    h,    a        ;; H tiene la coordenada Y corregida
+   no_offset_y:
+   call tile_a_mapa
 
    jr sigue_con_el_dro
    normal_dro:
@@ -131,10 +200,12 @@ dw_clear::
 ;;======================================================================
 ;;======================================================================
 
-;; PASA LAS COORDENADAS DE MAPA A COORDENADAS DE TILE
-mapa_a_tile:
+;; PASA LAS COORDENADAS DE TILE A COORDENADAS DE MAPA
+;; ENTRADA:    L -> Coordenada en X
+;;             H -> Coordenada en Y
+tile_a_mapa:
    ;; Paso Y
-   ld    a, e_y(ix)     ;; A = Y
+   ld    a, h           ;; A = Y
    ld    c, #7          ;; Iteraciones del loop
    ld    d, a           ;; D = Y
    loop_y:
@@ -145,7 +216,7 @@ mapa_a_tile:
    ld b, a              ;; En B guardo la Y
 
    ;; Paso X
-   ld    a, e_x(ix)     ;; ======================= ;;
+   ld    a, l           ;; ======================= ;;
    ld    c, #3          ;;                         ;;
    ld    d, a           ;; Hago lo mismo que antes ;;
    loop_x:              ;;      pero con la X      ;;

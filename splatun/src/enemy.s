@@ -21,13 +21,14 @@ DefineEnemy enemy_copy, 39, 50, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0
 
 ;; ANCHO:   0 - 79
 ;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
-x_range  = 79
-y_range  = 200
-; x_range = 19
-; y_range = 19
-var_r_max    = 20
-; var_r_max   = 11
-var_r_min   = 10
+; x_range  = 79
+; y_range  = 200
+x_range = 19
+y_range = 19
+; var_r_max    = 20
+; var_r_min   = 10
+var_r_max   = 6
+var_r_min   = 5
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
 DefineEnemy enemy1, #1, #2, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
@@ -147,7 +148,7 @@ enemy_randomGoal:
    ld    (flag_move), a          ;; Lo actualizo
    ret   nz                      ;; Si no ha llegado a 0 hace ret
 
-   ld    a, #1                  ;; Inicio de nuevo el contador para despues
+   ld    a, #20                  ;; Inicio de nuevo el contador para despues
    ld (flag_move), a
 
    ;;RESET DE LOS VALORES

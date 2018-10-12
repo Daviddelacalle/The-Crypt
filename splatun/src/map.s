@@ -25,6 +25,8 @@ inc_map::
     ld hl, (map_ptr)
     add hl, de
     ld (map_ptr), hl
+
+    call update_cam
 ret
 
 ;========================================================================;
