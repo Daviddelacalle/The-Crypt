@@ -140,21 +140,23 @@ _name:
  ;;;;;;;;;;;;;;;;;;;
  ;; Constantes de las entidades hero/enemy
  ;;;;;;;;;;;;;;;;;;;
-      en_x = 0         en_y = 1
-      en_w = 2         en_h = 3
-     en_vx = 4        en_vy = 5
-    en_col = 6
-   en_up_l = 7      en_up_h = 8
- en_g_flag = 9
+       ppe_x = 0    ppe_y = 1
+       pe_x = 2     pe_y = 3
+      en_x = 0+4         en_y = 1+4
+      en_w = 2+4         en_h = 3+4
+     en_vx = 4+4        en_vy = 5+4
+    en_col = 6+4
+   en_up_l = 7+4      en_up_h = 8+4
+ en_g_flag = 9+4
  ;;------------------------------BRESENHAM
-    en_g_x = 10      en_g_y = 11
-   en_dX_l = 12     en_dX_h = 13
-   en_dY_l = 14     en_dY_h = 15
-  en_incYr = 16    en_incXr = 17
-   en_av_l = 18     en_av_h = 19
-  en_avR_l = 20    en_avR_h = 21
-  en_avI_l = 22    en_avI_h = 23
-en_flagVel = 24
+    en_g_x = 10+4      en_g_y = 11+4
+   en_dX_l = 12+4     en_dX_h = 13+4
+   en_dY_l = 14+4     en_dY_h = 15+4
+  en_incYr = 16+4    en_incXr = 17+4
+   en_av_l = 18+4     en_av_h = 19+4
+  en_avR_l = 20+4    en_avR_h = 21+4
+  en_avI_l = 22+4    en_avI_h = 23+4
+en_flagVel = 24+4
 
 
 

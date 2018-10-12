@@ -62,6 +62,7 @@ _main::
         ;; CLIAR
         ;call bullet_clear
         ;call obs_clear
+        call enemy_clear_ALL
         call hero_clear
 
 
@@ -70,6 +71,7 @@ _main::
         ;call bullet_inputs
         ;call bullet_draw
         ;call obs_draw
+        call enemy_draw_ALL
         call hero_draw
 
         ;; UPDEIT

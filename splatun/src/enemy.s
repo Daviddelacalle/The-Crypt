@@ -117,6 +117,11 @@ enemy_init:
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
+   ld a, en_x(ix)
+   ld pe_x(ix), a
+   ld a, en_y(ix)
+   ld pe_y(ix), a
+
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion
@@ -310,17 +315,17 @@ enemy_randomGoal:
 
 
 
-   ;; 'DEBUG'
-   ld    de, #0xC000          ;;Comienzo memoria de video
-   ld     c, en_g_x(ix)       ;; C = Entity X
-   ld     b, en_g_y(ix)    ;; B = Entity Y
-   call cpct_getScreenPtr_asm
-   ;; SIN SPRITE
-   ex    de,   hl             ;; Apunta a la posicion x,y
-   ld     a,   #0xEE          ;; Código de color
-   ld     c,   #1             ;; Ancho
-   ld     b,   #4             ;; Alto
-   call cpct_drawSolidBox_asm
+   ; ;; 'DEBUG'
+   ; ld    de, #0xC000          ;;Comienzo memoria de video
+   ; ld     c, en_g_x(ix)       ;; C = Entity X
+   ; ld     b, en_g_y(ix)    ;; B = Entity Y
+   ; call cpct_getScreenPtr_asm
+   ; ;; SIN SPRITE
+   ; ex    de,   hl             ;; Apunta a la posicion x,y
+   ; ld     a,   #0xEE          ;; Código de color
+   ; ld     c,   #1             ;; Ancho
+   ; ld     b,   #4             ;; Alto
+   ; call cpct_drawSolidBox_asm
 
 
 
@@ -433,6 +438,17 @@ enemy_checkGoal:
          ld en_av_l(ix), l          ;; -- av = (av + avI)
          ld en_av_h(ix), h          ;; |
    end_if:
+
+
+   ld a, en_x(ix)
+   add en_vx(ix)
+   ld en_x(ix), a
+
+   ld a, en_y(ix)
+   add en_vy(ix)
+   ld en_y(ix), a
+
+
    ret
 
 
