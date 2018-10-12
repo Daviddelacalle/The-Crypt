@@ -79,14 +79,6 @@ ret
 ; Clears the sprite (squeare now)
 ;==================================
 dw_clear::
-    ld b, e_x(ix)       ;; Guardo la posicion actual en BE'
-    ld e, e_y(ix)
-    exx
-
-    ld a, ppe_x(ix)     ;; Cargo en la posicion de hace 2 frames, para borrarla
-    ld e_x(ix), a
-    ld a, ppe_y(ix)
-    ld e_y(ix), a
 
     ld  a, e_col(ix)
     ex af, af'            ;'
@@ -96,14 +88,6 @@ dw_clear::
     ex af, af'            ;'
     ld e_col(ix), a
 
-    exx             ;; Restaura la posicion original
-    ld e_x(ix), b
-    ld e_y(ix), e
-
-    ld a, pe_x(ix)  ;; Copio la posicion del frame anterior, a la posicion de hace 2 frames
-    ld ppe_x(ix), a
-    ld a, pe_y(ix)
-    ld ppe_y(ix), a
  ret
 
 ;;======================================================================

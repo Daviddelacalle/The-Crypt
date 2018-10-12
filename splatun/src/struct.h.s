@@ -5,8 +5,6 @@
 ;; Entidad drawable
 .macro DefineDrawableEnt _name, _x, _y, _w, _h
 _name:
-   .db   #0, #0
-   .db   #0, #0
    .db   _x, _y      ;; Posicion    (x,y)
    .db   _w, _h      ;; Dimensiones (w,h)
 .endm
@@ -49,13 +47,11 @@ e_size = . - (_name)
 ;;;;;;;;;;;;;;;;;;;
 ;; Constantes de las entidades hero/enemy
 ;;;;;;;;;;;;;;;;;;;
- ppe_x = 0    ppe_y = 1
-  pe_x = 2     pe_y = 3
-   e_x = 0+4      e_y = 1+4
-   e_w = 2+4      e_h = 3+4
-  e_vx = 4+4     e_vy = 5+4
- e_col = 6+4
-e_up_l = 7+4   e_up_h = 8+4
+   e_x = 0      e_y = 1
+   e_w = 2      e_h = 3
+  e_vx = 4     e_vy = 5
+ e_col = 6
+e_up_l = 7   e_up_h = 8
 
 ;;-----------------------------------------------------------------------------------------;;
 ;; Entidad bullet
@@ -87,11 +83,11 @@ _name:
 ;;;;;;;;;;;;;;;;;;;
 ;; Constantes de las entidades bullet
 ;;;;;;;;;;;;;;;;;;;
-    b_x = 0+4      b_y = 1+4
-    b_w = 2+4      b_h = 3+4
-   b_vx = 4+4     b_vy = 5+4
-  b_col = 6+4  b_alive = 7+4
- b_up_l = 8+4   b_up_h = 9+4
+    b_x = 0      b_y = 1
+    b_w = 2      b_h = 3
+   b_vx = 4     b_vy = 5
+  b_col = 6  b_alive = 7
+ b_up_l = 8   b_up_h = 9
 
 
 
@@ -140,23 +136,22 @@ _name:
  ;;;;;;;;;;;;;;;;;;;
  ;; Constantes de las entidades hero/enemy
  ;;;;;;;;;;;;;;;;;;;
-       ppe_x = 0    ppe_y = 1
-       pe_x = 2     pe_y = 3
-      en_x = 0+4         en_y = 1+4
-      en_w = 2+4         en_h = 3+4
-     en_vx = 4+4        en_vy = 5+4
-    en_col = 6+4
-   en_up_l = 7+4      en_up_h = 8+4
- en_g_flag = 9+4
+
+      en_x = 0         en_y = 1
+      en_w = 2         en_h = 3
+     en_vx = 4        en_vy = 5
+    en_col = 6
+   en_up_l = 7      en_up_h = 8
+ en_g_flag = 9
  ;;------------------------------BRESENHAM
-    en_g_x = 10+4      en_g_y = 11+4
-   en_dX_l = 12+4     en_dX_h = 13+4
-   en_dY_l = 14+4     en_dY_h = 15+4
-  en_incYr = 16+4    en_incXr = 17+4
-   en_av_l = 18+4     en_av_h = 19+4
-  en_avR_l = 20+4    en_avR_h = 21+4
-  en_avI_l = 22+4    en_avI_h = 23+4
-en_flagVel = 24+4
+    en_g_x = 10      en_g_y = 11
+   en_dX_l = 12     en_dX_h = 13
+   en_dY_l = 14     en_dY_h = 15
+  en_incYr = 16    en_incXr = 17
+   en_av_l = 18     en_av_h = 19
+  en_avR_l = 20    en_avR_h = 21
+  en_avI_l = 22    en_avI_h = 23
+en_flagVel = 24
 
 
 

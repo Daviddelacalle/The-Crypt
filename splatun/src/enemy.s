@@ -117,11 +117,6 @@ enemy_init:
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
-   ld a, en_x(ix)
-   ld pe_x(ix), a
-   ld a, en_y(ix)
-   ld pe_y(ix), a
-
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion

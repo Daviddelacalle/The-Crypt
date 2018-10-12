@@ -27,15 +27,6 @@ DefineEntity hero, #40, #50, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 ;;======================================================================
 
 
-hero_init::
-    ld ix, #hero
-    ld a, e_x(ix)
-    ld pe_x(ix), a
-    ld ppe_x(ix), a
-    ld a, e_y(ix)
-    ld pe_y(ix), a
-    ld ppe_y(ix), a
-ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DIBUJADO DE LA ENTIDAD HERO
@@ -53,11 +44,6 @@ hero_update::
     ld    ix,   #hero   ; Se puede borrar si hero es el ultimo en hacer dro
     ld e_vx(ix), #0
     ld e_vy(ix), #0
-
-    ld a, e_x(ix)
-    ld pe_x(ix), a
-    ld a, e_y(ix)
-    ld pe_y(ix), a
 
     call cpct_scanKeyboard_asm
 

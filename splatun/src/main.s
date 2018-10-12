@@ -34,11 +34,10 @@
     ld  bc,  #0x4000 - 1
     ldir
 
-    call hero_init
 
     ld hl, #_g_000
-    ld c, #20
-    ld b, #25
+    ld c, #16
+    ld b, #16
     ld de, #29
     call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm
@@ -62,14 +61,14 @@ _main::
         ;; CLIAR
         ;call bullet_clear
         ;call obs_clear
-        call enemy_clear_ALL
-        call hero_clear
+        ;call enemy_clear_ALL
+        ;call hero_clear
 
 
         ;; DRO
+        call bullet_inputs
         call drawMap
-        ;call bullet_inputs
-        ;call bullet_draw
+        call bullet_draw
         ;call obs_draw
         call enemy_draw_ALL
         call hero_draw
