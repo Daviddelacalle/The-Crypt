@@ -5,8 +5,6 @@
 
 CameraMinX::  .db #0
 CameraMinY::  .db #0
-OffsetX::     .db #0
-OffsetY::     .db #0
 
 map_ptr:    .dw #_nivel1
                 ;   X    Y     W     H       VX     VY    COL
@@ -23,13 +21,19 @@ obs_clear::
     jp dw_clear
 
 ;========================================================================;
-;   Inreases ptr to map
-;   Input: DE = Incremento
+;   Inreases ptr for the map
+;   Input:  DE => Incremento
+;            B => Incremento de CameraMinX/Y
+;           HL => Puntero a CameraMinX/Y
 ;========================================================================;
 inc_map::
-    ld hl, (map_ptr)
-    add hl, de
+    add b
+    ld (hl), a              ;; Incremento el min de la camara
+
+    ld hl, (map_ptr)        ;; Cambio el puntero del mapa
+    add hl, de              ;; sumándole lo que le hay pasado en DE
     ld (map_ptr), hl
+
 ret
 
 ;========================================================================;
