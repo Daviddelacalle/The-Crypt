@@ -35,7 +35,7 @@ DefineEnemy enemy1, #1, #2, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
-
+ptr_map:       .dw #_nivel1   ;; Puntero al array de id de tiles que forman el mapa
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PUBLICAS
@@ -148,7 +148,7 @@ enemy_randomGoal:
    ld    (flag_move), a          ;; Lo actualizo
    ret   nz                      ;; Si no ha llegado a 0 hace ret
 
-   ld    a, #10                  ;; Inicio de nuevo el contador para despues
+   ld    a, #1                  ;; Inicio de nuevo el contador para despues
    ld (flag_move), a
 
    ;;RESET DE LOS VALORES
@@ -318,7 +318,7 @@ enemy_randomGoal:
 
 
 
-   ; ;; 'DEBUG'
+;; <DEBUG>
    ; ld    de, #0xC000          ;;Comienzo memoria de video
    ; ld     c, en_g_x(ix)       ;; C = Entity X
    ; ld     b, en_g_y(ix)    ;; B = Entity Y
@@ -329,6 +329,7 @@ enemy_randomGoal:
    ; ld     c,   #1             ;; Ancho
    ; ld     b,   #4             ;; Alto
    ; call cpct_drawSolidBox_asm
+;; </DEBUG>
 
 
 
@@ -337,7 +338,8 @@ enemy_randomGoal:
    ld en_up_h(ix), h
    ld en_up_l(ix), l
 
-   jp enemy_checkGoal
+   ret
+   ;;jp enemy_checkGoal
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CHECKEA SI HA LLEGADO A SU DESTINO
@@ -442,16 +444,56 @@ enemy_checkGoal:
          ld en_av_h(ix), h          ;; |
    end_if:
 
+   ;; Primero hay que comprobar si la posicion
+   ;; a la que se va a mover NO ES UN OBSTACULO
+   ;; - OBSTACULO = EL BIT MAS SIGNIFICATIVO ES 0 (por ahora)
 
-   ld a, en_x(ix)
-   add en_vx(ix)
-   ld en_x(ix), a
+   ;; Guardo en C,A (x,y) para las comprobaciones
+   ld a, en_y(ix)          ;; Guardo posicion Y nueva en A
+   add en_vy(ix)           ;; |
 
-   ld a, en_y(ix)
-   add en_vy(ix)
-   ld en_y(ix), a
+   ;; Miro en el array del mapa comprobando cada tile
+   ld    l,    a        ;; L = A \
+   ld    h,    #0       ;; H = 0 | -> HL = A
 
+   ld    c,    a        ;; C = A = enemy_y
+   ld    b,    #0       ;; B = 0 ----------------> BC = A
 
+   ld    d,    #29      ;; Multiplicar por 30
+   loop_mult_y:
+      add hl, bc        ;; HL += BC
+      dec d             ;; D--
+   jr nz, loop_mult_y
+
+   ex    de,   hl          ;; DE = Aumento 'vertical' del array
+
+   ld    hl, (ptr_map)     ;; HL apunta a nivel1
+   add   hl, de            ;; HL + incremento en vertical
+
+   ld    a,    en_x(ix)    ;; |
+   add en_vx(ix)           ;; E  = Aumento 'horizontal' del array
+   ld    e,    a
+   ld    d,    #0          ;; DE = Aumento 'horizontal' del array
+   add   hl, de
+
+   ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
+   bit 2, (hl)
+   jr nz, no_colision       ;; SI EL BIT 3 ES 1 -> HAY COLISION
+      ld en_vx(ix),  #0          ;; Pongo a 0 -> RESET
+      ld en_vy(ix),  #0          ;; Pongo a 0 -> RESET
+
+      ld hl, #enemy_randomGoal      ;; Vuelvo a cambiar el update del enemigo
+      ld en_up_h(ix), h
+      ld en_up_l(ix), l
+      ret
+   no_colision:
+   ld a, en_x(ix)          ;; Actualizo posicion en X
+   add en_vx(ix)           ;; |
+   ld en_x(ix), a          ;; x = x + vx
+
+   ld a, en_y(ix)          ;; Actualizo posicion en Y
+   add en_vy(ix)           ;; |
+   ld en_y(ix), a          ;; y = y + vy
    ret
 
 
