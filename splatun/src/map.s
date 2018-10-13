@@ -34,6 +34,7 @@ inc_map::
     add hl, de              ;; sumándole lo que le hay pasado en DE
     ld (map_ptr), hl
 
+    call update_cam
 ret
 
 ;========================================================================;
