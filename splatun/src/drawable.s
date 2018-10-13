@@ -29,6 +29,14 @@ save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
 ;; FUNCIONES PUBLICAS
 ;;======================================================================
 ;;======================================================================
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ACTUALIZA LAS COORDENADAS MAXIMAS Y MINIMAS DE LA CAMARA
+;;            PARA EL DIBUJADO DE LOS ENEMIGOS
+;; ____________________________________________________________________
+;; ENTRADA:    E -> Incremento del mapa para el dibujado [1,-1,30,-30]
+;; DESTRUYE:   A
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 update_cam::
    ;; Check E
    ld a, e
@@ -131,6 +139,18 @@ dw_draw::
    ld l, e_x(ix)           ;; L = X
    ld h, e_y(ix)           ;; H = Y
 
+   ;; ============================================================== ;;
+   ;;                  SOBRE EL OFFSET DE LA CAMARA                  ;;
+   ;; ______________________________________________________________ ;;
+   ;; La camara empieza con el borde arriba-izquierda a (0,0)        ;;
+   ;; Si la camara es movida una vez hacia la derecha                ;;
+   ;; entonces el offset offset sube a (1,1).                        ;;
+   ;; - La posicion de comprobación de coordenadas se hace con esto  ;;
+   ;; - Hay que restarle este offset a las posiciones en tiles       ;;
+   ;;   de la entidad que se le pase en IX                           ;;
+   ;; ============================================================== ;;
+
+   ;; HAY QUE COMENTAR CABRONES!! @dani @dd
 
    ;; Hay offset en X?
    ld a, (cam_min)
@@ -146,11 +166,12 @@ dw_draw::
    add   h
    ld    h,    a        ;; H tiene la coordenada Y corregida
    no_offset_y:
-   call tile_a_mapa
+   call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
 
    jr sigue_con_el_dro
    normal_dro:
 
+   ;; Aqui solo entra si las coordenadas de la entidad IX NO ESTAN EN TILES
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
    ld     c,   a                        ;; x  [0-79]
 
@@ -200,9 +221,15 @@ dw_clear::
 ;;======================================================================
 ;;======================================================================
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PASA LAS COORDENADAS DE TILE A COORDENADAS DE MAPA
-;; ENTRADA:    L -> Coordenada en X
-;;             H -> Coordenada en Y
+;; __________________________________________________
+;; ENTRADA:    L -> Coordenada de TILE en X
+;;             H -> Coordenada de TILE en Y
+;; SALIDA:     C -> Coordenada de MAPA en X
+;;             B -> Coordenada de MAPA en Y
+;; DESTRUYE:   A,D,BC
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 tile_a_mapa:
    ;; Paso Y
    ld    a, h           ;; A = Y
