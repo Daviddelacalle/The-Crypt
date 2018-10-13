@@ -47,4 +47,3 @@ drawMap::
     ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret
-

@@ -51,12 +51,18 @@ _main::
     ld sp, #0x8000
 
     init
+    call drawMenu
 
-    call drawMap
     ;call enemy_create
 
+    loop_load::
+
+     call load_control
+     jr loop_load
+     map_start::
+        call drawMap
     ;; Comienza el bucle del juego
-    loop:
+    loop::
 
         ;; CLIAR
         ;call bullet_clear
