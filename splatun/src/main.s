@@ -57,10 +57,11 @@ _main::
 
     loop_load::
 
-     call load_control
-     jr loop_load
-     map_start::
-        call drawMap
+      call load_control
+      jr loop_load
+      map_start::
+      call drawMap
+
     ;; Comienza el bucle del juego
     loop::
 
@@ -84,7 +85,5 @@ _main::
         call bullet_update
 
         call cpct_waitVSYNC_asm
-
         call swapBuffers
-
 jr loop

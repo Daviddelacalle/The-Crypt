@@ -13,9 +13,9 @@ TODO:
    [✔]   Doble buffer
 
    FULL GAME MECHANIKS:
-   [ ]   Que mueran los enemigos
-   [ ]   Colisiones de las balas
-   [ ]   Reinicio de partida
+   [ ]   Que mueran los enemigos    DD
+   [ ]   Colisiones de las balas    YO
+   [ ]   Reinicio de partida        DANI
    [ ]   IA
 
    ESTÉTICO:

@@ -21,12 +21,8 @@ DefineEnemy enemy_copy, 39, 50, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0
 
 ;; ANCHO:   0 - 79
 ;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
-; x_range  = 79
-; y_range  = 199
 x_range = 29
 y_range = 29
-; var_r_max    = 20
-; var_r_min   = 10
 var_r_max   = 6
 var_r_min   = 5
 vector_init:                  ;; Etiqueta de inicio del vector

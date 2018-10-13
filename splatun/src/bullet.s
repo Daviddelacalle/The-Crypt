@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 1
+vector_size = 5
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 vector_index:  .dw #0x0000
@@ -132,6 +132,7 @@ bullet_inputs::
    jp nz, bullet_init               ;; Si A == 0: NO SE HA PULSADO NINGUNA TECLA DE DISPARO
 
    jp flag_shoot_off                ;; Volver flag_shoot a 0
+ret
 
 ;;======================================================================
 ;;======================================================================
