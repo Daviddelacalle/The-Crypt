@@ -69,7 +69,6 @@ _main::
         call bullet_inputs
         call drawMap
         call bullet_draw
-        ;call obs_draw
         call enemy_draw_ALL
         call hero_draw
 
