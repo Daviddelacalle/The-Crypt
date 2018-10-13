@@ -2,7 +2,6 @@ IMPORTANTE!: HACER make cleanall ANTES DE HACER COMMIT
 
 NOTA:
    [✔] -> ACABADO
-   [-] -> EN PROCESO
    [?] -> DUDA
 
 TODO:
@@ -10,15 +9,17 @@ TODO:
    [✔]   Scroll mapa                      -> FALTA OPTIMIZACION
    [✔]   Disparos                         -> ARREGLAR DIBUJADO
    [✔]   Movimiento personajes
+   [✔]   Colisiones (mapa y obstaculos)   DANNY
+   [✔]   Doble buffer
 
    FULL GAME MECHANIKS:
-   [-]   Colisiones (mapa y obstaculos)   DANNY
-   [-]   Enemigos en general              PABLO
-   [-]   Menú                             DD
-   [?]   Doble buffer
+   [ ]   Que mueran los enemigos
+   [ ]   Colisiones de las balas
    [ ]   Reinicio de partida
+   [ ]   IA
 
    ESTÉTICO:
+   [ ]   Menú
    [ ]   HUD
    [ ]   Sprites
    [ ]   Música
