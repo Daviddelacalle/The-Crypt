@@ -3,8 +3,8 @@
 
 .include "struct.h.s"
 
-CameraMinX::  .db #0
-CameraMinY::  .db #0
+CameraMinX::  .db #8
+CameraMinY::  .db #32
 
 map_ptr:    .dw #_nivel1
                 ;   X    Y     W     H       VX     VY    COL
@@ -42,8 +42,9 @@ ret
 ;========================================================================;
 drawMap::
     ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
+    inc a
     ld h, a
-    ld l, #0
+    ld l, #0x48
     ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret

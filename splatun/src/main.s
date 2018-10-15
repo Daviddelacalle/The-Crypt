@@ -12,7 +12,20 @@
     ;call cpct_setPALColour_asm
 .endm
 
-; 0x40
+INIT_X == #40
+INIT_Y == #60
+
+VIEWPORT_WIDTH == 16
+VIEWPORT_HEIGHT == 16
+ScreenSizeX = 16*4
+ScreenSizeY = 16*8
+;X = Width * 4 / 4 <~ Múltiplo de 4
+;Y = Height * 8 / 4 <~ Múltiplo de 6
+
+LEFT    == 8+12
+RIGHT   == 8+ScreenSizeX-12
+TOP     == 30+30
+BOTTOM  == 126
 
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
@@ -36,8 +49,8 @@
 
 
     ld hl, #_g_0
-    ld c, #20        ;; Ancho
-    ld b, #20        ;; Alto
+    ld c, #VIEWPORT_WIDTH        ;; Ancho
+    ld b, #VIEWPORT_HEIGHT        ;; Alto
     ld de, #30
     call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm

@@ -22,7 +22,7 @@ CENTER_Y = 70
 
 hero_x = .
 hero_y = . + 1
-DefineEntity hero, #40, #70, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+DefineEntity hero, #INIT_X, #INIT_Y, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 
 ;;======================================================================
 ;;======================================================================
@@ -116,12 +116,12 @@ hero_update::
     jr z, a_no_pulsada
 
         ld a, e_x(ix)                       ;; Pruebo la primera condicion
-        cp #CENTER_X
+        cp #LEFT
         jr nz, move_the_character_A         ;; Si no estoy en el centro, muevo el jugador
 
         ld hl, #CameraMinX                  ;; Pruebo la segunda condicion
         ld a, (hl)                          ;; Lo cargo en HL porque la funcion inc_map lo necesita
-        cp #0                               ;; Borde izquierdo (0)
+        cp #8                               ;; Borde izquierdo (0)
         jr nz, move_the_map_A               ;; Si se ha pulsado la A y no estoy en el borde
                                             ;; muevo el mapa
         move_the_character_A:
@@ -143,12 +143,12 @@ hero_update::
         jr z, d_no_pulsada
 
             ld a, e_x(ix)
-            cp #CENTER_X
+            cp #RIGHT
             jr nz, move_the_character_D
 
             ld hl, #CameraMinX
             ld a, (hl)
-            cp #40
+            cp #64
             jr nz, move_the_map_D
 
             move_the_character_D:
@@ -167,16 +167,16 @@ hero_update::
         jr z, w_no_pulsada
 
             ld a, e_y(ix)
-            cp #CENTER_Y
+            cp #TOP
             jr nz, move_the_character_W
 
             ld hl, #CameraMinY
             ld a, (hl)
-            cp #0
+            cp #32
             jr nz, move_the_map_W
 
             move_the_character_W:
-                ld b, #-4
+                ld b, #-6
                 ld e_vy(ix), b
 
             jr s_no_pulsada
@@ -195,16 +195,16 @@ hero_update::
         jr z, s_no_pulsada
 
             ld a, e_y(ix)
-            cp #CENTER_Y
+            cp #BOTTOM
             jr nz, move_the_character_S
 
             ld hl, #CameraMinY
             ld a, (hl)
-            cp #80
+            cp #144
             jr nz, move_the_map_S
 
             move_the_character_S:
-                ld b, #4
+                ld b, #6
                 ld e_vy(ix), b
 
             jr s_no_pulsada

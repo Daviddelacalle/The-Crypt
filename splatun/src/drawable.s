@@ -183,7 +183,7 @@ dw_draw::
 
    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
    ld d, a
-   ld e, #0
+   ld e, #00
 
    call cpct_getScreenPtr_asm
    ;; SIN SPRITE
