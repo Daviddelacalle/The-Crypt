@@ -89,7 +89,7 @@ enemy_update_ALL::
 ;; DESTRUYE:   A, DE, IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_search:
-   ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
+   ld    ix,   #vector_init      ;; IX apunta al inicio de vector de enemigos (a la primera entidad)
    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
    search_loop:
       ld     a,   0(ix)                ;; Compruebo que no he llegado al final del vector
@@ -444,36 +444,7 @@ enemy_checkGoal:
    ;; a la que se va a mover NO ES UN OBSTACULO
    ;; - OBSTACULO = EL BIT MAS SIGNIFICATIVO ES 0 (por ahora)
 
-   ;; Guardo en C,A (x,y) para las comprobaciones
-   ld a, en_y(ix)          ;; Guardo posicion Y nueva en A
-   add en_vy(ix)           ;; |
-
-   ;; Miro en el array del mapa comprobando cada tile
-   ld    l,    a        ;; L = A \
-   ld    h,    #0       ;; H = 0 | -> HL = A
-
-   ld    c,    a        ;; C = A = enemy_y
-   ld    b,    #0       ;; B = 0 ----------------> BC = A
-
-   ld    d,    #29      ;; Multiplicar por 30
-   loop_mult_y:
-      add hl, bc        ;; HL += BC
-      dec d             ;; D--
-   jr nz, loop_mult_y
-
-   ex    de,   hl          ;; DE = Aumento 'vertical' del array
-
-   ld    hl, (ptr_map)     ;; HL apunta a nivel1
-   add   hl, de            ;; HL + incremento en vertical
-
-   ld    a,    en_x(ix)    ;; |
-   add en_vx(ix)           ;; E  = Aumento 'horizontal' del array
-   ld    e,    a
-   ld    d,    #0          ;; DE = Aumento 'horizontal' del array
-   add   hl, de
-
-   ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
-   bit 2, (hl)
+   call checkTileCollision
    jr nz, no_colision       ;; SI EL BIT 3 ES 1 -> HAY COLISION
       ld en_vx(ix),  #0          ;; Pongo a 0 -> RESET
       ld en_vy(ix),  #0          ;; Pongo a 0 -> RESET
@@ -519,7 +490,45 @@ enemy_get_negative:
       ld    l,    a          ;; L = dY --> HL = FF**, donde ** = dY
    ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DETERMINA SI HA COLISIONADO CON ALGUN TILE CON COLISION DEL MAPA
+;; NOTA:       Aplicar una comprobacion de z despues del call para comprobar colision
+;; ___________________________________________________________________________________
+;; ENTRADA:    IX -> Entidad a comprobar con COORDENADAS en TILES
+;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E CASI TOTALE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+checkTileCollision::
+   ;; Guardo en C,A (x,y) para las comprobaciones
+   ld a, en_y(ix)          ;; Guardo posicion Y nueva en A
+   add en_vy(ix)           ;; |
 
+   ;; Miro en el array del mapa comprobando cada tile
+   ld    l,    a        ;; L = A \
+   ld    h,    #0       ;; H = 0 | -> HL = A
+
+   ld    c,    a        ;; C = A = enemy_y
+   ld    b,    #0       ;; B = 0 ----------------> BC = A
+
+   ld    d,    #29      ;; Multiplicar por 30
+   loop_mult_y:
+      add hl, bc        ;; HL += BC
+      dec d             ;; D--
+   jr nz, loop_mult_y
+
+   ex    de,   hl          ;; DE = Aumento 'vertical' del array
+
+   ld    hl, (ptr_map)     ;; HL apunta a nivel1
+   add   hl, de            ;; HL + incremento en vertical
+
+   ld    a,    en_x(ix)    ;; |
+   add en_vx(ix)           ;; E  = Aumento 'horizontal' del array
+   ld    e,    a
+   ld    d,    #0          ;; DE = Aumento 'horizontal' del array
+   add   hl, de
+
+   ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
+   bit 2, (hl)
+   ret
 
 
 

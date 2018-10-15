@@ -71,7 +71,6 @@ _main::
         ;call enemy_clear_ALL
         ;call hero_clear
 
-
         ;; DRO
         call bullet_inputs
         call drawMap

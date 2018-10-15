@@ -167,6 +167,7 @@ dw_draw::
    ld    h,    a        ;; H tiene la coordenada Y corregida
    no_offset_y:
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
+   ld (save_dw_x), bc   ;; Lo guardo en memoria
 
    jr sigue_con_el_dro
    normal_dro:
@@ -235,10 +236,10 @@ tile_a_mapa:
    ld    a, h           ;; A = Y
    ld    c, #7          ;; Iteraciones del loop
    ld    d, a           ;; D = Y
-   loop_y:
+   loop_y_tm:
       add a, d          ;; A = A + D = A + A_inicial
       dec c             ;; C--
-   jr nz, loop_y
+   jr nz, loop_y_tm
 
    ld b, a              ;; En B guardo la Y
 
@@ -246,17 +247,55 @@ tile_a_mapa:
    ld    a, l           ;; ======================= ;;
    ld    c, #3          ;;                         ;;
    ld    d, a           ;; Hago lo mismo que antes ;;
-   loop_x:              ;;      pero con la X      ;;
+   loop_x_tm:           ;;      pero con la X      ;;
       add a, d          ;;                         ;;
       dec c             ;; ======================= ;;
-   jr nz, loop_x
+   jr nz, loop_x_tm
 
    ld c, a              ;; En C guardo la X
-
-   ld (save_dw_x), bc   ;; Lo guardo en memoria
    ret
 
+;; Misma ejecucion que tile_a_mapa
+mapa_a_tile::
+   ;; Paso Y
+   ld    a, h           ;; A = Y
+   ld    d, #8          ;; D = 8 -> Tamanyo en Y de cada tile en bytes
+   ld    c, #0          ;; C = 0
+   loop_y_mt:
+      cp d
+      jr c, end_loop_y_mt
 
+      inc c
+      sub d             ;; A = A - D
+   jr nc, loop_y_mt
+   jr z, loop_y_mt
+   end_loop_y_mt:
+   ld    a,    (cam_min+1)
+   add   a,    c
+   ld    b,    a              ;; En B guardo la Y
+
+   ;; Paso Y
+   ld    a, l           ;; A = Y
+   ld    d, #4          ;; D = 4 -> Tamanyo en X de cada tile en bytes
+   ld    c, #0          ;; C = 0
+   loop_x_mt:
+      cp d
+      jr c, end_loop_x_mt
+
+      inc c
+      sub d             ;; A = A - D
+   jr nc, loop_x_mt
+   jr z, loop_x_mt
+   end_loop_x_mt:
+   ;; En C ya tengo guardada la X debido al bucle
+   ld    a,    (cam_min)
+   add   a,    c
+   ld    c,    a              ;; En B guardo la Y
+
+   ;; LOS VALORES DEL OFFSET YA ESTA ANYADIDOS!!!
+
+
+   ret
 
 
 
