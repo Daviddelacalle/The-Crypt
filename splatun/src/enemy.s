@@ -28,10 +28,10 @@ y_range = 29
 ; var_r_max    = 20
 ; var_r_min   = 10
 var_r_max   = 6
-var_r_min   = 5
+var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #1, #2, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #4, #4, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
@@ -152,45 +152,46 @@ enemy_randomGoal:
    ld (flag_move), a
 
    ;;RESET DE LOS VALORES
-   ld en_dX_l(ix), #0      ;; dX
-   ld en_dX_h(ix), #0      ;; \
-   ld en_dY_l(ix), #0      ;; dY
-   ld en_dY_h(ix), #0      ;; \
-   ld en_incXr(ix), #0     ;; IncXr
-   ld en_incYr(ix), #0     ;; IncYr
-   ld en_vx(ix),  #0       ;; vx = IncXi
-   ld en_vy(ix),  #0       ;; vy = IncYi
-   ld en_av_l(ix), #0      ;; av
-   ld en_av_h(ix), #0      ;; \
-   ld en_avR_l(ix), #0     ;; avR
-   ld en_avR_h(ix), #0     ;; \
-   ld en_avI_l(ix), #0     ;; avI
-   ld en_avI_h(ix), #0     ;; \
+  ;ld en_dX_l(ix),  #0      ;; dX
+  ;ld en_dX_h(ix),  #0      ;; \
+  ;ld en_dY_l(ix),  #0      ;; dY
+  ;ld en_dY_h(ix),  #0      ;; \
+   ld en_incXr(ix), #0      ;; IncXr
+   ld en_incYr(ix), #0      ;; IncYr
+   ld en_vx(ix),    #0      ;; vx = IncXi
+   ld en_vy(ix),    #0      ;; vy = IncYi
+  ;ld en_av_l(ix),  #0      ;; av
+  ;ld en_av_h(ix),  #0      ;; \
+  ;ld en_avR_l(ix), #0      ;; avR
+  ;ld en_avR_h(ix), #0      ;; \
+  ;ld en_avI_l(ix), #0      ;; avI
+  ;ld en_avI_h(ix), #0      ;; \
 
 
 
    ;; PARTE 1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;; X
    get_random_x:
-      call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
-      ld    a,    l                          ;; Cargo en A el random que se ha cargado en L
-      cp    #x_range                         ;; Miro que este dentro del rango 0-80 (dec)
 
-      sub   en_x(ix)                         ;; Resto la posicion actual del enemigo
-      jr    nc, no_carry_x
-         cpl
-         inc a
-      no_carry_x:
-      ;; Ahora tengo la distancia arreglada
-      cp    #var_r_max
-   jr    nc, get_random_x                    ;; Si no esta dentro del rango max, lo vuelve a buscar
-      cp    #var_r_min
-   jr    c, get_random_x                     ;; Si esta dentro del rango min, lo vuelve a buscar
+    ld a, en_x(ix)              ;; Cojo la X actual del jugador
+    sub #var_r_max              ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
+    ld b, a
+    jr nc, not_negative_x       ;; Si el mínimo es menor que 0
+        ld b, #0                ;; Se pone a 0
+    not_negative_x:
 
-   ld en_g_x(ix), l                          ;; Cargo la posicion random en el enemigo
+    ld a, en_x(ix)              ;; Cojo la X actual de nuevo
+    add #var_r_max              ;; Le sumo la distancia maxima para sacar el maximo
+    ld c, a
+    cp #MAP_WIDTH               ;; Si el maximo es mayor que el ancho del mapa
+    jr c, not_over_Map_Max_x
+        ld c, #MAP_WIDTH        ;; Lo pongo al ancho total del mapa
+    not_over_Map_Max_x:
+    call getRandomInRange       ;; Genero un numero aleatorio entre MIN y MAX
+
+   ld en_g_x(ix), a             ;; Cargo la posicion random en el enemigo
 
    ;; Saco vector VX del enemigo
-   ld    a,    l              ;; Posicion X del objetivo
    sub   en_x(ix)             ;; Resto la posicion actual del enemigo
    ld    en_dX_l(ix), a       ;; GUARDO el valor de dX
    jr c, vx_neg               ;; Si C==1, la distancia es negativa
@@ -205,27 +206,25 @@ enemy_randomGoal:
       ld en_dX_h(ix), a          ;; Ya que es negativo -> FF**
    continua_y:
 
-   ;; Y
-   get_random_y:
-      call cpct_getRandom_mxor_u8_asm        ;; Lo devuelve en L
-      ld    a,    l                          ;; Cargo en A el random que se ha cargado en L
-      cp    #y_range                         ;; Miro que este dentro del rango 0-200 (dec)
+   ld a, en_y(ix)               ;; Cojo la Y actual del jugador
+   sub #var_r_max               ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
+   ld b, a
+   jr nc, not_negative_y        ;; Si el mínimo es menor que 0
+       ld b, #0                 ;; Lo pongo a 0
+   not_negative_y:
 
-      sub   en_y(ix)                         ;; Resto la posicion actual del enemigo
-      jr    nc, no_carry_y
-         cpl
-         inc a
-      no_carry_y:
-      ;; Ahora tengo la distancia arreglada
-      cp    #var_r_max
-   jr    nc, get_random_y                    ;; Si no esta dentro del rango, lo vuelve a buscar
-      cp    #var_r_min
-   jr    c, get_random_y                     ;; Si esta dentro del rango min, lo vuelve a buscar
+   ld a, en_y(ix)               ;; Cojo la Y actual de nuevo
+   add #var_r_max               ;; Le sumo la distancia maxima para sacar el maximo
+   ld c, a
+   cp #MAP_HEIGHT               ;; Si el maximo es mayor que el ancho del mapa
+   jr c, not_over_Map_Max_y
+       ld c, #MAP_HEIGHT        ;; Lo pongo al ancho total del mapa
+   not_over_Map_Max_y:
+   call getRandomInRange
 
-   ld en_g_y(ix), l                          ;; Cargo la posicion random en el enemigo
+   ld en_g_y(ix), a                          ;; Cargo la posicion random en el enemigo
 
    ;; Saco vector VY del enemigo
-   ld    a,    l                 ;; Posicion Y del objetivo
    sub   a, en_y(ix)             ;; Posicion Y del enemigo
    ld    en_dY_l(ix), a          ;; Guardo el valor para despues
    ;cp    #200                   ;; |
@@ -236,7 +235,7 @@ enemy_randomGoal:
       ld    en_vy(ix), #-1       ;; VY = -1
       cpl                        ;; Invierto bites de A, que guarda la distancia
       inc   a                    ;; Le sumo 1 y entonces -> A = -A
-      ld en_dY_l(ix), a            ;; Lo guardo de nuevo
+      ld en_dY_l(ix), a          ;; Lo guardo de nuevo
       ld    a,    #0x00          ;; | A = 0xFF
       ld en_dY_h(ix), a          ;; Ya que es negativo -> FF**
    continua_fin:
@@ -525,6 +524,25 @@ enemy_get_negative:
 
 
 
+
+;=================================
+; Generates random number in range
+; Input:
+;     B = MIN, C = MAX
+;=================================
+getRandomInRange::
+    exx
+    call cpct_getRandom_mxor_u8_asm
+    ld a, l
+    exx
+    reduce_max:
+    cp c
+    jr c, ensure_min
+    sub c
+    jr reduce_max
+    ensure_min:
+    add b
+ret
 
 
 

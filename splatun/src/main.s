@@ -27,6 +27,8 @@ RIGHT   == 8+ScreenSizeX-12
 TOP     == 30+30
 BOTTOM  == 126
 
+MAP_WIDTH == 30
+MAP_HEIGHT == 30
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
 ;   Load custom palette
@@ -46,7 +48,6 @@ BOTTOM  == 126
     ld  de,  #0x8000 + 1
     ld  bc,  #0x4000 - 1
     ldir
-
 
     ld hl, #_g_0
     ld c, #VIEWPORT_WIDTH        ;; Ancho
@@ -76,13 +77,6 @@ _main::
         call drawMap
     ;; Comienza el bucle del juego
     loop::
-
-        ;; CLIAR
-        ;call bullet_clear
-        ;call obs_clear
-        ;call enemy_clear_ALL
-        ;call hero_clear
-
 
         ;; DRO
         call bullet_inputs
