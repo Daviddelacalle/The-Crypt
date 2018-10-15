@@ -78,10 +78,12 @@ _main::
         call enemy_draw_ALL
         call hero_draw
 
+
         ;; UPDEIT
-        call enemy_update_ALL
+        ;call enemy_update_ALL
         call hero_update
         call bullet_update
+        ; call bullet_check_death
 
         call cpct_waitVSYNC_asm
 

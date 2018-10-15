@@ -13,12 +13,13 @@
 .include "cpctelera.h.s"
 .include "struct.h.s"
 
+
 ;;======================================================================
 ;;======================================================================
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 1
+vector_size = 5
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 vector_index:  .dw #0x0000
@@ -132,7 +133,7 @@ bullet_inputs::
    jp nz, bullet_init               ;; Si A == 0: NO SE HA PULSADO NINGUNA TECLA DE DISPARO
 
    jp flag_shoot_off                ;; Volver flag_shoot a 0
-
+ret
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PRIVADAS
@@ -327,6 +328,8 @@ bullet_checkUpdate:
    add b_vx(ix)                  ;; Le aumento la velocidad en X
    ld  b_x(ix), a                ;; Guardo el dato actualizado
 
+   call bullet_check_death
+
    ld     a,   b_y(ix)           ;; Cargo en A la posicion en Y
    add b_vy(ix)                  ;; Le aumento la velocidad en Y
    ld  b_y(ix), a                ;; Guardo el dato actualizado
@@ -346,17 +349,80 @@ bullet_checkClear:
 ret
 
 
+bullet_check_death::
+  ;;tengo que comparar las variables b_x(ix)/b_y(ix) con la posicion de cada enemigo y ver si coinciden
+
+   call enemy_load
+   loop_bullet:
+   ld a, 0(iy)
+   cp #0xFF
+   ret z
+
+   ld     h, e_y(iy)
+   ld     l, e_x(iy)
+   call tile_a_mapa
+
+   ld     a, b_x(ix)
+   cp c
+   jr nc, check_left ;; si el carry es mayor el numero de cp es mas grande
+        jr check_right
+
+   check_left:
+
+   ld a, c
+   ld    c, b_x(ix)
+   cp c
+   jr c, end_loop_bullet
+        jr check_vertical
 
 
 
+   check_right:
+   ld a, b_x(ix)
+   cp c
+   jr c, end_loop_bullet
+        jr check_vertical
 
 
+   check_vertical:
+
+   ld     a, b_y(ix)
+   cp b
+   jr c, check_down ;; si el carry es mayor el numero de cp es mas grande
+        jr check_up
+
+   check_down:
+   ld a, b_y(ix)
+   add a,#2
+   cp b
+   jr c, end_loop_bullet
+        ld a,#0
+        ld b_alive(ix),a
+        ld e_y(iy),#15
+        ld e_x(iy),#15
+
+        ret
 
 
+   check_up:
 
+   ld a, b
+   add a,#4
+   ld    b, b_y(ix)
+   cp b
+   jr c, end_loop_bullet
+     ld a,#0
+     ld b_alive(ix),a
+     ld e_y(iy),#15
+     ld e_x(iy),#15
+     ret
 
+   end_loop_bullet:
+   call get_enemy_size
+   ld h, #0
+   ld l, a
+   ex de,hl
+   add iy,de
+   jr loop_bullet
 
-
-
-
-
+ret

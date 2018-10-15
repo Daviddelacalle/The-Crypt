@@ -16,7 +16,6 @@
 ;;======================================================================
 enemy_size = en_size           ;; Tamanyo parametrizado
 k_max_enemies = 1
-
 DefineEnemy enemy_copy, 39, 50, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 
 ;; ANCHO:   0 - 79
@@ -32,6 +31,11 @@ var_r_min   = 5
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
 DefineEnemy enemy1, #1, #2, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy2, #1, #15, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy3, #1, #20, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy4, #1, #25, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy5, #1, #8, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
@@ -92,7 +96,7 @@ enemy_update_ALL::
 ;; ENTRADA:    HL -> Puntero a funcion custom
 ;; DESTRUYE:   A, DE, IX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-enemy_search:
+enemy_search::
    ld    ix,   #vector_init      ;; IX apunta al inicio de vector_bullets (a la primera entidad)
    ld    (f_custom), hl          ;; Cargo en el call de abajo la funcion a la que quiero llamar en cada momento determinado
    search_loop:
@@ -523,17 +527,9 @@ enemy_get_negative:
       ld    l,    a          ;; L = dY --> HL = FF**, donde ** = dY
    ret
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   enemy_load::
+      ld    iy,   #vector_init
+  ret
+  get_enemy_size::
+      ld   a, #enemy_size
+  ret

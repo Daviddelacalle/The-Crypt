@@ -21,8 +21,8 @@ back_buffer::   .db 0x80
 cam_min: .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
 cam_max: .db   #20,  #20   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
 
-save_dw_x: .db   #0        ;; Donde guardo las coordenadas X de donde dibujar
-save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
+save_dw_x:: .db   #0        ;; Donde guardo las coordenadas X de donde dibujar
+save_dw_y:: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
 
 ;;======================================================================
 ;;======================================================================
@@ -230,7 +230,7 @@ dw_clear::
 ;;             B -> Coordenada de MAPA en Y
 ;; DESTRUYE:   A,D,BC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-tile_a_mapa:
+tile_a_mapa::
    ;; Paso Y
    ld    a, h           ;; A = Y
    ld    c, #7          ;; Iteraciones del loop
@@ -255,13 +255,3 @@ tile_a_mapa:
 
    ld (save_dw_x), bc   ;; Lo guardo en memoria
    ret
-
-
-
-
-
-
-
-
-
-
