@@ -40,6 +40,9 @@ flag_vy:       .db #0
 flag_shoot:    .db #0                     ;; Solo habra un disparo por cada vez que se pulse cada tecla
 flag_key:      .db #0                     ;; Si ha pulsado alguna de las 4 teclas de disparo, flag_key = 1
 
+k_update_count = 1
+update_count:  .db #k_update_count        ;; Limita el update a cada 2 frames
+
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PUBLICAS
@@ -61,8 +64,18 @@ bullet_draw::
 ;; DESTRUYE: HL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_update::
+   ld    a, (update_count)                ;; ======================== ;;
+   dec   a                                ;;     POR SI AL FINAL      ;;
+   ld    (update_count), a                ;;    SE QUIERE LIMITAR     ;;
+   cp    #1                               ;;  EL UPDATE DE LAS BALAS  ;;
+   ret   z                                ;; ======================== ;;
+
    ld    hl,   #bullet_searchUpdate
-   jp    bullet_search                 ;; Llamada al bucle
+   call    bullet_search                  ;; Llamada al bucle
+
+   ld    a, #k_update_count               ;; REINICIAR EL CONTADOR
+   ld    (update_count), a                ;;       DEL UPDATE
+   ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CLEAR
