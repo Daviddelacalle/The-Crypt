@@ -29,6 +29,10 @@ BOTTOM  == 126
 
 MAP_WIDTH == 30
 MAP_HEIGHT == 30
+
+;decompress_buffer       == 0x040
+;levelMaxSize            = 0x384
+;decompress_buffer_end   = decompress_buffer + levelMaxSize - 1
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
 ;   Load custom palette
@@ -67,7 +71,9 @@ _main::
     init
     call drawMenu
 
-    ;call enemy_create
+    ;ld hl, #_level0_pack_end
+    ;ld de, #decompress_buffer_end
+    ;call cpct_zx7b_decrunch_s_asm
 
     loop_load::
 

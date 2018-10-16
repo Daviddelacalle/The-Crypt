@@ -168,7 +168,6 @@ enemy_randomGoal:
   ;ld en_avI_h(ix), #0      ;; \
 
 
-
    ;; PARTE 1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;; X
    get_random_x:
@@ -199,8 +198,7 @@ enemy_randomGoal:
       jr continua_y
    vx_neg:
       ld    en_vx(ix), #-1       ;; VX = -1
-      cpl                        ;; Invierto bites de A, que guarda la distancia
-      inc   a                    ;; Le sumo 1 y entonces -> A = -A
+      neg
       ld en_dX_l(ix) , a         ;; Lo guardo de nuevo
       ld    a,    #0x00          ;; | A = 0xFF
       ld en_dX_h(ix), a          ;; Ya que es negativo -> FF**
@@ -233,8 +231,7 @@ enemy_randomGoal:
       jr continua_fin
    vy_neg:
       ld    en_vy(ix), #-1       ;; VY = -1
-      cpl                        ;; Invierto bites de A, que guarda la distancia
-      inc   a                    ;; Le sumo 1 y entonces -> A = -A
+      neg
       ld en_dY_l(ix), a          ;; Lo guardo de nuevo
       ld    a,    #0x00          ;; | A = 0xFF
       ld en_dY_h(ix), a          ;; Ya que es negativo -> FF**
@@ -527,8 +524,8 @@ enemy_get_negative:
 
 ;=================================
 ; Generates random number in range
-; Input:
-;     B = MIN, C = MAX
+; Return: A = Random
+; Input: [B = MIN, C = MAX]
 ;=================================
 getRandomInRange::
     exx
