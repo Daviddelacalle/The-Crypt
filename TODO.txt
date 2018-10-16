@@ -9,13 +9,15 @@ TODO:
    [✔]   Scroll mapa                      -> FALTA OPTIMIZACION
    [✔]   Disparos                         -> ARREGLAR DIBUJADO
    [✔]   Movimiento personajes
-   [✔]   Colisiones (mapa y obstaculos)   DANNY
+   [✔]   Colisiones (mapa y obstaculos)
    [✔]   Doble buffer
+   [✔]   Que mueran los enemigos
+   [✔]   Colisiones de las balas
 
    FULL GAME MECHANIKS:
-   [ ]   Que mueran los enemigos
-   [ ]   Colisiones de las balas
-   [ ]   Reinicio de partida
+   [ ]   Aplicar offset en colisiones
+   [ ]   Muerte del personaje
+   [ ]   Reinicio de partida              DANI
    [ ]   IA
 
    ESTÉTICO:

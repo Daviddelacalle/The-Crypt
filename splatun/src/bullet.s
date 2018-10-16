@@ -18,8 +18,11 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 1
+vector_size = 10
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
+
+K_VEL_X = 2
+K_VEL_Y = 4
 
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
@@ -39,6 +42,9 @@ flag_vx:       .db #0
 flag_vy:       .db #0
 flag_shoot:    .db #0                     ;; Solo habra un disparo por cada vez que se pulse cada tecla
 flag_key:      .db #0                     ;; Si ha pulsado alguna de las 4 teclas de disparo, flag_key = 1
+
+k_update_count = 1
+update_count:  .db #k_update_count        ;; Limita el update a cada 2 frames
 
 ;;======================================================================
 ;;======================================================================
@@ -61,8 +67,18 @@ bullet_draw::
 ;; DESTRUYE: HL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_update::
+   ld    a, (update_count)                ;; ======================== ;;
+   dec   a                                ;;     POR SI AL FINAL      ;;
+   ld    (update_count), a                ;;    SE QUIERE LIMITAR     ;;
+   cp    #1                               ;;  EL UPDATE DE LAS BALAS  ;;
+   ret   z                                ;; ======================== ;;
+
    ld    hl,   #bullet_searchUpdate
-   jp    bullet_search                 ;; Llamada al bucle
+   call    bullet_search                  ;; Llamada al bucle
+
+   ld    a, #k_update_count               ;; REINICIAR EL CONTADOR
+   ld    (update_count), a                ;;       DEL UPDATE
+   ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CLEAR
@@ -132,6 +148,7 @@ bullet_inputs::
    jp nz, bullet_init               ;; Si A == 0: NO SE HA PULSADO NINGUNA TECLA DE DISPARO
 
    jp flag_shoot_off                ;; Volver flag_shoot a 0
+ret
 
 ;;======================================================================
 ;;======================================================================
@@ -144,7 +161,7 @@ bullet_inputs::
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyUp_ON:
-   ld a, #-8
+   ld a, #-K_VEL_Y
    ld (flag_vy), a
    ret
 
@@ -154,7 +171,7 @@ keyUp_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyDown_ON:
-   ld a, #8
+   ld a, #K_VEL_Y
    ld (flag_vy), a
    ret
 
@@ -164,7 +181,7 @@ keyDown_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyRight_ON:
-   ld a, #2
+   ld a, #K_VEL_X
    ld (flag_vx), a
    ret
 
@@ -174,7 +191,7 @@ keyRight_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyLeft_ON:
-   ld a, #-2
+   ld a, #-K_VEL_X
    ld (flag_vx), a
    ret
 
@@ -256,6 +273,10 @@ bullet_search:
 bullet_checkDraw:
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
+
+
+
+   ; ld a, #0xAA                   ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
    ret
 
@@ -282,8 +303,14 @@ bullet_checkInit:
    ld    bc,   #bullet_size      ;; Tamanyo de la entidad
    ldir
 
-   ;; Si debo cambiar algo de la entidad, aqui
+
+   ;; DEBO CONSEGUIR UNAS POSICIONES DE TILE DEL HERO
    call hero_get_position        ;; A = hero_x // B = hero_y
+   ; ld l, a                       ;; L = X
+   ; ld h, b                       ;; H = Y
+   ; call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
+
+   ;; Si debo cambiar algo de la entidad, aqui
    ld    b_x(ix), a              ;; Asigno X
    ld    b_y(ix), b              ;; Asigno Y
 
@@ -307,6 +334,16 @@ bullet_searchUpdate:
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
    ret    z                      ;; Si no se ha inicialiado, poco podemos hacer
+
+   ; call checkTileCollision
+   call checkTileCollision_m
+   jr nz, no_tile_collision
+      ld hl, #bullet_death
+      ld b_up_h(ix), h
+      ld b_up_l(ix), l
+   no_tile_collision:
+
+   call bullet_checkBorderCollision
 
    ld l, b_up_l(ix)           ;; Carga el byte bajo en L
    ld h, b_up_h(ix)           ;; Carga el byte alto en H
@@ -345,9 +382,93 @@ bullet_checkClear:
     call nz, dw_clear
 ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; MUERTE DE LA BALA
+;; ____________________________________________________
+;; ENTRADA:    IX -> Puntero a la entidad BULLET
+;; DESTRUYE:   A
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+bullet_death:
+   ld a, #0
+   ld b_alive(ix), a
+   ret
 
 
 
+;;;;;
+bullet_checkBorderCollision:
+   ld    a, e_vx(ix)
+   cp    #-K_VEL_X
+   jr nz , check_right
+      ld    a,    #8
+      cp    b_x(ix)
+      ret c
+         ld hl, #bullet_death
+         ld b_up_h(ix), h
+         ld b_up_l(ix), l
+         ret
+   check_right:
+
+   ld    a, e_vx(ix)
+   cp    #K_VEL_X
+   jr nz , check_up
+      ld    a,    #68
+      cp    b_x(ix)
+      ret nc
+         ld hl, #bullet_death
+         ld b_up_h(ix), h
+         ld b_up_l(ix), l
+         ret
+   check_up:
+
+   ld    a, e_vy(ix)
+   cp    #-K_VEL_Y
+   jr nz , check_down
+      ld    a,    #34
+      cp    b_y(ix)
+      ret c
+         ld hl, #bullet_death
+         ld b_up_h(ix), h
+         ld b_up_l(ix), l
+         ret
+   check_down:
+
+   ld    a, e_vy(ix)
+   cp    #K_VEL_Y
+   ret nz
+      ld    a,    #152
+      cp    b_y(ix)
+      ret nc
+         ld hl, #bullet_death
+         ld b_up_h(ix), h
+         ld b_up_l(ix), l
+         ret
+
+   ; ld    a,    #32
+   ; cp    b_x(ix)
+   ; jr    c, no_col_up
+   ;    ld hl, #bullet_death
+   ;    ld b_up_h(ix), h
+   ;    ld b_up_l(ix), l
+   ;    ret
+   ; no_col_up:
+   ;
+   ; ld    a,    #72
+   ; cp    b_x(ix)
+   ; jr    c, no_col_right
+   ;    ld hl, #bullet_death
+   ;    ld b_up_h(ix), h
+   ;    ld b_up_l(ix), l
+   ;    ret
+   ; no_col_right:
+   ;
+   ; ld    a,    #160
+   ; cp    b_x(ix)
+   ; ret c
+   ;    ld hl, #bullet_death
+   ;    ld b_up_h(ix), h
+   ;    ld b_up_l(ix), l
+   ret
 
 
 

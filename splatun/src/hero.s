@@ -215,12 +215,12 @@ hero_update::
                 call inc_map
 
     s_no_pulsada:
+    
+    ld a, e_x(ix)                   ;; Consigue la posicion del jugador
+    add e_vx(ix)                    ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
+    ld e_x(ix), a                   ;; Lo guardo en su registro
 
-    ld a, e_x(ix)                    ;; Consigue la posicion del jugador
-    add e_vx(ix)                     ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
-    ld e_x(ix), a                    ;; Lo guardo en su registro
-
-    ld a, e_y(ix)                    ;; Repito para Y
+    ld a, e_y(ix)                   ;; Repito para Y
     add e_vy(ix)
     ld e_y(ix), a
 

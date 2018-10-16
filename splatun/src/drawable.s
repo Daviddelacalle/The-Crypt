@@ -18,8 +18,15 @@ back_buffer::   .db 0x80
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-cam_min: .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
-cam_max: .db   #20,  #20   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
+cam_min:             .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
+cam_max:             .db   #16,  #16   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
+
+;; Offset para lo del tamaño de cámara adaptable
+OFFSET_CAMERA_POS_X = 2          ;; De tile
+OFFSET_CAMERA_POS_Y = 2          ;; De tile
+
+OFFSET_CAMERA_POS_X_PANT = -8     ;; De pantalla
+OFFSET_CAMERA_POS_Y_PANT = -32    ;; De pantalla
 
 save_dw_x: .db   #0        ;; Donde guardo las coordenadas X de donde dibujar
 save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
@@ -157,6 +164,7 @@ dw_draw::
    cpl                  ;; Revierto los bits de A
    inc   a              ;; A++ -> Tengo el negativo de A
    add   l
+   add   #OFFSET_CAMERA_POS_X
    ld    l,    a        ;; L tiene la coordenada X corregida
 
    ;; Hay offset en Y?
@@ -164,9 +172,11 @@ dw_draw::
    cpl                  ;; Revierto los bits de A
    inc   a              ;; A++ -> Tengo el negativo de A
    add   h
+   add   #OFFSET_CAMERA_POS_Y
    ld    h,    a        ;; H tiene la coordenada Y corregida
-   no_offset_y:
+
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
+   ld (save_dw_x), bc   ;; Lo guardo en memoria
 
    jr sigue_con_el_dro
    normal_dro:
@@ -235,10 +245,10 @@ tile_a_mapa:
    ld    a, h           ;; A = Y
    ld    c, #7          ;; Iteraciones del loop
    ld    d, a           ;; D = Y
-   loop_y:
+   loop_y_tm:
       add a, d          ;; A = A + D = A + A_inicial
       dec c             ;; C--
-   jr nz, loop_y
+   jr nz, loop_y_tm
 
    ld b, a              ;; En B guardo la Y
 
@@ -246,17 +256,57 @@ tile_a_mapa:
    ld    a, l           ;; ======================= ;;
    ld    c, #3          ;;                         ;;
    ld    d, a           ;; Hago lo mismo que antes ;;
-   loop_x:              ;;      pero con la X      ;;
+   loop_x_tm:           ;;      pero con la X      ;;
       add a, d          ;;                         ;;
       dec c             ;; ======================= ;;
-   jr nz, loop_x
+   jr nz, loop_x_tm
 
    ld c, a              ;; En C guardo la X
-
-   ld (save_dw_x), bc   ;; Lo guardo en memoria
    ret
 
+;; Misma ejecucion que tile_a_mapa
+mapa_a_tile::
+   ;; Paso Y
+   ld    a, h           ;; A = Y
+   add   #OFFSET_CAMERA_POS_Y_PANT
+   ld    d, #8          ;; D = 8 -> Tamanyo en Y de cada tile en bytes
+   ld    c, #0          ;; C = 0
+   loop_y_mt:
+      cp d
+      jr c, end_loop_y_mt
 
+      inc c
+      sub d             ;; A = A - D
+   jr nc, loop_y_mt
+   jr z, loop_y_mt
+   end_loop_y_mt:
+   ld    a,    (cam_min+1)
+   add   a,    c
+   ld    b,    a              ;; En B guardo la Y
+
+   ;; Paso Y
+   ld    a, l           ;; A = X
+   add   #OFFSET_CAMERA_POS_X_PANT
+   ld    d, #4          ;; D = 4 -> Tamanyo en X de cada tile en bytes
+   ld    c, #0          ;; C = 0
+   loop_x_mt:
+      cp d
+      jr c, end_loop_x_mt
+
+      inc c
+      sub d             ;; A = A - D
+   jr nc, loop_x_mt
+   jr z, loop_x_mt
+   end_loop_x_mt:
+   ;; En C ya tengo guardada la X debido al bucle
+   ld    a,    (cam_min)
+   add   a,    c
+   ld    c,    a              ;; En C guardo la X
+
+   ;; LOS VALORES DEL OFFSET YA ESTA ANYADIDOS!!!
+
+
+   ret
 
 
 
