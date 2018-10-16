@@ -530,6 +530,63 @@ checkTileCollision::
    bit 2, (hl)
    ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; COLISION DE MAPA CON IX EN COORDENADAS DE PANTALLA
+;; NOTA:       Aplicar una comprobacion de z despues del call para comprobar colision
+;; ___________________________________________________________________________________
+;; ENTRADA:    IX -> Entidad a comprobar con COORDENADAS en TILES
+;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E CASI TOTALE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+checkTileCollision_m::
+   ;; ================================ ;;
+   ;; IX EN COORDENADAS DE PANTALLA !! ;;
+   ;; ================================ ;;
+   ;; Guardar en AF' las coordenadas para que no se pierdan
+   ld    l,    en_x(ix)       ;; L = X_pantalla
+   ld    h,    en_y(ix)       ;; H = Y_pantalla
+   call mapa_a_tile           ;; B = X, C = Y
+
+   ;; Guardo en C,A (x,y) para las comprobaciones
+   ld    a,    b              ;; Guardo posicion Y nueva en A
+   exx                        ;; Guardo el valor de BC en BC' para no destruirlo
+   ; add en_vy(ix)              ;; |
+
+   ;; Miro en el array del mapa comprobando cada tile
+   ld    l,    a        ;; L = A \
+   ld    h,    #0       ;; H = 0 | -> HL = A
+
+   ld    c,    a        ;; C = A = enemy_y actualizada con vy
+   ld    b,    #0       ;; B = 0 ----------------> BC = A
+
+   ld    d,    #29      ;; Multiplicar por 30
+   loop_mult_y_m:
+      add hl, bc        ;; HL += BC
+      dec d             ;; D--
+   jr nz, loop_mult_y_m
+
+   ex    de,   hl          ;; DE = Aumento 'vertical' del array
+
+   ld    hl, (ptr_map)     ;; HL apunta a nivel1
+   add   hl, de            ;; HL + incremento en vertical
+
+   exx                     ;; Devuelvo de nuevo el valor de BC
+   ld    a,    c
+   exx
+
+   ; add en_vx(ix)
+   ld    e,    a           ;; E  = Aumento 'horizontal' del array
+   ld    d,    #0          ;; DE = Aumento 'horizontal' del array
+   add   hl, de
+
+   ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
+   bit 2, (hl)
+
+   ;; COMPROBAR
+   ;;    |
+   ;;    v
+   ;;  0 1 0 0
+
+   ret
 
 
 

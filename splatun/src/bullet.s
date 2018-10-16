@@ -21,6 +21,9 @@
 vector_size = 10
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
+K_VEL_X = 2
+K_VEL_Y = 2
+
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
 DefineNBullets vector_bullets, vector_size
@@ -158,7 +161,7 @@ ret
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyUp_ON:
-   ld a, #-1
+   ld a, #-K_VEL_Y
    ld (flag_vy), a
    ret
 
@@ -168,7 +171,7 @@ keyUp_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyDown_ON:
-   ld a, #1
+   ld a, #K_VEL_Y
    ld (flag_vy), a
    ret
 
@@ -178,7 +181,7 @@ keyDown_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyRight_ON:
-   ld a, #1
+   ld a, #K_VEL_X
    ld (flag_vx), a
    ret
 
@@ -188,7 +191,7 @@ keyRight_ON:
 ;; DESTRUYE: A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 keyLeft_ON:
-   ld a, #-1
+   ld a, #-K_VEL_X
    ld (flag_vx), a
    ret
 
@@ -273,7 +276,7 @@ bullet_checkDraw:
 
 
 
-   ld a, #0xAA                   ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
+   ; ld a, #0xAA                   ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
    ret
 
@@ -303,9 +306,9 @@ bullet_checkInit:
 
    ;; DEBO CONSEGUIR UNAS POSICIONES DE TILE DEL HERO
    call hero_get_position        ;; A = hero_x // B = hero_y
-   ld l, a                       ;; L = X
-   ld h, b                       ;; H = Y
-   call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
+   ; ld l, a                       ;; L = X
+   ; ld h, b                       ;; H = Y
+   ; call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
 
    ;; Si debo cambiar algo de la entidad, aqui
    ld    b_x(ix), a              ;; Asigno X
@@ -332,7 +335,8 @@ bullet_searchUpdate:
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
    ret    z                      ;; Si no se ha inicialiado, poco podemos hacer
 
-   call checkTileCollision
+   ; call checkTileCollision
+   call checkTileCollision_m
    jr nz, no_tile_collision
       ld hl, #bullet_death
       ld b_up_h(ix), h

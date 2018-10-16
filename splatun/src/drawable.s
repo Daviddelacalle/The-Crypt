@@ -19,7 +19,7 @@ back_buffer::   .db 0x80
 ;;======================================================================
 ;;======================================================================
 cam_min:             .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
-cam_max:             .db   #16,  #16   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
+cam_max:             .db   #20,  #20   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
 
 ;; Offset para lo del tamaño de cámara adaptable
 OFFSET_CAMERA_POS_X = 0
@@ -296,7 +296,7 @@ mapa_a_tile::
    ;; En C ya tengo guardada la X debido al bucle
    ld    a,    (cam_min)
    add   a,    c
-   ld    c,    a              ;; En B guardo la Y
+   ld    c,    a              ;; En C guardo la X
 
    ;; LOS VALORES DEL OFFSET YA ESTA ANYADIDOS!!!
 
