@@ -18,8 +18,12 @@ back_buffer::   .db 0x80
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-cam_min: .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
-cam_max: .db   #20,  #20   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
+cam_min:             .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
+cam_max:             .db   #16,  #16   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
+
+;; Offset para lo del tamaño de cámara adaptable
+OFFSET_CAMERA_POS_X = 0
+OFFSET_CAMERA_POS_Y = 0
 
 save_dw_x: .db   #0        ;; Donde guardo las coordenadas X de donde dibujar
 save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
@@ -157,6 +161,7 @@ dw_draw::
    cpl                  ;; Revierto los bits de A
    inc   a              ;; A++ -> Tengo el negativo de A
    add   l
+   add   #OFFSET_CAMERA_POS_X
    ld    l,    a        ;; L tiene la coordenada X corregida
 
    ;; Hay offset en Y?
@@ -164,8 +169,9 @@ dw_draw::
    cpl                  ;; Revierto los bits de A
    inc   a              ;; A++ -> Tengo el negativo de A
    add   h
+   add   #OFFSET_CAMERA_POS_Y
    ld    h,    a        ;; H tiene la coordenada Y corregida
-   no_offset_y:
+
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
    ld (save_dw_x), bc   ;; Lo guardo en memoria
 
