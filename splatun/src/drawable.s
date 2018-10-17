@@ -159,22 +159,6 @@ dw_draw::
 
    ;; HAY QUE COMENTAR CABRONES!! @dani @dd
 
-   ;; Hay offset en X?
-   ld a, (cam_min)
-   cpl                  ;; Revierto los bits de A
-   inc   a              ;; A++ -> Tengo el negativo de A
-   add   l
-   ; add   #OFFSET_CAMERA_POS_X
-   ld    l,    a        ;; L tiene la coordenada X corregida
-
-   ;; Hay offset en Y?
-   ld a, (cam_min+1)
-   cpl                  ;; Revierto los bits de A
-   inc   a              ;; A++ -> Tengo el negativo de A
-   add   h
-   ; add   #OFFSET_CAMERA_POS_Y
-   ld    h,    a        ;; H tiene la coordenada Y corregida
-
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
    ld (save_dw_x), bc   ;; Lo guardo en memoria
 
@@ -240,12 +224,25 @@ dw_clear::
 ;;             B -> Coordenada de MAPA en Y
 ;; DESTRUYE:   A,D,BC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-tile_a_mapa:
+tile_a_mapa::
+   ld a, (cam_min)
+   cpl                  ;; Revierto los bits de A
+   inc   a              ;; A++ -> Tengo el negativo de A
+   add   l
+   ld    l,    a        ;; L tiene la coordenada X corregida
+
+   ;; Hay offset en Y?
+   ld a, (cam_min+1)
+   cpl                  ;; Revierto los bits de A
+   inc   a              ;; A++ -> Tengo el negativo de A
+   add   h
+   ld    h,    a        ;; H tiene la coordenada Y corregida
+
    ;; Paso Y
-   ld    a, h           ;; A = Y
+   ld    a,    h           ;; A = Y
    add   #OFFSET_CAMERA_POS_Y
-   ld    c, #7          ;; Iteraciones del loop
-   ld    d, a           ;; D = Y
+   ld    c,    #7          ;; Iteraciones del loop
+   ld    d,    a           ;; D = Y
    loop_y_tm:
       add a, d          ;; A = A + D = A + A_inicial
       dec c             ;; C--

@@ -345,6 +345,8 @@ bullet_searchUpdate:
 
    call bullet_checkBorderCollision
 
+   call bullet_check_death
+
    ld l, b_up_l(ix)           ;; Carga el byte bajo en L
    ld h, b_up_h(ix)           ;; Carga el byte alto en H
    jp (hl)                    ;; Llama a la funcion propia de cada entidad
@@ -444,37 +446,80 @@ bullet_checkBorderCollision:
          ld b_up_l(ix), l
          ret
 
-   ; ld    a,    #32
-   ; cp    b_x(ix)
-   ; jr    c, no_col_up
-   ;    ld hl, #bullet_death
-   ;    ld b_up_h(ix), h
-   ;    ld b_up_l(ix), l
-   ;    ret
-   ; no_col_up:
-   ;
-   ; ld    a,    #72
-   ; cp    b_x(ix)
-   ; jr    c, no_col_right
-   ;    ld hl, #bullet_death
-   ;    ld b_up_h(ix), h
-   ;    ld b_up_l(ix), l
-   ;    ret
-   ; no_col_right:
-   ;
-   ; ld    a,    #160
-   ; cp    b_x(ix)
-   ; ret c
-   ;    ld hl, #bullet_death
-   ;    ld b_up_h(ix), h
-   ;    ld b_up_l(ix), l
+
+;; COLISION ENEMIGO-BALA
+bullet_check_death::
+  ;;tengo que comparar las variables b_x(ix)/b_y(ix) con la posicion de cada enemigo y ver si coinciden
+
+   call enemy_load
+   loop_bullet:
+   ld a, 0(iy)
+      cp #0xFF
+      ret z
+
+   ld     h, e_y(iy)
+   ld     l, e_x(iy)
+   call tile_a_mapa
+
+   ld     a, b_x(ix)
+   cp c
+   jr nc, death_check_left ;; si el carry es mayor el numero de cp es mas grande
+        jr death_check_right
+
+   death_check_left:
+      ld a, c
+      ld    c, b_x(ix)
+      cp c
+      jr c, end_loop_bullet
+           jr death_check_vertical
+   death_check_right:
+      ld a, b_x(ix)
+      cp c
+      jr c, end_loop_bullet
+           jr death_check_vertical
+
+
+   death_check_vertical:
+   ld     a, b_y(ix)
+   cp b
+   jr c, death_check_down ;; si el carry es mayor el numero de cp es mas grande
+        jr death_check_up
+
+   death_check_down:
+      ld a, b_y(ix)
+      add a,#8
+      cp b
+      jr c, end_loop_bullet
+         call bullet_set_death
+         ld e_y(iy),#15
+         ld e_x(iy),#15
+         ret
+   death_check_up:
+      ld a, b
+      add a,#4
+      ld    b, b_y(ix)
+      cp b
+      jr c, end_loop_bullet
+         call bullet_set_death
+         ld e_y(iy),#15
+         ld e_x(iy),#15
+         ret
+
+   end_loop_bullet:
+      call get_enemy_size
+      ld h, #0
+      ld l, a
+      ex de,hl
+      add iy,de
+   jr loop_bullet
+ret
+
+
+bullet_set_death:
+   ld hl, #bullet_death
+   ld b_up_h(ix), h
+   ld b_up_l(ix), l
    ret
-
-
-
-
-
-
 
 
 
