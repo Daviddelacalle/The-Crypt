@@ -27,11 +27,17 @@ var_r_max   = 6
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #4, #4, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #1, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy2, #4, #4, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy3, #2, #5, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
 ptr_map:       .dw #_nivel1   ;; Puntero al array de id de tiles que forman el mapa
+
+k_update_count = 3
+update_count:  .db #k_update_count        ;; Limita el update a cada k_update_count frames
+
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PUBLICAS
@@ -74,8 +80,18 @@ enemy_clear_ALL::
 ;; DESTRUYE:   HL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update_ALL::
+   ld    a, (update_count)                ;; ======================== ;;
+   dec   a                                ;;     POR SI AL FINAL      ;;
+   ld    (update_count), a                ;;    SE QUIERE LIMITAR     ;;
+   cp    #0                               ;;  EL UPDATE DEL ENEMIGO   ;;
+   ret   nz                               ;; ======================== ;;
+
    ld hl, #enemy_update
-   jp enemy_search
+   call enemy_search
+
+   ld    a, #k_update_count               ;; REINICIAR EL CONTADOR
+   ld    (update_count), a                ;;       DEL UPDATE
+   ret
 
 ;;======================================================================
 ;;======================================================================

@@ -23,10 +23,10 @@ cam_max:             .db   #16,  #16   ;; Coordenadas x,y de la posicion maxima 
 
 ;; Offset para lo del tamaño de cámara adaptable
 OFFSET_CAMERA_POS_X = 2          ;; De tile
-OFFSET_CAMERA_POS_Y = 2          ;; De tile
+OFFSET_CAMERA_POS_Y = 4          ;; De tile
 
-OFFSET_CAMERA_POS_X_PANT = -8     ;; De pantalla
-OFFSET_CAMERA_POS_Y_PANT = -32    ;; De pantalla
+OFFSET_CAMERA_POS_X_PANT = 4*OFFSET_CAMERA_POS_X     ;; De pantalla
+OFFSET_CAMERA_POS_Y_PANT = 8*OFFSET_CAMERA_POS_Y     ;; De pantalla
 
 save_dw_x: .db   #0        ;; Donde guardo las coordenadas X de donde dibujar
 save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
@@ -164,7 +164,7 @@ dw_draw::
    cpl                  ;; Revierto los bits de A
    inc   a              ;; A++ -> Tengo el negativo de A
    add   l
-   add   #OFFSET_CAMERA_POS_X
+   ; add   #OFFSET_CAMERA_POS_X
    ld    l,    a        ;; L tiene la coordenada X corregida
 
    ;; Hay offset en Y?
@@ -172,7 +172,7 @@ dw_draw::
    cpl                  ;; Revierto los bits de A
    inc   a              ;; A++ -> Tengo el negativo de A
    add   h
-   add   #OFFSET_CAMERA_POS_Y
+   ; add   #OFFSET_CAMERA_POS_Y
    ld    h,    a        ;; H tiene la coordenada Y corregida
 
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
@@ -243,6 +243,7 @@ dw_clear::
 tile_a_mapa:
    ;; Paso Y
    ld    a, h           ;; A = Y
+   add   #OFFSET_CAMERA_POS_Y
    ld    c, #7          ;; Iteraciones del loop
    ld    d, a           ;; D = Y
    loop_y_tm:
@@ -253,12 +254,13 @@ tile_a_mapa:
    ld b, a              ;; En B guardo la Y
 
    ;; Paso X
-   ld    a, l           ;; ======================= ;;
-   ld    c, #3          ;;                         ;;
-   ld    d, a           ;; Hago lo mismo que antes ;;
-   loop_x_tm:           ;;      pero con la X      ;;
-      add a, d          ;;                         ;;
-      dec c             ;; ======================= ;;
+   ld    a, l                    ;; ======================= ;;
+   add   #OFFSET_CAMERA_POS_X
+   ld    c, #3                   ;;                         ;;
+   ld    d, a                    ;; Hago lo mismo que antes ;;
+   loop_x_tm:                    ;;      pero con la X      ;;
+      add a, d                   ;;                         ;;
+      dec c                      ;; ======================= ;;
    jr nz, loop_x_tm
 
    ld c, a              ;; En C guardo la X
@@ -268,7 +270,7 @@ tile_a_mapa:
 mapa_a_tile::
    ;; Paso Y
    ld    a, h           ;; A = Y
-   add   #OFFSET_CAMERA_POS_Y_PANT
+   add   #-OFFSET_CAMERA_POS_Y_PANT
    ld    d, #8          ;; D = 8 -> Tamanyo en Y de cada tile en bytes
    ld    c, #0          ;; C = 0
    loop_y_mt:
@@ -286,7 +288,7 @@ mapa_a_tile::
 
    ;; Paso Y
    ld    a, l           ;; A = X
-   add   #OFFSET_CAMERA_POS_X_PANT
+   add   #-OFFSET_CAMERA_POS_X_PANT
    ld    d, #4          ;; D = 4 -> Tamanyo en X de cada tile en bytes
    ld    c, #0          ;; C = 0
    loop_x_mt:
