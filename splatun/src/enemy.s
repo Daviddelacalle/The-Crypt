@@ -148,6 +148,7 @@ enemy_update:
 ;; BUSCA UN PUNTO ALEATORIO PARA IR HACIA ALLI
 ;; _______________________
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
+;; DESTRUYE:   Se destruyen TODOS los registros, incluso BC',DE' y HL'
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_randomGoal:
    ld    a, (flag_move)          ;; Cargo en A un contador para que no busque todo el rato
@@ -319,6 +320,7 @@ enemy_randomGoal:
 ;; CHECKEA SI HA LLEGADO A SU DESTINO
 ;; _______________________
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
+;; DESTRUYE:   A,HL,DE,B
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_checkGoal:
    ;; Si ha llegado al destino -> NO MUEVO
@@ -527,7 +529,7 @@ enemy_get_negative:
 ;; NOTA:       Aplicar una comprobacion de z despues del call para comprobar colision
 ;; ___________________________________________________________________________________
 ;; ENTRADA:    IX -> Entidad a comprobar con COORDENADAS en TILES
-;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E CASI TOTALE
+;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E TOTALE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 checkTileCollision::
    ;; Guardo en C,A (x,y) para las comprobaciones
@@ -620,9 +622,14 @@ checkTileCollision_m::
 
    ret
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MIRA SI EL HEROE ESTA POR DEBAJO DE UNA CIERTA DISTANCIA EN X E Y
+;; ASIGNA, ADEMAS, LA POSICION FINAL DEL MOVIMIENTO Y LLAMA A enemy_randomGoal
 ;; ¡¡ IMPORTANTE !! -> COMPRUEBA LAS DISTANCIAS EN TILES
+;; ________________________________________________________________________________
 ;; ENTRADA:    IX -> Apunta a la entidad enemigo
+;; DESTRUYE:   LA DETRUCCIONE E TOTALE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_heroInRadius:
    ;; Guardo la funcion update
    ;; que se encuentra en HL
@@ -636,7 +643,7 @@ enemy_heroInRadius:
    ;;          B = Y
    call hero_get_position
 
-;; ===============================
+   ;; ==============================================================================
    ;; Paso las coordenadas del heroe
    ;;     a coordenadas de tile
    ;;          L = X
@@ -649,9 +656,9 @@ enemy_heroInRadius:
    ;;     del heroe en tiles
    ;;          C = X
    ;;          B = Y
-;; ===============================
+   ;; ==============================================================================
 
-;; ===============================
+   ;; ==============================================================================
    ;; Comparo las posiciones de X
    ;; y consigo la distancia en el eje X
    ld    a,    c
@@ -665,10 +672,10 @@ enemy_heroInRadius:
    cp    #5
    jr    nc, hIR_end
       jr hIR_check_y
-;; ===============================
+   ;; ==============================================================================
 
    hIR_check_y:
-;; ===============================
+   ;; ==============================================================================
    ;; Comparo las posiciones de Y
    ;; y consigo la distancia en el eje Y
    ld    a,    b
@@ -683,7 +690,7 @@ enemy_heroInRadius:
    jr    nc, hIR_end
       ld en_col(ix), #0xFE
       jr hIR_doThings
-;; ===============================
+      ;; ==============================================================================
 
    hIR_end:
    ld en_col(ix), #0x0F
@@ -697,7 +704,7 @@ enemy_heroInRadius:
 
    hIR_doThings:
 
-;; ============================================================================================
+   ;; ============================================================================================
    ;; V1: Sigue al personaje
    ;; Consigo los datos del heroe
    ;;          A = X
@@ -713,21 +720,18 @@ enemy_heroInRadius:
    ld    h,    a
    call mapa_a_tile
 
-   ;; Ahora se:
-   ;;    - d(hero,enemy) <= 4
-   ;;    - Posicion del heroe = (B,C) = (X,Y) = posicion final del movimiento
-   ld    e, #0xEE          ;; Senyal a enemy_randomGoal para que no busque ningun random
-   jp enemy_randomGoal
-;; ============================================================================================
-
    ;; Libero el registro del
    ;; contenido de la pila
    ;; que he almacenado al
    ;; principio de la funcion
    pop hl
 
-
-   ret
+   ;; Ahora se:
+   ;;    - d(hero,enemy) <= 4
+   ;;    - Posicion del heroe = (B,C) = (X,Y) = posicion final del movimiento
+   ld    e, #0xEE          ;; Senyal a enemy_randomGoal para que no busque ningun random
+   jp enemy_randomGoal
+   ;; ============================================================================================
 
 ;=================================
 ; Generates random number in range
