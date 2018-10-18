@@ -59,7 +59,6 @@ ret
 ;   de mínimos y máximos automáticamente
 ;   Destroys: A, BC, DE, HL
 ;========================================================================;
-
 update_cam::
     ld a, (#CameraTargetX)
     cp #0                   ;; Hay algún target para la cámara?

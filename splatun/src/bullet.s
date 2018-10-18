@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 10
+vector_size = 1
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 K_VEL_X = 2
@@ -261,13 +261,10 @@ bullet_search:
 ;; ENTRADA:    IX -> Puntero a entidad BULLET
 ;; DESTRUYE:   A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_checkDraw:
+bullet_checkDraw::
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-
-
-
-   ; ld a, #0xAA                   ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
+   ; ld a, #0xAA                 ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
    ret
 
@@ -296,7 +293,7 @@ bullet_checkInit:
 
 
    ;; DEBO CONSEGUIR UNAS POSICIONES DE TILE DEL HERO
-   call hero_get_position        ;; A = hero_x // B = hero_y
+   call hero_get_position           ;; A = hero_x // B = hero_y
    ; ld l, a                       ;; L = X
    ; ld h, b                       ;; H = Y
    ; call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
@@ -334,7 +331,7 @@ bullet_searchUpdate:
       ld b_up_l(ix), l
    no_tile_collision:
 
-   ;call bullet_checkBorderCollision
+   call bullet_checkBorderCollision
 
    call bullet_check_death
 
@@ -350,7 +347,7 @@ bullet_searchUpdate:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_checkUpdate:
    ;; UPDATE ALIVE
-   dec   b_alive(ix)     ;; Decrementar el valor de alive y si llega a 1 matar la bala -> alive = 0
+   dec   b_alive(ix)            ;; Decrementar el valor de alive y si llega a 1 matar la bala -> alive = 0
 
    ;; UPDATE POSICION
    ld     a,   b_x(ix)           ;; Cargo en A la posicion en X
@@ -377,12 +374,18 @@ bullet_death:
 
 
 ;;;;;
-bullet_checkBorderCollision:
+bullet_checkBorderCollision::
+   ld hl, #CoordMapMin
+   ld a, b_x(ix)            ;; A = Posición X  de la bala
+   sub (hl)                 ;; A -= CoordMapMin
+   ld b, a                  ;; B = A, Tiene la X corregida (de 0 palante)
+
    ld    a, e_vx(ix)
    cp    #-K_VEL_X
    jr nz , check_right
-      ld    a,    #8
-      cp    b_x(ix)
+      ld    a,    #10
+      cp    b               ;; En vez de hacer cp de la posición actual, lo hago con la
+                            ;; posición actual menos la posición de la cámara
       ret c
          ld hl, #bullet_death
          ld b_up_h(ix), h
@@ -394,7 +397,7 @@ bullet_checkBorderCollision:
    cp    #K_VEL_X
    jr nz , check_up
       ld    a,    #68
-      cp    b_x(ix)
+      cp    b
       ret nc
          ld hl, #bullet_death
          ld b_up_h(ix), h
@@ -402,11 +405,16 @@ bullet_checkBorderCollision:
          ret
    check_up:
 
+   inc hl
+   ld a, b_y(ix)
+   sub (hl)
+   ld b, a
+
    ld    a, e_vy(ix)
    cp    #-K_VEL_Y
    jr nz , check_down
       ld    a,    #34
-      cp    b_y(ix)
+      cp    b
       ret c
          ld hl, #bullet_death
          ld b_up_h(ix), h
@@ -418,7 +426,7 @@ bullet_checkBorderCollision:
    cp    #K_VEL_Y
    ret nz
       ld    a,    #152
-      cp    b_y(ix)
+      cp    b
       ret nc
          ld hl, #bullet_death
          ld b_up_h(ix), h

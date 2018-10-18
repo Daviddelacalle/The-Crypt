@@ -164,7 +164,6 @@ hero_update::
     ld e_y(ix), a
 
     jp update_cam                   ;; Recusión de cola! Actualiza la cámara
-ret
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;

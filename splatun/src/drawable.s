@@ -111,7 +111,7 @@ dw_draw::
    sub (hl)
    ld     b,   a                        ;; y  [0-199]
 
-  
+
    sigue_con_el_dro:
 
    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
