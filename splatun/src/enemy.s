@@ -64,15 +64,6 @@ enemy_call_draw:
    jp dw_draw
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ASIGNA LA FUNCION DE CLEAR EN HL Y RECORRE EL BUCLE
-;; _______________________
-;; DESTRUYE:   HL
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-enemy_clear_ALL::
-   ld hl, #dw_clear
-   jp enemy_search
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ASIGNA LA FUNCION DE UPDATE EN HL Y RECORRE EL BUCLE
 ;; _______________________
 ;; DESTRUYE:   HL

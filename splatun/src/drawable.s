@@ -9,6 +9,7 @@
 
 .include "cpctelera.h.s"
 .include "struct.h.s"
+.include "constants.h.s"
 
 front_buffer:   .db 0xC0
 back_buffer::   .db 0x80
@@ -18,78 +19,13 @@ back_buffer::   .db 0x80
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-cam_min:             .db   #0 ,  #0    ;; Coordenadas x,y de la posicion minima de la camara -> ARRIBA - IZQUIERDA
-cam_max:             .db   #16,  #16   ;; Coordenadas x,y de la posicion maxima de la camara ->  ABAJO - DERECHA
 
-;; Offset para lo del tamaño de cámara adaptable
-OFFSET_CAMERA_POS_X = 2          ;; De tile
-OFFSET_CAMERA_POS_Y = 4          ;; De tile
-
-OFFSET_CAMERA_POS_X_PANT = 4*OFFSET_CAMERA_POS_X     ;; De pantalla
-OFFSET_CAMERA_POS_Y_PANT = 8*OFFSET_CAMERA_POS_Y     ;; De pantalla
-
-save_dw_x: .db   #0        ;; Donde guardo las coordenadas X de donde dibujar
-save_dw_y: .db   #0        ;; Donde guardo las coordenadas Y de donde dibujar
 
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PUBLICAS
 ;;======================================================================
 ;;======================================================================
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ACTUALIZA LAS COORDENADAS MAXIMAS Y MINIMAS DE LA CAMARA
-;;            PARA EL DIBUJADO DE LOS ENEMIGOS
-;; ____________________________________________________________________
-;; ENTRADA:    E -> Incremento del mapa para el dibujado [1,-1,30,-30]
-;; DESTRUYE:   A
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-update_cam::
-   ;; Check E
-   ld a, e
-   cp #1       ;; Derecha     (x++)
-   jr nz, cam_check_izq
-      ld    a, (cam_min)
-      inc a
-      ld    (cam_min), a
-
-      ld    a, (cam_max)
-      inc a
-      ld    (cam_max), a
-      ret
-   cam_check_izq:
-   cp #-1      ;; Izquierda   (x--)
-   jr nz, cam_check_ab
-      ld    a, (cam_min)
-      dec a
-      ld    (cam_min), a
-
-      ld    a, (cam_max)
-      dec a
-      ld    (cam_max), a
-      ret
-   cam_check_ab:
-   cp #30      ;; Abajo       (y++)
-   jr nz, cam_check_arr
-      ld    a, (cam_min+1)
-      inc a
-      ld    (cam_min+1), a
-
-      ld    a, (cam_max+1)
-      inc a
-      ld    (cam_max+1), a
-      ret
-   cam_check_arr:
-   cp #-30     ;; Arriba      (y--)
-   ret nz
-      ld    a, (cam_min+1)
-      dec   a
-      ld    (cam_min+1), a
-
-      ld    a, (cam_max+1)
-      dec   a
-      ld    (cam_max+1), a
-   ret
 
 swapBuffers::
     ld a, (back_buffer)
@@ -113,10 +49,10 @@ swapBuffers::
 dw_draw::
    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
 
-   ;; Si A == FF -> LAS COORDENADAS DEL OBJETO AL QUE APUNTA IX ESTAN EN TILES
+   ;; Si A == AA -> LAS COORDENADAS DEL OBJETO AL QUE APUNTA IX ESTAN EN TILES
    ;; Si lo es, entonces -> pasar a coordenadas de MAPA y ver si hay que dibujarlo
 
-   ;; Primero se checkea si A == FF
+   ;; Primero se checkea si A == AA
    cp    #0xAA
    jr nz, normal_dro
 
@@ -160,19 +96,22 @@ dw_draw::
    ;; HAY QUE COMENTAR CABRONES!! @dani @dd
 
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
-   ld (save_dw_x), bc   ;; Lo guardo en memoria
 
    jr sigue_con_el_dro
    normal_dro:
 
    ;; Aqui solo entra si las coordenadas de la entidad IX NO ESTAN EN TILES
+   ld hl, #CoordMapMin
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
+   sub (hl)
    ld     c,   a                        ;; x  [0-79]
 
+   ld hl, #CoordMapMin+1
    ld a, e_y(ix)                        ;; Repito para Y
-   ;add a
+   sub (hl)
    ld     b,   a                        ;; y  [0-199]
 
+  
    sigue_con_el_dro:
 
    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
@@ -226,15 +165,13 @@ dw_clear::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 tile_a_mapa::
    ld a, (cam_min)
-   cpl                  ;; Revierto los bits de A
-   inc   a              ;; A++ -> Tengo el negativo de A
+   neg                  ;; Tengo el negativo de A
    add   l
    ld    l,    a        ;; L tiene la coordenada X corregida
 
    ;; Hay offset en Y?
    ld a, (cam_min+1)
-   cpl                  ;; Revierto los bits de A
-   inc   a              ;; A++ -> Tengo el negativo de A
+   neg                  ;; Tengo el negativo de A
    add   h
    ld    h,    a        ;; H tiene la coordenada Y corregida
 
@@ -283,7 +220,7 @@ mapa_a_tile::
    add   a,    c
    ld    b,    a              ;; En B guardo la Y
 
-   ;; Paso Y
+   ;; Paso X
    ld    a, l           ;; A = X
    add   #-OFFSET_CAMERA_POS_X_PANT
    ld    d, #4          ;; D = 4 -> Tamanyo en X de cada tile en bytes
@@ -303,7 +240,6 @@ mapa_a_tile::
    ld    c,    a              ;; En C guardo la X
 
    ;; LOS VALORES DEL OFFSET YA ESTA ANYADIDOS!!!
-
 
    ret
 

@@ -12,27 +12,12 @@
     ;call cpct_setPALColour_asm
 .endm
 
-INIT_X == #40
-INIT_Y == #60
 
-VIEWPORT_WIDTH == 16
-VIEWPORT_HEIGHT == 16
-ScreenSizeX = 16*4
-ScreenSizeY = 16*8
-;X = Width * 4 / 4 <~ Múltiplo de 4
-;Y = Height * 8 / 4 <~ Múltiplo de 6
-
-LEFT    == 8+12
-RIGHT   == 8+ScreenSizeX-12
-TOP     == 30+30
-BOTTOM  == 126
-
-MAP_WIDTH == 30
-MAP_HEIGHT == 30
 
 ;decompress_buffer       == 0x040
 ;levelMaxSize            = 0x384
 ;decompress_buffer_end   = decompress_buffer + levelMaxSize - 1
+
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
 ;   Load custom palette

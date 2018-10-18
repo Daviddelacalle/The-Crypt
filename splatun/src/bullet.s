@@ -81,15 +81,6 @@ bullet_update::
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; CLEAR
-;; _______________________
-;; DESTRUYE: HL
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_clear::
-   ld    hl,   #bullet_checkClear
-   jp    bullet_search
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; COMPRUEBA LOS INPUTS
 ;; _______________________
 ;; DESTRUYE: AF, BC, DE, HL, IX
@@ -343,7 +334,7 @@ bullet_searchUpdate:
       ld b_up_l(ix), l
    no_tile_collision:
 
-   call bullet_checkBorderCollision
+   ;call bullet_checkBorderCollision
 
    call bullet_check_death
 
@@ -371,18 +362,6 @@ bullet_checkUpdate:
    ld  b_y(ix), a                ;; Guardo el dato actualizado
 
    ret
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; CAMBIA EL COLOR DE LA BALA AL DEL FONDO (SI NO HAY SPRITES)
-;; _______________________
-;; ENTRADA:    IX -> Puntero a entidad BULLET
-;; DESTRUYE:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_checkClear:
-    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-    call nz, dw_clear
-ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MUERTE DE LA BALA

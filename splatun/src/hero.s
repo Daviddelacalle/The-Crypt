@@ -40,68 +40,6 @@ hero_draw::
     ; ld   a, #0         ;; Por si las moscas
     jp dw_draw
 
-hero_clear::
-    ld ix, #hero
-    jp dw_clear
-
-
-;===============================================================================
-;|                                  CAMARA
-;|  Para que se produzca el scroll del mapa se tienen que producir dos codiciones:
-;|      -El jugador tiene que estar en el centro (CENTER_X/Y)
-;|      -El límite izquierdo (eje X) / superior (eje Y), no esté en el borde
-;|          -- Borde izquierdo  = 0
-;|          -- Borde derecho    = 40
-;|              --- Ancho del mapa =  30 tiles
-;|              --- Cada tile = 8 pixeles = 2 bytes
-;|              --- Ancho del mapa en bytes = 30 * 2 = 120 bytes
-;|              --- Ancho de pantalla = 80 bytes
-;|              --- Ancho real  = 120 bytes - 80b bytes = 40 bytes
-;|          -- Borde superior   = 0
-;|          -- Borde inferior = 80 bytes (mismo cálculos, pero el alto total
-;|                                          es distinto)
-;|
-;|  De manera que si la camara está pegada al border izquierdo y me muevo a la izq
-;|  se moverá el personaje.
-;|
-;|      ======================================  Pulso la A
-;|      ||                                  ||  x = Centro de la cámara
-;|      ||________________                  ||  @ = Jugador
-;|      ||                |                 ||
-;|      ||       x        |                 ||
-;|      ||   @            |                 ||
-;|      ||________________|                 ||
-;|      ||                                  ||  Se moverá el jugador
-;|      ||                                  ||
-;|      ======================================
-;|
-;|  En el caso de que la cámara esté pegada a la derecha y el jugador
-;|
-;|      ====================================== Pulso la A
-;|      ||                                  ||  x = Centro de la cámara
-;|      ||                  ________________||  @ = Jugador
-;|      ||                 |                ||
-;|      ||                 |       x        ||
-;|      ||                 |           @    ||
-;|      ||                 | _______________||
-;|      ||                                  ||  Se moverá el jugador
-;|      ||                                  ||
-;|      ======================================
-;|
-;|
-;|
-;|      ====================================== Pulso la A
-;|      ||                                  ||  x = Centro de la cámara
-;|      ||                  ________________||  @ = Jugador
-;|      ||                 |                ||
-;|      ||                 |       x        ||
-;|      ||                 |       @        ||
-;|      ||                 | _______________||
-;|      ||                                  ||  Se moverá la cámara
-;|      ||                                  ||
-;|      ======================================
-;|
-;===============================================================================
 hero_update::
     ld    ix,   #hero   ; Se puede borrar si hero es el ultimo en hacer dro
     ld e_vx(ix), #0
@@ -115,25 +53,25 @@ hero_update::
 
     jr z, a_no_pulsada
 
+        ld hl, #CoordMapMin
         ld a, e_x(ix)                       ;; Pruebo la primera condicion
+        sub (hl)
         cp #LEFT
         jr nz, move_the_character_A         ;; Si no estoy en el centro, muevo el jugador
 
-        ld hl, #CameraMinX                  ;; Pruebo la segunda condicion
-        ld a, (hl)                          ;; Lo cargo en HL porque la funcion inc_map lo necesita
-        cp #8                               ;; Borde izquierdo (0)
-        jr nz, move_the_map_A               ;; Si se ha pulsado la A y no estoy en el borde
+        ld a, (cam_min)                    ;;
+        cp #0                               ;; Borde izquierdo (0)
+        jr z, move_the_character_A          ;; Si se ha pulsado la A y no estoy en el borde
                                             ;; muevo el mapa
+        ;;  Set Camera Target X
+            ld b, #-3
+            call setTargetX
+
         move_the_character_A:
-            ld b, #-2                       ;; Cambio la velocidad del jugador a 2
+            ld b, #-1                       ;; Cambio la velocidad del jugador a 2
             ld e_vx(ix), b
 
-        jr d_no_pulsada
 
-        move_the_map_A:                     ;;  Muevo el map
-            ld de, #-1                      ;;  Pasándole los parámetros a la funcion
-            ld b, #-4
-            call inc_map
 
     jr d_no_pulsada             ;; Si se ha pulsado no compruebes la tecla D
 
@@ -141,51 +79,50 @@ hero_update::
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
-
+            ld hl, #CoordMapMin
             ld a, e_x(ix)
+            sub (hl)
             cp #RIGHT
             jr nz, move_the_character_D
 
-            ld hl, #CameraMinX
-            ld a, (hl)
-            cp #64
-            jr nz, move_the_map_D
+            ld a, (cam_min)
+            cp #LimitRight
+            jr z, move_the_character_D
+
+            ;;  Set Camera Target X
+                ld b, #3
+                call setTargetX
 
             move_the_character_D:
-                ld b, #2
+                ld b, #1
                 ld e_vx(ix), b
             jr d_no_pulsada
 
-            move_the_map_D:
-                ld de, #1
-                ld b, #4
-                call inc_map
+
 
     d_no_pulsada:
         ld hl, #Key_W
         call cpct_isKeyPressed_asm
         jr z, w_no_pulsada
 
+            ld hl, #CoordMapMin+1
             ld a, e_y(ix)
+            sub (hl)
+
             cp #TOP
             jr nz, move_the_character_W
 
-            ld hl, #CameraMinY
-            ld a, (hl)
-            cp #32
-            jr nz, move_the_map_W
+            ld a, (cam_min+1)
+            cp #0
+            jr z, move_the_character_W
+
+            ;;  Set Camera Target Y
+                ld b, #-3
+                call setTargetY
 
             move_the_character_W:
-                ld b, #-6
+                ld b, #-4
                 ld e_vy(ix), b
-
-            jr s_no_pulsada
-
-            move_the_map_W:
-                ld de, #-30
-                ld b, #-8
-                call inc_map
-
 
         jr s_no_pulsada
 
@@ -194,25 +131,26 @@ hero_update::
         call cpct_isKeyPressed_asm
         jr z, s_no_pulsada
 
+            ld hl, #CoordMapMin+1
             ld a, e_y(ix)
+            sub (hl)
+
             cp #BOTTOM
             jr nz, move_the_character_S
 
-            ld hl, #CameraMinY
-            ld a, (hl)
-            cp #144
-            jr nz, move_the_map_S
+            ld a, (cam_min+1)
+            cp #LimitDown
+            jr z, move_the_character_S
+
+            ;;  Set Camera Target Y
+                ld b, #3
+                call setTargetY
 
             move_the_character_S:
-                ld b, #6
+                ld b, #4
                 ld e_vy(ix), b
 
             jr s_no_pulsada
-
-            move_the_map_S:
-                ld de, #30
-                ld b, #8
-                call inc_map
 
     s_no_pulsada:
 
@@ -224,6 +162,7 @@ hero_update::
     add e_vy(ix)
     ld e_y(ix), a
 
+    jp update_cam
 ret
 
 
