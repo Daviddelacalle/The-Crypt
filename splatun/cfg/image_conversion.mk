@@ -43,12 +43,10 @@
 
 PALETTE=0 1 2 3 4 5 8 12 6 7 16 18 20 24 25 26
 #PALETTEALT=13 1 2 3 6 9 10 12 0 15 26 18 21 24 25 16
- PALETTEMENU={0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26}
+ PALETTEMENU=0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26
 
 $(eval $(call IMG2SP, SET_MODE        , 0                  ))
-#$(eval $(call IMG2SP, SET_MASK        , none               ))
 $(eval $(call IMG2SP, SET_FOLDER      , src/Sprites         ))
-#$(eval $(call IMG2SP, SET_EXTRAPAR    ,                    ))
 $(eval $(call IMG2SP, SET_IMG_FORMAT  , zgtiles            ))
 #(eval $(call IMG2SP, SET_OUTPUT      , c                  ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)         ))
@@ -57,7 +55,11 @@ $(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), g_palette ))
 $(eval $(call IMG2SP, CONVERT         , assets/mapa1/TileBien.png, 8, 8, g, ))
 
 
-$(eval $(call IMG2SPRITES,assets/PRESSA2.png,0,m,80,66,$(PALETTEMENU),,src/Sprites))
+$(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTEMENU)     ))
+$(eval $(call IMG2SP, SET_IMG_FORMAT  , sprites            ))
+$(eval $(call IMG2SP, SET_OUTPUT      , bin                  ))
+$(eval $(call IMG2SP, CONVERT         , assets/PRESSA2.png, 80, 66,t, ))
+#$(eval $(call IMG2SPRITES,assets/PRESSA2.png,0,m,80,66,$(PALETTEMENU),,src/Sprites))
 
 
 

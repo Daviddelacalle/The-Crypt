@@ -28,6 +28,7 @@ load_control::
 
 
   drawMenu::
+
       ;;ld hl, #_m_000
       ;;ld c, #20       ;40
       ;;ld b, #25      ;100
@@ -38,12 +39,12 @@ load_control::
       ;;ld de, (menu_ptr)
       ;;call cpct_etm_drawTilemap4x8_ag_asm
 
-      ld hl,#_m_PRESSA2_0
+      ld hl,#decompress_buffer
       ld de,#0xC280
       ld c, #40
       ld b, #66
-      call cpct_drawSprite_asm
-      ld hl,#_m_PRESSA2_1
+      call cpct_drawSprite_asm  ;; Inicio del buffer de descompresión ¬
+      ld hl,#0xA90              ;;              Offeset = 2640 + 64 (0x40) = 2704 = 0xA90
       ld de, #0xC2A8
       ld c, #40
       ld b, #66

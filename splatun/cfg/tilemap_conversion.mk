@@ -41,7 +41,7 @@
 
 $(eval $(call TMX2DATA, SET_BITSPERITEM , 4         ))
 $(eval $(call TMX2DATA, SET_FOLDER      , src/Mapas ))
-#$(eval $(call TMX2DATA, SET_OUTPUTS     , hs s bin    ))
+$(eval $(call TMX2DATA, SET_OUTPUTS     , hs bin    ))
 $(eval $(call TMX2DATA, CONVERT, assets/mapa1/MapaBien.tmx, nivel1 ))
 
 ##

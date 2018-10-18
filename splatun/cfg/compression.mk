@@ -38,8 +38,11 @@
 #$(eval $(call ADD2PACK,mygraphics,gfx/background.bin))
 #$(eval $(call PACKZX7B,mygraphics,src/))
 
-#$(eval $(call ADD2PACK,level0_pack,src/Mapas/MapaBien.bin))
-#$(eval $(call PACKZX7B,level0_pack,src/Compression/))
+$(eval $(call ADD2PACK,titleScreen,src/Sprites/PRESSA2.bin))
+$(eval $(call PACKZX7B,titleScreen,src/Compression/))
+
+$(eval $(call ADD2PACK,level0_pack,src/Mapas/MapaBien.bin))
+$(eval $(call PACKZX7B,level0_pack,src/Compression/))
 
 
 

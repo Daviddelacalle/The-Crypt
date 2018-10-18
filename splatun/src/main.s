@@ -14,9 +14,12 @@
 
 
 
-;decompress_buffer       == 0x040
-;levelMaxSize            = 0x384
-;decompress_buffer_end   = decompress_buffer + levelMaxSize - 1
+decompress_buffer       == 0x040
+levelMaxSize            = 0x384
+decompress_buffer_end   = decompress_buffer + levelMaxSize - 1
+
+imageMaxSize = 0x14A0
+buffer_end_img = decompress_buffer + imageMaxSize - 1
 
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
@@ -56,15 +59,19 @@ _main::
     init
     call drawMenu
 
-    ;ld hl, #_level0_pack_end
-    ;ld de, #decompress_buffer_end
-    ;call cpct_zx7b_decrunch_s_asm
+    ld hl, #_titleScreen_end
+    ld de, #buffer_end_img
+    call cpct_zx7b_decrunch_s_asm
 
     loop_load::
 
       call load_control
       jr loop_load
       map_start::
+
+      ld hl, #_level0_pack_end
+      ld de, #decompress_buffer_end
+      call cpct_zx7b_decrunch_s_asm
       call drawMap
 
     ;; Comienza el bucle del juego

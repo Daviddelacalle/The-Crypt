@@ -10,7 +10,7 @@ CoordMapMin::   .db #0, #0
 CameraTargetX:: .db #0
 CameraTargetY:: .db #0
 
-map_ptr:    .dw #_nivel1
+map_ptr:    .dw #decompress_buffer
 
 ;========================================================================;
 ;   Inreases ptr for the map
