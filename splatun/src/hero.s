@@ -79,23 +79,24 @@ hero_update::
         ld hl, #Key_D               ;; Comprueba tecla D
         call cpct_isKeyPressed_asm
         jr z, d_no_pulsada
-            ld hl, #CoordMapMin
+
+            ld hl, #CoordMapMin             ;; Le resto el borde izq de la cámara
             ld a, e_x(ix)
             sub (hl)
-            cp #RIGHT
-            jr nz, move_the_character_D
+            cp #RIGHT                       ;; Para comprobar si está en el punto dónde debe hacer scroll
+            jr nz, move_the_character_D     ;; Si no es ese punto, simplemente mueve el personaje
 
-            ld a, (cam_min)
-            cp #LimitRight
-            jr z, move_the_character_D
+            ld a, (cam_min)                 ;; Estamos en el punto!
+            cp #LimitRight                  ;; Comprobemos ahora si la cámara no está en el borde ya
+            jr z, move_the_character_D      ;; Estamos en el borde!, simplemente mueve el personaje
 
-            ;;  Set Camera Target X
-                ld b, #3
+            ;;  Set Camera Target X         ;; Estamos en el punto y la cámara no está en el borde
+                ld b, #3                    ;; Mueve la cámara 3 tiles a la derecha
                 call setTargetX
 
             move_the_character_D:
-                ld b, #1
-                ld e_vx(ix), b
+                ld b, #1                    ;; Creo que esto no necesita explicación
+                ld e_vx(ix), b              ;; Simplmente pon la velocidad a 1
             jr d_no_pulsada
 
 
@@ -162,7 +163,7 @@ hero_update::
     add e_vy(ix)
     ld e_y(ix), a
 
-    jp update_cam
+    jp update_cam                   ;; Recusión de cola! Actualiza la cámara
 ret
 
 
