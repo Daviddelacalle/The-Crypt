@@ -52,7 +52,7 @@ $(eval $(call IMG2SP, SET_IMG_FORMAT  , zgtiles            ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)         ))
 $(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), g_palette ))
 #$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTEALT), g2_palette ))
-$(eval $(call IMG2SP, CONVERT         , assets/mapa1/TileBien.png, 8, 8, g, ))
+$(eval $(call IMG2SP, CONVERT         , assets/World1/TileBien.png, 8, 8, g, ))
 
 
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTEMENU)     ))

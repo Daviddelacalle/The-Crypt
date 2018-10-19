@@ -41,9 +41,18 @@
 $(eval $(call ADD2PACK,titleScreen,src/Sprites/PRESSA2.bin))
 $(eval $(call PACKZX7B,titleScreen,src/Compression/))
 
-$(eval $(call ADD2PACK,level0_pack,src/Mapas/MapaBien.bin))
-$(eval $(call PACKZX7B,level0_pack,src/Compression/))
 
+# Mundo 1 - Nivel 1
+$(eval $(call ADD2PACK,level1,src/Mapas/Level1.bin))
+$(eval $(call PACKZX7B,level1,src/Compression/))
+
+# Mundo 1 - Nivel 2
+$(eval $(call ADD2PACK,level2,src/Mapas/Level2.bin))
+$(eval $(call PACKZX7B,level2,src/Compression/))
+
+# Mundo 1 - Nivel 3
+$(eval $(call ADD2PACK,level3,src/Mapas/Level3.bin))
+$(eval $(call PACKZX7B,level3,src/Compression/))
 
 
 
