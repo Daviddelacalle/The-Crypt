@@ -216,9 +216,8 @@ mapa_a_tile::
    jr nc, loop_y_mt
    jr z, loop_y_mt
    end_loop_y_mt:
-   ld    a,    (cam_min+1)
-   add   a,    c
-   ld    b,    a              ;; En B guardo la Y
+   ld    a,    c
+   ld    b,    a        ;; En B guardo la Y
 
    ;; Paso X
    ld    a, l           ;; A = X
@@ -235,12 +234,6 @@ mapa_a_tile::
    jr z, loop_x_mt
    end_loop_x_mt:
    ;; En C ya tengo guardada la X debido al bucle
-   ld    a,    (cam_min)
-   add   a,    c
-   ld    c,    a              ;; En C guardo la X
-
-   ;; LOS VALORES DEL OFFSET YA ESTA ANYADIDOS!!!
-
    ret
 
 

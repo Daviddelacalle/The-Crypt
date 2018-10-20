@@ -27,10 +27,10 @@ var_r_max   = 6
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #1, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-DefineEnemy enemy3, #1, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-DefineEnemy enemy4, #28, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #5, #5, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+; DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+; DefineEnemy enemy3, #1, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+; DefineEnemy enemy4, #28, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve

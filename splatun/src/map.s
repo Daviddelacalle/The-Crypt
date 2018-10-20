@@ -124,7 +124,7 @@ update_cam::
                 call setTargetY
                 ret
             not_on_limit_up:
-            ld b, #-1
+            ld b, #-1      ;;AAAAAAAAAAAAAAAAAAAAAAAAAAA
             ld c, #-8
             ld de, #-30
             ld a, (CameraTargetY)
@@ -142,7 +142,7 @@ update_cam::
 
             not_on_limit_down:
             ld de, #30
-            ld b, #1
+            ld b, #1       ;;AAAAAAAAAAAAAAAAAAAAAAAAAAA
             ld c, #8
             ld a, (CameraTargetY)
             dec a
