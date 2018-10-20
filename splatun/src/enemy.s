@@ -27,13 +27,16 @@ var_r_max   = 6
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #2, #5, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #1, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy3, #1, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy4, #28, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
 ptr_map:       .dw #_nivel1   ;; Puntero al array de id de tiles que forman el mapa
 
-k_update_count = 3
+k_update_count = 5
 update_count:  .db #k_update_count        ;; Limita el update a cada k_update_count frames
 
 ;;======================================================================
@@ -126,6 +129,8 @@ enemy_init:
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
+   call enemy_heroInRadius
+
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion
@@ -134,15 +139,8 @@ enemy_update:
 ;; BUSCA UN PUNTO ALEATORIO PARA IR HACIA ALLI
 ;; _______________________
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
+;; DESTRUYE:   Se destruyen TODOS los registros, incluso BC',DE' y HL'
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; save_dX:    .dw #0x0000    ;; Para Bresenham
-; save_dY:    .dw #0x0000    ;; Para Bresenham
-; IncYr:      .db #0x00      ;; Serian el contrario de las VY de la entidad --> LLEVAR A DATOS PARAMETRIZABLES!!
-; IncXr:      .db #0x00      ;; Serian el contrario de las VX de la entidad --> LLEVAR A DATOS PARAMETRIZABLES!!
-; av:         .dw #0x0000    ;; VALORES DE INICIALIZACION DEL ALGORITMO
-; avR:        .dw #0x0000    ;; VALORES DE INICIALIZACION DEL ALGORITMO
-; avI:        .dw #0x0000    ;; VALORES DE INICIALIZACION DEL ALGORITMO
-; flag_vel:   .db #0x01      ;; 1 = Esta utilizando IncYi/IncXi |------------| 0 = Esta utilizando IncYr/IncXr
 enemy_randomGoal:
    ld    a, (flag_move)          ;; Cargo en A un contador para que no busque todo el rato
    dec   a                       ;; A--
@@ -153,43 +151,32 @@ enemy_randomGoal:
    ld (flag_move), a
 
    ;;RESET DE LOS VALORES
-  ;ld en_dX_l(ix),  #0      ;; dX
-  ;ld en_dX_h(ix),  #0      ;; \
-  ;ld en_dY_l(ix),  #0      ;; dY
-  ;ld en_dY_h(ix),  #0      ;; \
    ld en_incXr(ix), #0      ;; IncXr
    ld en_incYr(ix), #0      ;; IncYr
    ld en_vx(ix),    #0      ;; vx = IncXi
    ld en_vy(ix),    #0      ;; vy = IncYi
-  ;ld en_av_l(ix),  #0      ;; av
-  ;ld en_av_h(ix),  #0      ;; \
-  ;ld en_avR_l(ix), #0      ;; avR
-  ;ld en_avR_h(ix), #0      ;; \
-  ;ld en_avI_l(ix), #0      ;; avI
-  ;ld en_avI_h(ix), #0      ;; \
-
 
    ;; PARTE 1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;; X
-   get_random_x:
 
-    ld a, en_x(ix)              ;; Cojo la X actual del jugador
-    sub #var_r_max              ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
-    ld b, a
-    jr nc, not_negative_x       ;; Si el mínimo es menor que 0
-        ld b, #0                ;; Se pone a 0
-    not_negative_x:
 
-    ld a, en_x(ix)              ;; Cojo la X actual de nuevo
-    add #var_r_max              ;; Le sumo la distancia maxima para sacar el maximo
-    ld c, a
-    cp #MAP_WIDTH               ;; Si el maximo es mayor que el ancho del mapa
-    jr c, not_over_Map_Max_x
-        ld c, #MAP_WIDTH        ;; Lo pongo al ancho total del mapa
-    not_over_Map_Max_x:
-    call getRandomInRange       ;; Genero un numero aleatorio entre MIN y MAX
+   ;; Miro si E = 0xEE
+   ;; En ese caso, no se consigue ningun random en X nuevo
+   ld    a,    e
+   cp    #0xEE
 
-   ld en_g_x(ix), a             ;; Cargo la posicion random en el enemigo
+   ;; Cargo en A la posicion en X que he conseguido para después
+   ;; en el caso que no vaya a elegir una random
+   ;; En otro caso, A sera sobreescrita
+   ;; A = X
+   ld    a,    c
+
+   ;; Guardo los registros HL, BC y DE
+   ;; Los que importan son BC y E
+   exx
+   jr z, dont_do_random_x
+      call enemy_getRandom_X     ;; A = X_fin
+   dont_do_random_x:
 
    ;; Saco vector VX del enemigo
    sub   en_x(ix)             ;; Resto la posicion actual del enemigo
@@ -205,23 +192,22 @@ enemy_randomGoal:
       ld en_dX_h(ix), a          ;; Ya que es negativo -> FF**
    continua_y:
 
-   ld a, en_y(ix)               ;; Cojo la Y actual del jugador
-   sub #var_r_max               ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
-   ld b, a
-   jr nc, not_negative_y        ;; Si el mínimo es menor que 0
-       ld b, #0                 ;; Lo pongo a 0
-   not_negative_y:
+   ;; Recupero BC y E
+   exx
 
-   ld a, en_y(ix)               ;; Cojo la Y actual de nuevo
-   add #var_r_max               ;; Le sumo la distancia maxima para sacar el maximo
-   ld c, a
-   cp #MAP_HEIGHT               ;; Si el maximo es mayor que el ancho del mapa
-   jr c, not_over_Map_Max_y
-       ld c, #MAP_HEIGHT        ;; Lo pongo al ancho total del mapa
-   not_over_Map_Max_y:
-   call getRandomInRange
+   ;; Miro si E = 0xEE
+   ;; En ese caso, no se consigue ningun random en X nuevo
+   ld    a,    e
+   cp    #0xEE
 
-   ld en_g_y(ix), a                          ;; Cargo la posicion random en el enemigo
+   ;; Cargo en A la posicion en X que he conseguido para después
+   ;; en el caso que no vaya a elegir una random
+   ;; En otro caso, A sera sobreescrita
+   ;; A = Y
+   ld    a,    b
+   jr z, dont_do_random_y
+      call enemy_getRandom_Y     ;; A = Y_fin
+   dont_do_random_y:
 
    ;; Saco vector VY del enemigo
    sub   a, en_y(ix)             ;; Posicion Y del enemigo
@@ -313,35 +299,19 @@ enemy_randomGoal:
    ld en_avI_l(ix), l         ;; --> avI = (av - dX)
    ld en_avI_h(ix), h         ;; |
 
-
-
-;; <DEBUG>
-   ; ld    de, #0xC000          ;;Comienzo memoria de video
-   ; ld     c, en_g_x(ix)       ;; C = Entity X
-   ; ld     b, en_g_y(ix)    ;; B = Entity Y
-   ; call cpct_getScreenPtr_asm
-   ; ;; SIN SPRITE
-   ; ex    de,   hl             ;; Apunta a la posicion x,y
-   ; ld     a,   #0xEE          ;; Código de color
-   ; ld     c,   #1             ;; Ancho
-   ; ld     b,   #4             ;; Alto
-   ; call cpct_drawSolidBox_asm
-;; </DEBUG>
-
-
-
    ;;; Cambio update
    ld hl, #enemy_checkGoal
    ld en_up_h(ix), h
    ld en_up_l(ix), l
 
+   ; jp enemy_checkGoal
    ret
-   ;;jp enemy_checkGoal
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CHECKEA SI HA LLEGADO A SU DESTINO
 ;; _______________________
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
+;; DESTRUYE:   A,HL,DE,B
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_checkGoal:
    ;; Si ha llegado al destino -> NO MUEVO
@@ -465,6 +435,60 @@ enemy_checkGoal:
    ret
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CONSIGUE UN VALOR ALEATORIO CORRESPONDIENTE CON LA POSICION EN X
+;; _________________________________________________________________
+;; ENTRADA:    IX -> Puntero a entidad enemigo
+;; DESTRUYE:   A,BC
+;; SALIDA:     A  -> Posicion aleatoria  en X
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+enemy_getRandom_X:
+   ld a, en_x(ix)              ;; Cojo la X actual del jugador
+   sub #var_r_max              ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
+   ld b, a
+   jr nc, not_negative_x       ;; Si el mínimo es menor que 0
+       ld b, #0                ;; Se pone a 0
+   not_negative_x:
+
+   ld a, en_x(ix)              ;; Cojo la X actual de nuevo
+   add #var_r_max              ;; Le sumo la distancia maxima para sacar el maximo
+   ld c, a
+   cp #MAP_WIDTH               ;; Si el maximo es mayor que el ancho del mapa
+   jr c, not_over_Map_Max_x
+       ld c, #MAP_WIDTH        ;; Lo pongo al ancho total del mapa
+   not_over_Map_Max_x:
+   call getRandomInRange       ;; Genero un numero aleatorio entre MIN y MAX
+
+   ld en_g_x(ix), a             ;; Cargo la posicion random en el enemigo
+   ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CONSIGUE UN VALOR ALEATORIO CORRESPONDIENTE CON LA POSICION EN Y
+;; _________________________________________________________________
+;; ENTRADA:    IX -> Puntero a entidad enemigo
+;; DESTRUYE:   A,BC
+;; SALIDA:     A  -> Posicion aleatoria  en Y
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+enemy_getRandom_Y:
+   ld a, en_y(ix)               ;; Cojo la Y actual del jugador
+   sub #var_r_max               ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
+   ld b, a
+   jr nc, not_negative_y        ;; Si el mínimo es menor que 0
+       ld b, #0                 ;; Lo pongo a 0
+   not_negative_y:
+
+   ld a, en_y(ix)               ;; Cojo la Y actual de nuevo
+   add #var_r_max               ;; Le sumo la distancia maxima para sacar el maximo
+   ld c, a
+   cp #MAP_HEIGHT               ;; Si el maximo es mayor que el ancho del mapa
+   jr c, not_over_Map_Max_y
+       ld c, #MAP_HEIGHT        ;; Lo pongo al ancho total del mapa
+   not_over_Map_Max_y:
+   call getRandomInRange
+
+   ld en_g_y(ix), a                          ;; Cargo la posicion random en el enemigo
+   ret
+
 ;; ENTRADA:    HL -> Valor de 2 bytes a llevar a valor positivo, en caso que sea negativo
 ;; DESTRUYE:   A, HL
 ;; SALIDA:     HL -> Valor negativo negado = valor positivo
@@ -496,7 +520,7 @@ enemy_get_negative:
 ;; NOTA:       Aplicar una comprobacion de z despues del call para comprobar colision
 ;; ___________________________________________________________________________________
 ;; ENTRADA:    IX -> Entidad a comprobar con COORDENADAS en TILES
-;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E CASI TOTALE
+;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E TOTALE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 checkTileCollision::
    ;; Guardo en C,A (x,y) para las comprobaciones
@@ -528,7 +552,7 @@ checkTileCollision::
    add   hl, de
 
    ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
-   bit 2, (hl)
+   bit 4, (hl)
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -580,7 +604,7 @@ checkTileCollision_m::
    add   hl, de
 
    ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
-   bit 2, (hl)
+   bit 4, (hl)
 
    ;; COMPROBAR
    ;;    |
@@ -588,6 +612,117 @@ checkTileCollision_m::
    ;;  0 1 0 0
 
    ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; MIRA SI EL HEROE ESTA POR DEBAJO DE UNA CIERTA DISTANCIA EN X E Y
+;; ASIGNA, ADEMAS, LA POSICION FINAL DEL MOVIMIENTO Y LLAMA A enemy_randomGoal
+;; ¡¡ IMPORTANTE !! -> COMPRUEBA LAS DISTANCIAS EN TILES
+;; ________________________________________________________________________________
+;; ENTRADA:    IX -> Apunta a la entidad enemigo
+;; DESTRUYE:   LA DETRUCCIONE E TOTALE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+enemy_heroInRadius:
+   ;; Guardo la funcion update
+   ;; que se encuentra en HL
+   ;; mediante un push a la pila
+   ld h, en_up_h(ix)
+   ld l, en_up_l(ix)
+   push hl
+
+   ;; Consigo los datos del heroe
+   ;;          A = X
+   ;;          B = Y
+   call hero_get_position
+
+   ;; ==============================================================================
+   ;; Paso las coordenadas del heroe
+   ;;     a coordenadas de tile
+   ;;          L = X
+   ;;          H = Y
+   ld    l,    a
+   ld    a,    b
+   ld    h,    a
+   call mapa_a_tile
+   ;; Ahora tengo las coordenadas
+   ;;     del heroe en tiles
+   ;;          C = X
+   ;;          B = Y
+   ;; ==============================================================================
+
+   ;; ==============================================================================
+   ;; Comparo las posiciones de X
+   ;; y consigo la distancia en el eje X
+   ld    a,    c
+   sub   en_x(ix)
+   jr nc, hIR_x_positive
+      neg
+   hIR_x_positive:
+
+   ;; Aplico el rango que se elija
+   ;;       RANGE = 4
+   cp    #5
+   jr    nc, hIR_end
+      jr hIR_check_y
+   ;; ==============================================================================
+
+   hIR_check_y:
+   ;; ==============================================================================
+   ;; Comparo las posiciones de Y
+   ;; y consigo la distancia en el eje Y
+   ld    a,    b
+   sub   en_y(ix)
+   jr    nc, hIR_y_positive
+      neg
+   hIR_y_positive:
+
+   ;; Aplico el rango que se elija
+   ;;       RANGE = 6
+   cp    #7
+   jr    nc, hIR_end
+      ld en_col(ix), #0xFE
+      jr hIR_doThings
+      ;; ==============================================================================
+
+   hIR_end:
+   ld en_col(ix), #0x0F
+
+   ;; Actualizo la funcion de update
+   ;; y asigno la funcion por defecto
+   pop hl
+   ld en_up_h(ix), h
+   ld en_up_l(ix), l
+   ret
+
+   hIR_doThings:
+
+   ;; ============================================================================================
+   ;; V1: Sigue al personaje
+   ;; Consigo los datos del heroe
+   ;;          A = X
+   ;;          B = Y
+   call hero_get_position
+   ;; ===============================
+   ;; Paso las coordenadas del heroe
+   ;;     a coordenadas de tile
+   ;;          L = X
+   ;;          H = Y
+   ld    l,    a
+   ld    a,    b
+   ld    h,    a
+   call mapa_a_tile
+
+   ;; Libero el registro del
+   ;; contenido de la pila
+   ;; que he almacenado al
+   ;; principio de la funcion
+   pop hl
+
+   ;; Ahora se:
+   ;;    - d(hero,enemy) <= 4
+   ;;    - Posicion del heroe = (B,C) = (X,Y) = posicion final del movimiento
+   ld    e, #0xEE          ;; Senyal a enemy_randomGoal para que no busque ningun random
+   jp enemy_randomGoal
+   ;; ============================================================================================
 
 ;=================================
 ; Generates random number in range
