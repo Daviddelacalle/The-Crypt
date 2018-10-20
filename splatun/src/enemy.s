@@ -561,7 +561,7 @@ checkTileCollision::
    add   hl, de
 
    ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
-   bit 2, (hl)
+   bit 4, (hl)
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -613,7 +613,7 @@ checkTileCollision_m::
    add   hl, de
 
    ;; Ahora HL apunta al tile en concreto donde se va a mover el enemigo
-   bit 2, (hl)
+   bit 4, (hl)
 
    ;; COMPROBAR
    ;;    |

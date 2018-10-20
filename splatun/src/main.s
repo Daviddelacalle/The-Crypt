@@ -53,7 +53,7 @@ MAP_HEIGHT == 30
     ld  bc,  #0x4000 - 1
     ldir
 
-    ld hl, #_g_0
+    ld hl, #_g_00
     ld c, #VIEWPORT_WIDTH        ;; Ancho
     ld b, #VIEWPORT_HEIGHT        ;; Alto
     ld de, #30
