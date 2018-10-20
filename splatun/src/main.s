@@ -70,8 +70,6 @@ _main::
       map_start::
 
       call loadLevel1       ;; Cargo el nivel 1
-      call loadNextLevel    ;; Cargo el siguiente nivel
-      call loadNextLevel    ;; Cargo el siguiente de nuevo
       call drawMap
 
     ;; Comienza el bucle del juego

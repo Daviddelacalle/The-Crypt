@@ -152,7 +152,6 @@ hero_update::
                 ld e_vy(ix), b
 
             jr s_no_pulsada
-
     s_no_pulsada:
 
     ld a, e_x(ix)                   ;; Consigue la posicion del jugador

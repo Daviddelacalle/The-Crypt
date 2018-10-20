@@ -2,6 +2,9 @@
 current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
 
+TIMEOUT = 4         ;; Segundos (aprox.)
+CLEAR_COLOR = 4
+
 level_list:
     .dw #_level1_end
     .dw #_level2_end
@@ -24,6 +27,9 @@ loadLevel1::
 ;;  DESTROYS: A, B, DE, HL
 ;;========================================================
 loadNextLevel::
+
+    call displayLoadingScreen
+
     ld a, (current_level)
     inc a
     inc a
@@ -53,4 +59,59 @@ loadCurrentLevel::
 
     ld de, #decompress_buffer_end
     call cpct_zx7b_decrunch_s_asm
+ret
+
+;;  ---
+;;  Displays de loading screen
+;;  DESTROYS: A, B, DE, HL
+;;==================================================================
+displayLoadingScreen:
+
+    call clearPlayableArea
+    call swapBuffers
+    call clearPlayableArea
+
+    ld d, #TIMEOUT*4
+    WaitB:
+        ld e, #0xFF
+        Timeout:
+            call cpct_waitVSYNC_asm
+            dec e
+        jr nz, Timeout
+        dec d
+    jr nz, WaitB
+ret
+
+;   ---
+;   Fills with zero the playable area
+;   DESTROYS: EVERYTHING
+;=====================================
+clearPlayableArea:
+    ld a, (back_buffer)
+    inc a
+    ld h, a
+    ld l, #0x48
+
+    ld a, #16
+    supreme_loop:
+        push hl
+        exx
+        pop hl
+        ld c, #8
+        outer_loop:
+            ld b, #64
+            inner_loop:
+                ld (hl), #CLEAR_COLOR
+                inc hl
+                dec b
+            jr nz, inner_loop
+            ld de, #0x7C0 ;; #0x800 - #0x40 (64)
+            add hl, de
+            dec c
+        jr nz, outer_loop
+        exx
+        ld de, #0x50
+        add hl, de
+        dec a
+    jr nz, supreme_loop
 ret
