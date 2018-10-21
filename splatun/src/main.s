@@ -15,10 +15,7 @@
 
 
 decompress_buffer       == 0x040
-levelMaxSize            = 0x384
-decompress_buffer_end   == decompress_buffer + levelMaxSize - 1
-
-imageMaxSize = 0x14A0
+imageMaxSize             = 0x14A0
 buffer_end_img = decompress_buffer + imageMaxSize - 1
 
 ;==========================================================;
@@ -47,9 +44,6 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
     ld de, #30
     call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm
-
-;1 2 3 4 5
-;6 7 8 9 9
 
 ;; Punto de entrada de la funcion main
 _main::

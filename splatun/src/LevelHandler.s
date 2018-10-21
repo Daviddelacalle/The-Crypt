@@ -2,8 +2,18 @@
 current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
 
-TIMEOUT = 4         ;; Segundos (aprox.)
-CLEAR_COLOR = 4
+TIMEOUT         = 4         ;; Segundos (aprox.)
+CLEAR_COLOR     = 0
+
+decompress_buffer        = 0x040
+MapSize                  = 0x384
+SpawnPointsSize          = 0xA
+
+levelMaxSize             = 0x390
+level_end   == decompress_buffer + levelMaxSize - 1
+SpawnPoints == decompress_buffer + MapSize
+Teleporter  == SpawnPoints + SpawnPointsSize
+
 
 level_list:
     .dw #_level1_end
@@ -57,7 +67,7 @@ loadCurrentLevel::
     ld l, a
     ld h, b             ;; HL contiene el puntero al mapa a descomprimir
 
-    ld de, #decompress_buffer_end
+    ld de, #level_end
     call cpct_zx7b_decrunch_s_asm
 ret
 
@@ -83,7 +93,7 @@ displayLoadingScreen:
 ret
 
 ;   ---
-;   Fills with zero the playable area
+;   Fills with zeros the playable area
 ;   DESTROYS: EVERYTHING
 ;=====================================
 clearPlayableArea:
