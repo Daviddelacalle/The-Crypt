@@ -133,7 +133,6 @@ bullet_inputs::
       jr    loop
    end_loop:
 
-
    ld a, (flag_key)                 ;; A = flag_key
    cp #0                            ;; Si A == 1: SE HA PULSADO ALGUNA DE LAS 4 TECLAS DE DISPARO
    jp nz, bullet_init               ;; Si A == 0: NO SE HA PULSADO NINGUNA TECLA DE DISPARO

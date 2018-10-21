@@ -16,9 +16,8 @@
 ;;======================================================================
 ;;======================================================================
 
-CENTER_X = 40
-CENTER_Y = 70
-
+CAMERA_TARGET_X = 3
+CAMERA_TARGET_Y = 5
 
 hero_x = .
 hero_y = . + 1
@@ -64,7 +63,7 @@ hero_update::
         jr z, move_the_character_A          ;; Si se ha pulsado la A y no estoy en el borde
                                             ;; muevo el mapa
         ;;  Set Camera Target X
-            ld b, #-3
+            ld b, #-CAMERA_TARGET_X
             call setTargetX
 
         move_the_character_A:
@@ -91,7 +90,7 @@ hero_update::
             jr z, move_the_character_D      ;; Estamos en el borde!, simplemente mueve el personaje
 
             ;;  Set Camera Target X         ;; Estamos en el punto y la cámara no está en el borde
-                ld b, #3                    ;; Mueve la cámara 3 tiles a la derecha
+                ld b, #CAMERA_TARGET_X      ;; Mueve la cámara 3 tiles a la derecha
                 call setTargetX
 
             move_the_character_D:
@@ -118,7 +117,7 @@ hero_update::
             jr z, move_the_character_W
 
             ;;  Set Camera Target Y
-                ld b, #-3
+                ld b, #-CAMERA_TARGET_Y
                 call setTargetY
 
             move_the_character_W:
@@ -144,7 +143,7 @@ hero_update::
             jr z, move_the_character_S
 
             ;;  Set Camera Target Y
-                ld b, #3
+                ld b, #CAMERA_TARGET_Y
                 call setTargetY
 
             move_the_character_S:
@@ -152,7 +151,6 @@ hero_update::
                 ld e_vy(ix), b
 
             jr s_no_pulsada
-
     s_no_pulsada:
 
     ld a, e_x(ix)                   ;; Consigue la posicion del jugador

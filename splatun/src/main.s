@@ -14,9 +14,9 @@
 
 
 
-;decompress_buffer       == 0x040
-;levelMaxSize            = 0x384
-;decompress_buffer_end   = decompress_buffer + levelMaxSize - 1
+decompress_buffer       == 0x040
+imageMaxSize             = 0x14A0
+buffer_end_img = decompress_buffer + imageMaxSize - 1
 
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
@@ -45,9 +45,6 @@
     call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm
 
-;1 2 3 4 5
-;6 7 8 9 9
-
 ;; Punto de entrada de la funcion main
 _main::
     ; --> Realocate stack memory <-- ;
@@ -56,15 +53,17 @@ _main::
     init
     call drawMenu
 
-    ;ld hl, #_level0_pack_end
-    ;ld de, #decompress_buffer_end
-    ;call cpct_zx7b_decrunch_s_asm
+    ld hl, #_titleScreen_end
+    ld de, #buffer_end_img
+    call cpct_zx7b_decrunch_s_asm
 
     loop_load::
 
       call load_control
       jr loop_load
       map_start::
+
+      call loadLevel1       ;; Cargo el nivel 1
       call drawMap
 
     ;; Comienza el bucle del juego
@@ -77,7 +76,6 @@ _main::
         ;call hero_clear
 
         ;; DRO
-        call bullet_inputs
         call drawMap
         call bullet_draw
         call enemy_draw_ALL
@@ -86,6 +84,7 @@ _main::
         ;; UPDEIT
         call enemy_update_ALL
         call hero_update
+        call bullet_inputs
         call bullet_update
 
         call cpct_waitVSYNC_asm

@@ -34,7 +34,7 @@ DefineEnemy enemy1, #5, #5, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
-ptr_map:       .dw #_nivel1   ;; Puntero al array de id de tiles que forman el mapa
+ptr_map:       .dw #decompress_buffer   ;; Puntero al array de id de tiles que forman el mapa
 
 k_update_count = 5
 update_count:  .db #k_update_count        ;; Limita el update a cada k_update_count frames
@@ -609,7 +609,14 @@ checkTileCollision_m::
    ;; COMPROBAR
    ;;    |
    ;;    v
+   ;;  0 0 0 0
+   ;;  0 0 0 1
+   ;;  0 0 1 0
+   ;;  0 0 1 1
    ;;  0 1 0 0
+   ;;  0 1 0 1
+   ;;  0 1 1 0
+   ;;  0 1 1 1
 
    ret
 
