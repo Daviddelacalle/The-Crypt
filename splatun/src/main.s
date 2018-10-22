@@ -82,11 +82,12 @@ _main::
         call hero_draw
 
         ;; UPDEIT
-        ;call enemy_update_ALL
+        call enemy_update_ALL
         call hero_update
         call bullet_inputs
         call bullet_update
 
         call cpct_waitVSYNC_asm
         call swapBuffers
+        call kill
 jr loop

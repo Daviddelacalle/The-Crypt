@@ -27,8 +27,8 @@ var_r_max   = 6
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #22, #25, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-; DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #5, #5, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 ; DefineEnemy enemy3, #1, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 ; DefineEnemy enemy4, #28, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
@@ -77,6 +77,7 @@ enemy_update_ALL::
    ld    (update_count), a                ;;    SE QUIERE LIMITAR     ;;
    cp    #0                               ;;  EL UPDATE DEL ENEMIGO   ;;
    ret   nz                               ;; ======================== ;;
+
 
    ld hl, #enemy_update
    call enemy_search
@@ -130,7 +131,7 @@ enemy_init:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
    call enemy_heroInRadius
-
+   call kill
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion
@@ -758,11 +759,71 @@ get_enemy_size::
    ld a, #enemy_size
    ret
 
+   ; kill::
+   ;  call hero_get_iy
+   ;  ld     h, e_y(iy)
+   ;  ld     l, e_x(iy)
+   ;  call mapa_a_tile
+   ;  ld a, e_x(ix)
+   ;  cp c
+         ld e_y(iy),#15
+         ld e_x(iy),#15
+   ;  jr nz, noCol
+   ;    ld a, e_y(ix)
+   ;    cp b
+   ;    jr nz, noCol
+   ;      ld e_x(iy), #30
+   ;      ld e_y(iy), #300
+   ;  noCol:
+   ;  ret
+
+   kill::
+
+   ld     h, e_y(ix)
+   ld     l, e_x(ix)
+   call tile_a_mapa
+   call hero_get_iy
+
+   ld hl, #CoordMapMin
+   ld a, e_x(iy)
+   sub (hl)
+   ld d,a
+   ld a, c
+   add a,#4
+   dec a
+   cp a, d
+   jp c, noCol
+
+   ld hl, #CoordMapMin
+   ld a, e_x(iy)
+   sub (hl)
+   add a,#4
+   dec a
+   cp a,c
+   jp c, noCol
 
 
+   ld hl, #CoordMapMin+1
+   ld a, e_y(iy)
+   sub (hl)
+   ld d, a
+   ld a, b
+   add a,#8
+   dec a
+   cp a, d
+   jp c, noCol
 
+   ld hl, #CoordMapMin+1
+   ld a, e_y(iy)
+   sub (hl)
+   add a,#8
+   dec a
+   cp a, b
+   jp c, noCol
 
+   push ix
+   pop iy
+   call spawnEnemies
 
-
-
-
+   noCol:
+   ret
