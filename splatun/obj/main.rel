@@ -1,0 +1,65 @@
+XL2
+H 2 areas 1E global symbols
+M cpct_keyboard
+S load_control Ref0000
+S drawMenu Ref0000
+S cpct_setPalette_asm Ref0000
+S _g_00 Ref0000
+S swapBuffers Ref0000
+S loadLevel1 Ref0000
+S bullet_inputs Ref0000
+S drawMap Ref0000
+S decompress_buffer Def0040
+S hero_update Ref0000
+S _g_palette Ref0000
+S bullet_draw Ref0000
+S VIEWPORT_HEIGHT Ref0000
+S .__.ABS. Def0000
+S VIEWPORT_WIDTH Ref0000
+S enemy_draw_ALL Ref0000
+S bullet_update Ref0000
+S kill Ref0000
+S cpct_waitVSYNC_asm Ref0000
+S cpct_zx7b_decrunch_s_asm Ref0000
+S cpct_setVideoMode_asm Ref0000
+S _titleScreen_end Ref0000
+S enemy_update_ALL Ref0000
+S cpct_disableFirmware_asm Ref0000
+S hero_draw Ref0000
+S cpct_etm_setDrawTilemap4x8_ag_asm Ref0000
+A _CODE size 68 flags 0 addr 0
+S _main Def0000
+S map_start Def003F
+S loop_load Def003A
+S loop Def0045
+A _DATA size 0 flags 0 addr 0
+T 00 00
+R 00 00 00 00
+T 00 00 31 00 80 CD 00 00 0E 00 CD 00 00 21 00 00
+R 00 00 00 00 02 06 17 00 02 0B 14 00 02 0E 0A 00
+T 0E 00 11 10 00 CD 00 00 21 00 80 36 00 11 01 80
+R 00 00 00 00 02 06 02 00
+T 1C 00 01 FF 3F ED B0 21 00 00 0E 00 00 06 00 00
+R 00 00 00 00 02 08 03 00 0B 0B 0E 00 0B 0E 0C 00
+T 28 00 11 1E 00 CD 00 00 CD 00 00 21 00 00 11
+R 00 00 00 00 02 06 19 00 02 09 01 00 02 0C 15 00
+T 35 00 DF 14 CD 00 00
+R 00 00 00 00 02 05 13 00
+T 3A 00
+R 00 00 00 00
+T 3A 00 CD 00 00 18 FB
+R 00 00 00 00 02 03 00 00
+T 3F 00
+R 00 00 00 00
+T 3F 00 CD 00 00 CD 00 00
+R 00 00 00 00 02 03 05 00 02 06 07 00
+T 45 00
+R 00 00 00 00
+T 45 00 CD 00 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 03 07 00 02 06 0B 00 02 09 0F 00
+T 4F 00 00 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 02 18 00 02 05 16 00 02 08 09 00
+T 58 00 00 00 CD 00 00 CD 00 00 CD
+R 00 00 00 00 02 02 06 00 02 05 10 00 02 08 12 00
+T 61 00 00 00 CD 00 00 18 DD
+R 00 00 00 00 02 02 04 00 02 05 11 00

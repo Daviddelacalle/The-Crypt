@@ -1,0 +1,142 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+
+
+                              1 
+   0000 00                    2 current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
+                              3                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
+                              4 
+                     0004     5 TIMEOUT         = 4         ;; Segundos (aprox.)
+                     0000     6 CLEAR_COLOR     = 0
+                              7 
+                     0040     8 decompress_buffer        = 0x040
+                     0384     9 MapSize                  = 0x384
+                     000A    10 SpawnPointsSize          = 0xA
+                             11 
+                     0390    12 levelMaxSize             = 0x390
+                     03CF    13 level_end   == decompress_buffer + levelMaxSize - 1
+                     03C4    14 SpawnPoints == decompress_buffer + MapSize
+                     03CE    15 Teleporter  == SpawnPoints + SpawnPointsSize
+                             16 
+                             17 
+   0001                      18 level_list:
+   0001 00 00                19     .dw #_level1_end
+   0003 00 00                20     .dw #_level2_end
+   0005 00 00                21     .dw #_level3_end
+                             22 
+                             23 ;   Public
+                             24 ;=================================
+                             25 
+                             26 ;;  ---
+                             27 ;;  Loads the first level
+                             28 ;;  DESTROYS: A, B, DE, HL
+                             29 ;;========================================================
+   0007                      30 loadLevel1::
+   0007 3E 00         [ 7]   31     ld a, #0                ;; Pongo un 0 en el offset
+   0009 32 00 00      [13]   32     ld (current_level), a
+   000C C3 1D 00      [10]   33     jp loadCurrentLevel
+                             34 
+                             35 ;;  ---
+                             36 ;;  Loads the next level from the current one
+                             37 ;;  DESTROYS: A, B, DE, HL
+                             38 ;;========================================================
+   000F                      39 loadNextLevel::
+                             40 
+   000F CD 30 00      [17]   41     call displayLoadingScreen
+                             42 
+   0012 3A 00 00      [13]   43     ld a, (current_level)
+   0015 3C            [ 4]   44     inc a
+   0016 3C            [ 4]   45     inc a
+   0017 32 00 00      [13]   46     ld (current_level), a
+   001A C3 1D 00      [10]   47     jp loadCurrentLevel
+                             48 
+                             49 
+                             50 ;   Private
+                             51 ;=================================
+                             52 
+                             53 ;;  ---
+                             54 ;;  Loads the level that current_level adding the offset
+                             55 ;;  DESTROYS: A, B, DE, HL
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+
+
+                             56 ;;========================================================
+   001D                      57 loadCurrentLevel::
+   001D 16 00         [ 7]   58     ld d, #0            ;; Cargo en DE el offset
+   001F 5F            [ 4]   59     ld e, a
+   0020 21 01 00      [10]   60     ld hl, #level_list  ;; HL apunta al inicio de la lista de mapas
+   0023 19            [11]   61     add hl, de          ;; Sumo el offset a HL
+                             62 
+   0024 7E            [ 7]   63     ld a, (hl)
+   0025 23            [ 6]   64     inc hl
+   0026 46            [ 7]   65     ld b, (hl)
+                             66 
+   0027 6F            [ 4]   67     ld l, a
+   0028 60            [ 4]   68     ld h, b             ;; HL contiene el puntero al mapa a descomprimir
+                             69 
+   0029 11 CF 03      [10]   70     ld de, #level_end
+   002C CD 00 00      [17]   71     call cpct_zx7b_decrunch_s_asm
+   002F C9            [10]   72 ret
+                             73 
+                             74 ;;  ---
+                             75 ;;  Displays de loading screen
+                             76 ;;  DESTROYS: A, B, DE, HL
+                             77 ;;==================================================================
+   0030                      78 displayLoadingScreen:
+                             79 
+   0030 CD 47 00      [17]   80     call clearPlayableArea
+   0033 CD 00 00      [17]   81     call swapBuffers
+   0036 CD 47 00      [17]   82     call clearPlayableArea
+                             83 
+   0039 16 10         [ 7]   84     ld d, #TIMEOUT*4
+   003B                      85     WaitB:
+   003B 1E FF         [ 7]   86         ld e, #0xFF
+   003D                      87         Timeout:
+   003D CD 00 00      [17]   88             call cpct_waitVSYNC_asm
+   0040 1D            [ 4]   89             dec e
+   0041 20 FA         [12]   90         jr nz, Timeout
+   0043 15            [ 4]   91         dec d
+   0044 20 F5         [12]   92     jr nz, WaitB
+   0046 C9            [10]   93 ret
+                             94 
+                             95 ;   ---
+                             96 ;   Fills with zeros the playable area
+                             97 ;   DESTROYS: EVERYTHING
+                             98 ;=====================================
+   0047                      99 clearPlayableArea:
+   0047 3A 00 00      [13]  100     ld a, (back_buffer)
+   004A 3C            [ 4]  101     inc a
+   004B 67            [ 4]  102     ld h, a
+   004C 2E 48         [ 7]  103     ld l, #0x48
+                            104 
+   004E 3E 10         [ 7]  105     ld a, #16
+   0050                     106     supreme_loop:
+   0050 E5            [11]  107         push hl
+   0051 D9            [ 4]  108         exx
+   0052 E1            [10]  109         pop hl
+   0053 0E 08         [ 7]  110         ld c, #8
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+Hexadecimal [16-Bits]
+
+
+
+   0055                     111         outer_loop:
+   0055 06 40         [ 7]  112             ld b, #64
+   0057                     113             inner_loop:
+   0057 36 00         [10]  114                 ld (hl), #CLEAR_COLOR
+   0059 23            [ 6]  115                 inc hl
+   005A 05            [ 4]  116                 dec b
+   005B 20 FA         [12]  117             jr nz, inner_loop
+   005D 11 C0 07      [10]  118             ld de, #0x7C0 ;; #0x800 - #0x40 (64)
+   0060 19            [11]  119             add hl, de
+   0061 0D            [ 4]  120             dec c
+   0062 20 F1         [12]  121         jr nz, outer_loop
+   0064 D9            [ 4]  122         exx
+   0065 11 50 00      [10]  123         ld de, #0x50
+   0068 19            [11]  124         add hl, de
+   0069 3D            [ 4]  125         dec a
+   006A 20 E4         [12]  126     jr nz, supreme_loop
+   006C C9            [10]  127 ret

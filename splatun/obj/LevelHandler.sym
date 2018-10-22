@@ -1,0 +1,24 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     CLEAR_CO=  0000     |     MapSize =  0384 
+    SpawnPoi=  03C4 G   |     SpawnPoi=  000A     |     TIMEOUT =  0004 
+    Teleport=  03CE G   |   0 Timeout    003D R   |   0 WaitB      003B R
+    _level1_   **** GX  |     _level2_   **** GX  |     _level3_   **** GX
+    back_buf   **** GX  |   0 clearPla   0047 R   |     cpct_wai   **** GX
+    cpct_zx7   **** GX  |   0 current_   0000 R   |     decompre=  0040 
+  0 displayL   0030 R   |   0 inner_lo   0057 R   |     levelMax=  0390 
+    level_en=  03CF G   |   0 level_li   0001 R   |   0 loadCurr   001D GR
+  0 loadLeve   0007 GR  |   0 loadNext   000F GR  |   0 outer_lo   0055 R
+  0 supreme_   0050 R   |     swapBuff   **** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size   6D   flags    0
+

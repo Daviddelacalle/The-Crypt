@@ -1,0 +1,39 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |   0 CameraTa   0006 GR  |   0 CameraTa   0007 GR
+  0 CoordMap   0004 GR  |     LimitDow   **** GX  |     LimitRig   **** GX
+    b_alive =  0007     |     b_col   =  0006     |     b_h     =  0003 
+    b_up_h  =  0009     |     b_up_l  =  0008     |     b_vx    =  0004 
+    b_vy    =  0005     |     b_w     =  0002     |     b_x     =  0000 
+    b_y     =  0001     |     back_buf   **** GX  |   0 cam_max    0002 GR
+  0 cam_min    0000 GR  |     cpct_etm   **** GX  |     decompre   **** GX
+  0 drawMap    00BD GR  |     e_col   =  0006     |     e_h     =  0003 
+    e_up_h  =  0008     |     e_up_l  =  0007     |     e_vx    =  0004 
+    e_vy    =  0005     |     e_w     =  0002     |     e_x     =  0000 
+    e_y     =  0001     |     en_avI_h=  0017     |     en_avI_l=  0016 
+    en_avR_h=  0015     |     en_avR_l=  0014     |     en_av_h =  0013 
+    en_av_l =  0012     |     en_col  =  0006     |     en_dX_h =  000D 
+    en_dX_l =  000C     |     en_dY_h =  000F     |     en_dY_l =  000E 
+    en_flagV=  0018     |     en_g_fla=  0009     |     en_g_x  =  000A 
+    en_g_y  =  000B     |     en_h    =  0003     |     en_incXr=  0011 
+    en_incYr=  0010     |     en_up_h =  0008     |     en_up_l =  0007 
+    en_vx   =  0004     |     en_vy   =  0005     |     en_w    =  0002 
+    en_x    =  0000     |     en_y    =  0001     |   0 inc_map    000A GR
+  0 is_posit   0058 R   |   0 is_posit   009E R   |   0 map_ptr    0008 R
+  0 noTarget   0077 R   |   0 not_on_l   00A8 R   |   0 not_on_l   0048 R
+  0 not_on_l   0063 R   |   0 not_on_l   008E R   |   0 setTarge   001F GR
+  0 setTarge   0027 GR  |   0 update_c   002F GR  |   0 update_x   0071 R
+  0 update_y   00B6 R
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size   CC   flags    0
+   1 _DATA      size    0   flags    0
+

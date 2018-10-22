@@ -1,0 +1,39 @@
+-mjwx
+-i obj/splatun.ihx
+-b _CODE = 0x14e0
+-b _DATA = 0x0000
+-u
+-k /home/david/cpctelera/cpctelera/tools/sdcc-3.6.8-r9946/bin/../share/sdcc/lib/z80
+-k /home/david/cpctelera/cpctelera/tools/sdcc-3.6.8-r9946/share/sdcc/lib/z80
+-l /home/david/cpctelera/cpctelera/cpctelera.lib
+-l z80
+obj/Sprites/Tileset.rel
+obj/Sprites/g_palette.rel
+obj/Compression/level3.rel
+obj/Compression/level2.rel
+obj/Compression/level1.rel
+obj/Compression/titleScreen.rel
+obj/Mapas/Level3.h.rel
+obj/Mapas/Level2.h.rel
+obj/Mapas/Level1.h.rel
+obj/Sprites/PRESSA2.h.rel
+obj/Mapas/MapaBien.rel
+obj/Sprites/PRESSA2.rel
+obj/Sprites/TileBien.rel
+obj/struct.h.rel
+obj/hero.rel
+obj/bullet.rel
+obj/constants.h.rel
+obj/LevelHandler.rel
+obj/load.rel
+obj/drawable.rel
+obj/main.rel
+obj/enemy.rel
+obj/map.rel
+obj/movable.rel
+obj/Compression/titleScreen.h.rel
+obj/Compression/level3.h.rel
+obj/Compression/level1.h.rel
+obj/Compression/level2.h.rel
+
+-e
