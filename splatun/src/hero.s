@@ -48,6 +48,8 @@ hero_update::
     ld e_vx(ix), #0
     ld e_vy(ix), #0
 
+    call checkTeleporter
+
     ;; Reset
     ld hl, #0x0000
     ld (save_xm), hl
@@ -234,9 +236,28 @@ hero_get_position::
 ;;======================================================================
 ;;======================================================================
 
+checkTeleporter:
+    ld a, (NumberOfEnemies)
+    cp #0
+    ret nz
 
+    ld h, e_y(ix)
+    ld l, e_x(ix)
+    call mapa_a_tile
 
+    ld a, (Teleporter)
+    cp c
+    ret nz
+    ld a, (Teleporter+1)
+    cp b
+    ret nz
 
+    ld e_x(ix), #INIT_X
+    ld e_y(ix), #INIT_Y
+    call resetCamera
+
+    call loadNextLevel
+ret
 
 
 

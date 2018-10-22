@@ -42,6 +42,21 @@ inc_map::
 
 ret
 
+resetCamera::
+    ld a, #0
+    ld (cam_min),   a
+    ld (cam_min+1), a
+    ld (cam_max),   a
+    ld (cam_max+1), a
+    ld (CoordMapMin), a
+    ld (CoordMapMin+1), a
+    ld (CameraTargetX), a
+    ld (CameraTargetY), a
+
+    ld hl, #decompress_buffer
+    ld (map_ptr), hl
+ret
+
 ;;  ENTRADA:    B -> Incremento molon de camara
 setTargetX::
     ld a, (#CameraTargetX)

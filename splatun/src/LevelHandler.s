@@ -6,6 +6,7 @@ TIMEOUT         = 4         ;; Segundos (aprox.)
 CLEAR_COLOR     = 0
 
 decompress_buffer        = 0x040
+MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384
 SpawnPointsSize          = 0xA
@@ -13,8 +14,8 @@ SpawnPointsSize          = 0xA
 levelMaxSize             = 0x391
 
 level_end           == decompress_buffer + levelMaxSize - 1
-NumberOfEnemies     == decompress_buffer + EnemiesSize
-SpawnPoints         == NumberOfEnemies + MapSize
+NumberOfEnemies     == decompress_buffer + MapSize
+SpawnPoints         == NumberOfEnemies + EnemiesSize
 Teleporter          == SpawnPoints + SpawnPointsSize
 
 SpawnOffset::    .db #0
