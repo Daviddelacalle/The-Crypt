@@ -42,12 +42,14 @@ inc_map::
 
 ret
 
+;;  ENTRADA:    B -> Incremento molon de camara
 setTargetX::
     ld a, (#CameraTargetX)
     add b
     ld (#CameraTargetX), a
 ret
 
+;;  ENTRADA:    B -> Incremento molon de camara
 setTargetY::
     ld a, (#CameraTargetY)
     add b

@@ -216,8 +216,8 @@ mapa_a_tile::
    jr nc, loop_y_mt
    jr z, loop_y_mt
    end_loop_y_mt:
-   ld    a,    c
-   ld    b,    a        ;; En B guardo la Y
+   ld   a,    c
+   ld   b,    a        ;; En B guardo la Y
 
    ;; Paso X
    ld    a, l           ;; A = X
