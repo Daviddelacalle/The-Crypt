@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 1
+vector_size = 5
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 K_VEL_X = 2
@@ -27,7 +27,7 @@ K_VEL_Y = 8
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
 DefineNBullets vector_bullets, vector_size
-DefineBullet bullet_copy 0xFF, 0xFF, #1, #4, 0, 4, #0xF0, #10, bullet_checkUpdate
+DefineBullet bullet_copy 0xFF, 0xFF, #1, #4, 0, 4, #0xFF, #10, bullet_checkUpdate
 
 save_a:        .db #0x00            ;; Guarda el valor de A
 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
@@ -435,6 +435,10 @@ bullet_checkBorderCollision::
 
 ;; COLISION ENEMIGO-BALA
 bullet_check_death::
+
+    ld a, (NumberOfEnemies)
+    cp #0
+    ret z
   ;;tengo que comparar las variables b_x(ix)/b_y(ix) con la posicion de cada enemigo y ver si coinciden
 
    call enemy_load
@@ -447,57 +451,76 @@ bullet_check_death::
    ld     l, e_x(iy)
    call tile_a_mapa
 
-   ld     a, b_x(ix)
-   cp c
-   jr nc, death_check_left ;; si el carry es mayor el numero de cp es mas grande
-        jr death_check_right
+    ;; B = Coordenadas de mapa en Y, esquina superior izq del tile
+    ;; C = Coordenadas de mapa en X, esquina superior izq del tile
+    ld hl, #CoordMapMin
+    ld a, b_x(ix)           ;; Cordenada X de la bala - el offset en X de la cámara
+    sub (hl)
+    ld d, a                 ;; D = X del borde izquierdo de la bala
 
-   death_check_left:
-      ld a, c
-      ld    c, b_x(ix)
-      cp c
-      jr c, end_loop_bullet
-           jr death_check_vertical
-   death_check_right:
-      ld a, b_x(ix)
-      cp c
-      jr c, end_loop_bullet
-           jr death_check_vertical
+    ld a, c                 ;; A = X del borde izquierdo del enemigo
+    add e_w(iy)             ;; A = X del borde derecho del enemigo
 
+    cp d                    ;; Comprobamos si el borde izquierdo de la bala
+                            ;; está a la derecha del borde derecho del enemigo
 
-   death_check_vertical:
-   ld     a, b_y(ix)
-   cp b
-   jr c, death_check_down ;; si el carry es mayor el numero de cp es mas grande
-        jr death_check_up
+    jr nc, checkLeftBorder  ;; No lo está, comprueba la izq
+    jr no_colision          ;; Si lo está, no hay colisión
 
-   death_check_down:
-      ld a, b_y(ix)
-      add a,#8
-      cp b
-      jr c, end_loop_bullet
-         call bullet_set_death
-         ld e_y(iy),#15
-         ld e_x(iy),#15
-         ret
-   death_check_up:
-      ld a, b
-      add a,#4
-      ld    b, b_y(ix)
-      cp b
-      jr c, end_loop_bullet
-         call bullet_set_death
-         ld e_y(iy),#15
-         ld e_x(iy),#15
-         ret
+    checkLeftBorder:
+        ld a, d             ;; A = X del borde izquierdo de la bala
+        add b_w(ix)         ;; A = X del borde derecho de la bala
+        ld d, a             ;; D = X del borde derecho de la bala
+        ld a, c             ;; A = X del borde izquiedo del enemigo
 
-   end_loop_bullet:
-      call get_enemy_size
-      ld h, #0
-      ld l, a
-      ex de,hl
-      add iy,de
-   jr loop_bullet
+        cp d                ;; Comprobamos si el borde derecho de la bala, está
+                            ;; a la derecha del borde izq del enemigo
+    jr nc, no_colision
+
+    ; Hay colision en X, comprobemos en Y
+    ld hl, #CoordMapMin+1
+    ld a, b_y(ix)           ;; Coordenada Y de la bala - offset en Y de la cámara
+    sub (hl)
+    ld d, a                 ;; D = Y del borde superior de la bala
+
+    ld a, b                 ;; A = Y del borde superior del enemigo
+    add e_h(iy)             ;; A = Y del borde inferior del enemigo
+
+    cp d                    ;; Compruebo si el borde superior de la bala está
+                            ;; por debajo del borde inferior del enemigo
+
+    jr nc, checkTopBorder   ;; No está por debajo, comprueba la parte de arriba
+    jr no_colision          ;; Si lo está, no hay colisión
+
+    checkTopBorder:
+        ld a, d             ;; A = Y del borde superior de la bala
+        add b_h(ix)         ;; A = Y del borde inferior de la bala
+        ld d, a             ;; D = Y del borde inferior de la bala
+        ld a, b             ;; A = Y del borde superior del enemigo
+
+        cp d                ;; Comprobamos si el borde inferior de la bala está
+                            ;; por encima del borde superior del enemigo
+    jr nc, no_colision
+
+    ; COLISION
+    ld a, (NumberOfEnemies)
+    dec a
+    ld (NumberOfEnemies), a
+    cp #0
+    call z, openTeleporter
+
+    call bullet_set_death
+    call spawnEnemies
+
+    ret
+
+    no_colision:
+        call get_enemy_size
+        ld h, #0
+        ld l, a
+        ex de,hl
+        add iy,de
+    jr loop_bullet
 ret
 
 
@@ -508,7 +531,33 @@ bullet_set_death:
    ret
 
 
+spawnEnemies::
+    ld hl, #SpawnPoints
+    ld a, (SpawnOffset)
+    ld d, #0
+    ld e, a
+    add hl, de
 
+    inc a
+    inc a
+    cp #10
+    jr nz, no_last_coord
+        ld a, #0
+    no_last_coord:
+    ld (SpawnOffset), a
 
+    ld b, (hl)
+    inc hl
+    ld c, (hl)
+    push bc
+    call checkViewport
+    pop bc
+    cp #0
+
+    jr nz, spawnEnemies
+
+    ld e_x(iy),b
+    ld e_y(iy),c
+ret
 
 
