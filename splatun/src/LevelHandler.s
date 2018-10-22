@@ -6,13 +6,18 @@ TIMEOUT         = 4         ;; Segundos (aprox.)
 CLEAR_COLOR     = 0
 
 decompress_buffer        = 0x040
+EnemiesSize              = 0x1
 MapSize                  = 0x384
 SpawnPointsSize          = 0xA
 
-levelMaxSize             = 0x390
-level_end   == decompress_buffer + levelMaxSize - 1
-SpawnPoints == decompress_buffer + MapSize
-Teleporter  == SpawnPoints + SpawnPointsSize
+levelMaxSize             = 0x391
+
+level_end           == decompress_buffer + levelMaxSize - 1
+NumberOfEnemies     == decompress_buffer + EnemiesSize
+SpawnPoints         == NumberOfEnemies + MapSize
+Teleporter          == SpawnPoints + SpawnPointsSize
+
+SpawnOffset::    .db #0
 
 
 level_list:
@@ -115,7 +120,7 @@ clearPlayableArea:
                 inc hl
                 dec b
             jr nz, inner_loop
-            ld de, #0x7C0 ;; #0x800 - #0x40 (64)
+            ld de, #0x7C0 ;; #0x800 - #0x40 (64) = #0x7C0
             add hl, de
             dec c
         jr nz, outer_loop

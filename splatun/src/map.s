@@ -154,6 +154,10 @@ update_cam::
         call inc_map
 ret
 
+openTeleporter::
+
+ret
+
 ;========================================================================;
 ;   Draws the complete map.in.include "drawable.h.s"clude "drawable.h.s"
 ;========================================================================;

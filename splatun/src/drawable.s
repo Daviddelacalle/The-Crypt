@@ -56,28 +56,18 @@ dw_draw::
    cp    #0xAA
    jr nz, normal_dro
 
-   ;; OPERACIONES EN COORDENADAS DE TILES, NO EN COORDENADAS DE MAPA
-   ld    hl, (cam_max)
-   ex    de, hl            ;; E = X, D = Y -> Coordenadas maximas
-   ld    hl, (cam_min)     ;; L = X, H = Y -> Coordenadas minimas
-
-   ld    a, e_x(ix)        ;; A = enemy_x
-   cp    l                 ;; Ver si X es mayor que la coordenada X minima
-   ret   c                    ;; Si A > x_min <----> C = 0
-   cp    e                 ;; Ver si X es menor que la coordenada X maxima
-   ret   nc                   ;; Si A < x_max <----> C = 1
-
-   ld    a, e_y(ix)        ;; A = enemy_y
-   cp    h                 ;; Ver si X es mayor que la coordenada Y minima
-   ret   c                    ;; Si A > y_min <----> C = 0
-   cp    d                 ;; Ver si X es menor que la coordenada Y maxima
-   ret   nc                   ;; Si A < y_max <----> C = 1
-
    ;; Si llega aqui significa que esta dentro de los limites
    ;; Corregir offset de la camara
       ;; HAY QUE COGER UNAS COORDENADAS RELATIVAS A LA POSICION DE LA CAMARA
       ;; SINO SIEMPRE LA CAMARA ESTARA EN min(0,0) Y max(20,20)
+   ld a, e_x(ix)
+   ld b, a
+   ld a, e_y(ix)
+   ld c, a
 
+   call checkViewport
+   cp #0
+   ret z
    ;; Cargar las coordenadas en HL
    ld l, e_x(ix)           ;; L = X
    ld h, e_y(ix)           ;; H = Y
@@ -177,7 +167,6 @@ tile_a_mapa::
 
    ;; Paso Y
    ld    a,    h           ;; A = Y
-   add   #OFFSET_CAMERA_POS_Y
    ld    c,    #7          ;; Iteraciones del loop
    ld    d,    a           ;; D = Y
    loop_y_tm:
@@ -185,11 +174,11 @@ tile_a_mapa::
       dec c             ;; C--
    jr nz, loop_y_tm
 
+   add   #OFFSET_CAMERA_POS_Y_PANT
    ld b, a              ;; En B guardo la Y
 
    ;; Paso X
    ld    a, l                    ;; ======================= ;;
-   add   #OFFSET_CAMERA_POS_X
    ld    c, #3                   ;;                         ;;
    ld    d, a                    ;; Hago lo mismo que antes ;;
    loop_x_tm:                    ;;      pero con la X      ;;
@@ -197,6 +186,7 @@ tile_a_mapa::
       dec c                      ;; ======================= ;;
    jr nz, loop_x_tm
 
+   add   #OFFSET_CAMERA_POS_X_PANT
    ld c, a              ;; En C guardo la X
    ret
 
@@ -236,10 +226,39 @@ mapa_a_tile::
    ;; En C ya tengo guardada la X debido al bucle
    ret
 
+;   ---
+;   Check if entity is inside the viewport
+;   Input:  IX => Entity
+;            B => X
+;            C => Y
+;   Return:  A = (0 = Is Outside, 1 = Is inside)
+;   Destroys: A, BC, DE, HL
+;===============================================
+checkViewport::
+    ;; OPERACIONES EN COORDENADAS DE TILES, NO EN COORDENADAS DE MAPA
+    ld    hl, (cam_max)
+    ex    de, hl            ;; E = X, D = Y -> Coordenadas maximas
+    ld    hl, (cam_min)     ;; L = X, H = Y -> Coordenadas minimas
 
+    ld a, b
+    cp    l                 ;; Ver si X es mayor que la coordenada X minima
+    jr    c, is_outside     ;; Si A > x_min <----> C = 0
+    cp    e                 ;; Ver si X es menor que la coordenada X maxima
+    jr   nc, is_outside        ;; Si A < x_max <----> C = 1
 
+    ld    a, c              ;; A = enemy_y
+    cp    h                 ;; Ver si X es mayor que la coordenada Y minima
+    jr    c, is_outside        ;; Si A > y_min <----> C = 0
+    cp    d                 ;; Ver si X es menor que la coordenada Y maxima
+    jr   nc, is_outside        ;; Si A < y_max <----> C = 1
 
+    ld a, #1
+    ret
 
+    is_outside:
+        ld a, #0
+        ret
+ret
 
 
 

@@ -784,32 +784,46 @@ get_enemy_size::
    call tile_a_mapa
    call hero_get_iy
 
+   ld hl, #CoordMapMin
+   ld a, e_x(iy)
+   sub (hl)
+   ld d,a
    ld a, c
    add a,#4
    dec a
-   cp a, e_x(iy)
+   cp a, d
    jp c, noCol
 
+   ld hl, #CoordMapMin
    ld a, e_x(iy)
+   sub (hl)
    add a,#4
    dec a
    cp a,c
    jp c, noCol
 
+
+   ld hl, #CoordMapMin+1
+   ld a, e_y(iy)
+   sub (hl)
+   ld d, a
    ld a, b
    add a,#8
    dec a
-   cp a, e_y(iy)
+   cp a, d
    jp c, noCol
 
+   ld hl, #CoordMapMin+1
    ld a, e_y(iy)
+   sub (hl)
    add a,#8
    dec a
    cp a, b
    jp c, noCol
 
-   ld e_y(iy),#80
-   ld e_x(iy),#300
+   push ix
+   pop iy
+   call spawnEnemies
 
    noCol:
    ret
