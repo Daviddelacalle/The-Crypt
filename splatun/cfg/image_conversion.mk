@@ -41,12 +41,19 @@
 #$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), g_palette ))
 #$(eval $(call IMG2SP, CONVERT         , img.png , w, h, array, palette, tileset))
 
-PALETTE=0 1 2 3 4 5 8 12 6 7 16 18 20 24 25 26
-#PALETTEALT=13 1 2 3 6 9 10 12 0 15 26 18 21 24 25 16
-PALETTEMENU=0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26
+PALETTE			=0 1 2 3 4 5 8 15 6 7 16 9 20 24 12 26
+# PALETTE_HERO	=0 1 2 3 4 6 8 15 6 7 16 18 20 24 25 26
+PALETTEMENU		=0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26
 
 $(eval $(call IMG2SP, SET_MODE        , 0                  ))
-$(eval $(call IMG2SP, SET_FOLDER      , src/Sprites         ))
+$(eval $(call IMG2SP, SET_FOLDER      , src/Sprites        ))
+$(eval $(call IMG2SP, SET_IMG_FORMAT  , sprites            ))
+$(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)    ))
+$(eval $(call IMG2SP, CONVERT         , assets/Sprites/p1.png, 8, 8, sp_hero, ))
+
+
+$(eval $(call IMG2SP, SET_MODE        , 0                  ))
+$(eval $(call IMG2SP, SET_FOLDER      , src/Sprites        ))
 $(eval $(call IMG2SP, SET_IMG_FORMAT  , zgtiles            ))
 #(eval $(call IMG2SP, SET_OUTPUT      , c                  ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)         ))

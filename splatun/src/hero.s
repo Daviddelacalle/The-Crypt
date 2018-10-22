@@ -25,7 +25,7 @@ save_ym: .db #0x00
 
 hero_x = .
 hero_y = . + 1
-DefineEntity hero, #INIT_X, #INIT_Y, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
+DefineEntity hero, #INIT_X, #INIT_Y, #4, #8, 0x00, 0x00, #_sp_hero_00, 0x0000
 
 ;;======================================================================
 ;;======================================================================
@@ -75,6 +75,11 @@ hero_update::
             call setTargetX
 
         move_the_character_A:
+            ;; Actualizo el sprite del heroe
+            ld hl, #_sp_hero_01
+            ld e_spr_l(ix), l
+            ld e_spr_h(ix), h
+
             ld a, #-1                       ;; Para la comprobacion de colisiones
             ld (save_xm), a
 
@@ -105,7 +110,12 @@ hero_update::
                 call setTargetX
 
             move_the_character_D:
-                ld a, #1                       ;; Para la comprobacion de colisiones
+                ;; Actualizo el sprite del heroe
+                ld hl, #_sp_hero_02
+                ld e_spr_l(ix), l
+                ld e_spr_h(ix), h
+
+                ld a, #2                       ;; Para la comprobacion de colisiones
                 ld (save_xm), a
 
                 ld b, #1                    ;; Creo que esto no necesita explicación
@@ -135,6 +145,11 @@ hero_update::
                 call setTargetY
 
             move_the_character_W:
+                ;; Actualizo el sprite del heroe
+                ld hl, #_sp_hero_00
+                ld e_spr_l(ix), l
+                ld e_spr_h(ix), h
+
                 ld a, #-1                       ;; Para la comprobacion de colisiones
                 ld (save_ym), a
 
@@ -164,6 +179,11 @@ hero_update::
                 call setTargetY
 
             move_the_character_S:
+                ;; Actualizo el sprite del heroe
+                ld hl, #_sp_hero_03
+                ld e_spr_l(ix), l
+                ld e_spr_h(ix), h
+
                 ld a, #8                       ;; Para la comprobacion de colisiones
                 ld (save_ym), a
 
