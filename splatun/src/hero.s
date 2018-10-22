@@ -241,7 +241,6 @@ ret
 ;; FUNCIONES PRIVADAS
 ;;======================================================================
 ;;======================================================================
-<<<<<<< HEAD
 
 checkTeleporter:
     ld a, (NumberOfEnemies)
@@ -266,7 +265,3 @@ checkTeleporter:
     call loadNextLevel
 ret
 
-
-
-=======
->>>>>>> 55500e5eef611d16d23bea5aa36e2c873ee3183e
