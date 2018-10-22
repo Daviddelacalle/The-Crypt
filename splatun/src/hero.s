@@ -19,6 +19,10 @@
 CAMERA_TARGET_X = 3
 CAMERA_TARGET_Y = 5
 
+
+save_xm: .db #0x00      ;; Guarda
+save_ym: .db #0x00
+
 hero_x = .
 hero_y = . + 1
 DefineEntity hero, #INIT_X, #INIT_Y, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
@@ -44,6 +48,10 @@ hero_update::
     ld e_vx(ix), #0
     ld e_vy(ix), #0
 
+    ;; Reset
+    ld hl, #0x0000
+    ld (save_xm), hl
+
     call cpct_scanKeyboard_asm
 
 
@@ -67,6 +75,9 @@ hero_update::
             call setTargetX
 
         move_the_character_A:
+            ld a, #-1                       ;; Para la comprobacion de colisiones
+            ld (save_xm), a
+
             ld b, #-1                       ;; Cambio la velocidad del jugador a 2
             ld e_vx(ix), b
 
@@ -94,6 +105,9 @@ hero_update::
                 call setTargetX
 
             move_the_character_D:
+                ld a, #1                       ;; Para la comprobacion de colisiones
+                ld (save_xm), a
+
                 ld b, #1                    ;; Creo que esto no necesita explicación
                 ld e_vx(ix), b              ;; Simplmente pon la velocidad a 1
             jr d_no_pulsada
@@ -121,6 +135,9 @@ hero_update::
                 call setTargetY
 
             move_the_character_W:
+                ld a, #-1                       ;; Para la comprobacion de colisiones
+                ld (save_ym), a
+
                 ld b, #-4
                 ld e_vy(ix), b
 
@@ -147,22 +164,58 @@ hero_update::
                 call setTargetY
 
             move_the_character_S:
+                ld a, #8                       ;; Para la comprobacion de colisiones
+                ld (save_ym), a
+
                 ld b, #4
                 ld e_vy(ix), b
 
             jr s_no_pulsada
     s_no_pulsada:
 
-    ld a, e_x(ix)                   ;; Consigue la posicion del jugador
-    add e_vx(ix)                    ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
-    ld e_x(ix), a                   ;; Lo guardo en su registro
+    ;; Consigo los valores según se hayan guardado
+    ;; Depende de si se han pulsado algunas teclas de movimiento
+    ld hl, (save_xm)
+    ;;  - EN L TENGO 4 (derecha)    o -4 (izquierda)
+    ;;  - EN H TENGO 8 (abajo)      o -8 (arriba)
+
+    ld  a, e_x(ix)                  ;; Consigue la posicion del jugador
+    add a, l                        ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
+    ld  e_x(ix), a                  ;; Lo guardo en su registro
 
     ld a, e_y(ix)                   ;; Repito para Y
-    add e_vy(ix)
+    add a, h
     ld e_y(ix), a
 
-    jp update_cam                   ;; Recusión de cola! Actualiza la cámara
+    ;; Comprueba la colision con las tiles del mapa
+    call    checkTileCollision_m
+    ;; L = C
+    ;; H = D
+    ld hl, (save_xm)
+    jr nz, hero_no_colisiona
+        ;; Hago reset de las posiciones
+        ld  a, e_x(ix)
+        sub a, l
+        ld  e_x(ix), a
 
+        ld a, e_y(ix)
+        sub a, h
+        ld e_y(ix), a
+
+        ret
+    hero_no_colisiona:
+    ld  a, e_x(ix)
+    sub a, l
+    add a, e_vx(ix)
+    ld  e_x(ix), a
+
+    ld a, e_y(ix)
+    sub a, h
+    add a, e_vy(ix)
+    ld e_y(ix), a
+
+
+    jp update_cam                   ;; Recusión de cola! Actualiza la cámara
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CARGA EN LOS REGISTROS A,B LOS VALORES DE X,Y
