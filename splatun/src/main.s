@@ -89,4 +89,5 @@ _main::
 
         call cpct_waitVSYNC_asm
         call swapBuffers
+        call kill
 jr loop
