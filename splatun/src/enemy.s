@@ -17,8 +17,6 @@
 enemy_size = en_size           ;; Tamanyo parametrizado
 k_max_enemies = 1
 
-DefineEnemy enemy_copy, 39, 50, #1, #4, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-
 ;; ANCHO:   0 - 79
 ;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
 x_range = 29
@@ -27,7 +25,7 @@ var_r_max   = 6
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector
 ;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #22, #25, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+DefineEnemy enemy1, #22, #25, #4, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 ; DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 ; DefineEnemy enemy3, #1, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
 ; DefineEnemy enemy4, #28, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
@@ -415,6 +413,48 @@ enemy_checkGoal:
          ld en_av_h(ix), h          ;; |
    end_if:
 
+   ;; Actualizo el sprite del enemigo
+
+   ;; El sprite que mira hacia el jugador
+   ;; es el sprite por defecto
+   ld hl, #_sp_hero_11
+
+   ;; -------------------------------------------------------
+   ;; NOTA PARA NAVEGANTES:
+   ;; -------------------------------------------------------
+   ;; Aunque ponga "'TECLA' PULSADA"
+   ;; se sabe que el enemigo no puede pulsar teclas
+   ;; Se sobreentiende que W es arriba y así todas las demás
+   ;; -------------------------------------------------------
+   ld a, en_vy(ix)
+   cp #-1
+   jr nz, en_changeSprite_S
+        ;; W PULSADA
+        ld hl, #_sp_hero_08
+        jr en_changeSprite_X
+   en_changeSprite_S:
+   cp #1
+   jr nz, en_changeSprite_X
+        ;; S PULSADA
+        ld hl, #_sp_hero_11
+   en_changeSprite_X:
+   ld a, en_vx(ix)
+   cp #1
+   jr nz, en_changeSprite_A
+       ;; D PULSADA
+       ld hl, #_sp_hero_10
+       jr en_changeSprite_end
+   en_changeSprite_A:
+   cp #-1
+   jr nz, en_changeSprite_end
+       ;; A PULSADA
+       ld hl, #_sp_hero_09
+   en_changeSprite_end:
+   ld en_spr_l(ix), l
+   ld en_spr_h(ix), h
+
+;; --------------------------------------------------------------------------
+
    ;; Primero hay que comprobar si la posicion
    ;; a la que se va a mover NO ES UN OBSTACULO
    ;; - OBSTACULO = EL BIT MAS SIGNIFICATIVO ES 0 (por ahora)
@@ -690,12 +730,10 @@ enemy_heroInRadius:
    ;;       RANGE = 6
    cp    #7
    jr    nc, hIR_end
-      ld en_col(ix), #0xFE
       jr hIR_doThings
       ;; ==============================================================================
 
    hIR_end:
-   ld en_col(ix), #0x0F
 
    ;; Actualizo la funcion de update
    ;; y asigno la funcion por defecto

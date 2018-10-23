@@ -17,7 +17,7 @@ _name:
 
 ;; Entidad por defecto
 .macro DefineEntityDefault _name, _suf
-   DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0xFFFF           ;;'
+   DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0x0000, 0xFFFF           ;;'
 .endm
 
 ;; Definir N entidades
@@ -30,15 +30,13 @@ _name:
 .endm
 
 ;; Entidad heroe/enemigo
-.macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd
+.macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _spr, _upd
 _name:
-   DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
-   DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
-;; Si no tiene sprite
-   .db   _col        ;; Color
+    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
 ;; Si tiene sprite
-;;.dw   _spr
-   .dw   _upd        ;; Puntero a la funcion de update
+    .dw   _spr
+    .dw   _upd        ;; Puntero a la funcion de update
 
 ;; Aqui falta saber el tamanyo de la entidad
 e_size = . - (_name)
@@ -47,28 +45,30 @@ e_size = . - (_name)
 ;;;;;;;;;;;;;;;;;;;
 ;; Constantes de las entidades hero/enemy
 ;;;;;;;;;;;;;;;;;;;
-   e_x = 0      e_y = 1
-   e_w = 2      e_h = 3
-  e_vx = 4     e_vy = 5
- e_col = 6
-e_up_l = 7   e_up_h = 8
+    e_x = 0      e_y = 1
+    e_w = 2      e_h = 3
+   e_vx = 4     e_vy = 5
+e_spr_l = 6  e_spr_h = 7
+ e_up_l = 8   e_up_h = 9
+
 
 ;;-----------------------------------------------------------------------------------------;;
 ;; Entidad bullet
-.macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _col, _alive, _upd
+.macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _spr, _alive, _upd
 _name:
    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
-   .db   _col        ;; Color / Sprite (cuando haya)
+   .dw   _spr        ;; Color / Sprite (cuando haya)
    .db   _alive      ;; _alive>0? Se actualiza/dibuja
    .dw   _upd        ;; Funcion de update
 
 ;; Saber tamanyo de entidad bala
+b_size = . - (_name)
 .endm
 
 ;; Entidad por defecto de bullet
 .macro DefineBulletDefault _name, _suf
-   DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0, 0, 0xFFFF        ;;'
+   DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0x0000, 0, 0xFFFF        ;;'
 .endm
 
 ;; Bucle de crear entidades bullet
@@ -83,18 +83,19 @@ _name:
 ;;;;;;;;;;;;;;;;;;;
 ;; Constantes de las entidades bullet
 ;;;;;;;;;;;;;;;;;;;
-    b_x = 0      b_y = 1
-    b_w = 2      b_h = 3
-   b_vx = 4     b_vy = 5
-  b_col = 6  b_alive = 7
- b_up_l = 8   b_up_h = 9
+     b_x = 0      b_y = 1
+     b_w = 2      b_h = 3
+    b_vx = 4     b_vy = 5
+ b_spr_l = 6  b_spr_h = 7
+ b_alive = 8
+  b_up_l = 9   b_up_h = 10
 
 
 
  ;;-----------------------------------------------------------------------------------------;;
  ;; Entidad enemigo por defecto
  .macro DefineEnemyDefault _name, _suf
-    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0, #0xFFFF, #0, #0, #0, #0, #0, #0, #0, #0, #0, #0, #1           ;;'
+    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0x0000, #0xFFFF, #0, #0, #0, #0, #0, #0, #0, #0, #0, #0, #1           ;;'
  .endm
 
  ;; Definir N entidades enemigo
@@ -107,14 +108,12 @@ _name:
  .endm
 
  ;; Entidad enemigo
- .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _col, _upd, _goal_flag, _goal_x, _goal_y, save_dX, save_dY, IncYr, IncXr, av, avR, avI, flag_vel
+ .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _spr, _upd, _goal_flag, _goal_x, _goal_y, save_dX, save_dY, IncYr, IncXr, av, avR, avI, flag_vel
  _name:
     DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
     DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
- ;; Si no tiene sprite
-    .db  _col        ;; Color
  ;; Si tiene sprite
- ;;.dw   _spr
+    .dw  _spr
     .dw  _upd        ;; Puntero a la funcion de update
     .db  _goal_flag  ;; 0 -> No se ha
     .db  _goal_x     ;; X de la posicion final
@@ -140,18 +139,18 @@ _name:
       en_x = 0         en_y = 1
       en_w = 2         en_h = 3
      en_vx = 4        en_vy = 5
-    en_col = 6
-   en_up_l = 7      en_up_h = 8
- en_g_flag = 9
+  en_spr_l = 6     en_spr_h = 7
+   en_up_l = 8      en_up_h = 9
+ en_g_flag = 10
  ;;------------------------------BRESENHAM
-    en_g_x = 10      en_g_y = 11
-   en_dX_l = 12     en_dX_h = 13
-   en_dY_l = 14     en_dY_h = 15
-  en_incYr = 16    en_incXr = 17
-   en_av_l = 18     en_av_h = 19
-  en_avR_l = 20    en_avR_h = 21
-  en_avI_l = 22    en_avI_h = 23
-en_flagVel = 24
+    en_g_x = 11      en_g_y = 12
+   en_dX_l = 13     en_dX_h = 14
+   en_dY_l = 15     en_dY_h = 16
+  en_incYr = 17    en_incXr = 18
+   en_av_l = 19     en_av_h = 20
+  en_avR_l = 21    en_avR_h = 22
+  en_avI_l = 23    en_avI_h = 24
+en_flagVel = 25
 
 
 

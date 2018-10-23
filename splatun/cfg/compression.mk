@@ -41,6 +41,9 @@
 $(eval $(call ADD2PACK,titleScreen,src/Sprites/PRESSA2.bin))
 $(eval $(call PACKZX7B,titleScreen,src/Compression/))
 
+# El jud
+$(eval $(call ADD2PACK,hud,src/Mapas/hud.bin))
+$(eval $(call PACKZX7B,hud,src/Compression/))
 
 # Mundo 1 - Nivel 1
 $(eval $(call ADD2PACK,level1,src/Mapas/Level1.bin))

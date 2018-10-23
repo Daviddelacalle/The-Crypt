@@ -115,21 +115,15 @@ dw_draw::
    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
    ld d, a
    ld e, #00
-
    call cpct_getScreenPtr_asm
-   ;; SIN SPRITE
-   ex    de,   hl          ;; Apunta a la posicion x,y
-   ld     a,   e_col(ix)    ;; Código de color
-   ld     c,   e_w(ix)      ;; Ancho
-   ld     b,   e_h(ix)      ;; Alto
-   call cpct_drawSolidBox_asm
 
-   ;; CON SPRITE
-   ;; (2B HL) sprite	Source Sprite Pointer (array with pixel data)
-   ;; (2B DE) memory	Destination video memory pointer
-   ;; (1B C ) width	Sprite Width in bytes [1-63] (Beware, not in pixels!)
-   ;; (1B B ) height	Sprite Height in bytes (>0)
-   ;; cpct_drawSprite_asm
+   ex   de,     hl                      ;; Apunta a la posicion x,y
+   ld   l,      e_spr_l(ix)             ;; Apuntar al sprite
+   ld   h,      e_spr_h(ix)             ;; Apuntar al sprite
+   ld   c,      e_w(ix)                 ;; Ancho
+   ld   b,      e_h(ix)                 ;; Alto
+   call cpct_drawSprite_asm
+
 ret
 
 
