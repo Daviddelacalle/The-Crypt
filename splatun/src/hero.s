@@ -229,13 +229,7 @@ hero_get_position::
    ld    b,    a
    ld    a,    (hero_x)
    ret
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; CARGA EN IY EL VECTOR DEL HEROE
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-hero_get_iy::
-  ld iy, #hero
-ret
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PRIVADAS
@@ -264,4 +258,6 @@ checkTeleporter:
 
     call loadNextLevel
 ret
+
+
 

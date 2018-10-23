@@ -27,8 +27,6 @@ load_control::
   jp nz, map_start
 
 
-  drawMenu::
-
       ;;ld hl, #_m_000
       ;;ld c, #20       ;40
       ;;ld b, #25      ;100

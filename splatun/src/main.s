@@ -51,7 +51,7 @@ _main::
     ld sp, #0x8000
 
     init
-    call drawMenu
+    ;call drawMenu
 
     ld hl, #_titleScreen_end
     ld de, #buffer_end_img
@@ -89,5 +89,4 @@ _main::
 
         call cpct_waitVSYNC_asm
         call swapBuffers
-        call kill
 jr loop

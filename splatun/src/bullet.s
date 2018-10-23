@@ -22,7 +22,7 @@ vector_size = 5
 bullet_size = 10                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 K_VEL_X = 2
-K_VEL_Y = 4
+K_VEL_Y = 8
 
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
@@ -81,15 +81,6 @@ bullet_update::
    ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; CLEAR
-;; _______________________
-;; DESTRUYE: HL
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_clear::
-   ld    hl,   #bullet_checkClear
-   jp    bullet_search
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; COMPRUEBA LOS INPUTS
 ;; _______________________
 ;; DESTRUYE: AF, BC, DE, HL, IX
@@ -141,7 +132,6 @@ bullet_inputs::
       add   ix,   de                ;; IX + 4
       jr    loop
    end_loop:
-
 
    ld a, (flag_key)                 ;; A = flag_key
    cp #0                            ;; Si A == 1: SE HA PULSADO ALGUNA DE LAS 4 TECLAS DE DISPARO
@@ -270,13 +260,10 @@ bullet_search:
 ;; ENTRADA:    IX -> Puntero a entidad BULLET
 ;; DESTRUYE:   A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_checkDraw:
+bullet_checkDraw::
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-
-
-
-   ; ld a, #0xAA                   ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
+   ; ld a, #0xAA                 ;; Se le manda A = AA a dw_draw ya que LAS COORDEADAS DE LAS BALAS ESTAN EN TILES
    call  nz,   #dw_draw          ;; Llama a la funcion de dibujado
    ret
 
@@ -305,7 +292,7 @@ bullet_checkInit:
 
 
    ;; DEBO CONSEGUIR UNAS POSICIONES DE TILE DEL HERO
-   call hero_get_position        ;; A = hero_x // B = hero_y
+   call hero_get_position           ;; A = hero_x // B = hero_y
    ; ld l, a                       ;; L = X
    ; ld h, b                       ;; H = Y
    ; call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
@@ -343,8 +330,6 @@ bullet_searchUpdate:
       ld b_up_l(ix), l
    no_tile_collision:
 
-   call bullet_checkBorderCollision
-
    call bullet_check_death
 
    ld l, b_up_l(ix)           ;; Carga el byte bajo en L
@@ -359,7 +344,7 @@ bullet_searchUpdate:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_checkUpdate:
    ;; UPDATE ALIVE
-   dec   b_alive(ix)     ;; Decrementar el valor de alive y si llega a 1 matar la bala -> alive = 0
+   dec   b_alive(ix)            ;; Decrementar el valor de alive y si llega a 1 matar la bala -> alive = 0
 
    ;; UPDATE POSICION
    ld     a,   b_x(ix)           ;; Cargo en A la posicion en X
@@ -372,18 +357,6 @@ bullet_checkUpdate:
 
    ret
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; CAMBIA EL COLOR DE LA BALA AL DEL FONDO (SI NO HAY SPRITES)
-;; _______________________
-;; ENTRADA:    IX -> Puntero a entidad BULLET
-;; DESTRUYE:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_checkClear:
-    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
-    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
-    call nz, dw_clear
-ret
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MUERTE DE LA BALA
 ;; ____________________________________________________
@@ -394,58 +367,6 @@ bullet_death:
    ld a, #0
    ld b_alive(ix), a
    ret
-
-
-
-;;;;;
-bullet_checkBorderCollision:
-   ld    a, e_vx(ix)
-   cp    #-K_VEL_X
-   jr nz , check_right
-      ld    a,    #8
-      cp    b_x(ix)
-      ret c
-         ld hl, #bullet_death
-         ld b_up_h(ix), h
-         ld b_up_l(ix), l
-         ret
-   check_right:
-
-   ld    a, e_vx(ix)
-   cp    #K_VEL_X
-   jr nz , check_up
-      ld    a,    #68
-      cp    b_x(ix)
-      ret nc
-         ld hl, #bullet_death
-         ld b_up_h(ix), h
-         ld b_up_l(ix), l
-         ret
-   check_up:
-
-   ld    a, e_vy(ix)
-   cp    #-K_VEL_Y
-   jr nz , check_down
-      ld    a,    #34
-      cp    b_y(ix)
-      ret c
-         ld hl, #bullet_death
-         ld b_up_h(ix), h
-         ld b_up_l(ix), l
-         ret
-   check_down:
-
-   ld    a, e_vy(ix)
-   cp    #K_VEL_Y
-   ret nz
-      ld    a,    #152
-      cp    b_y(ix)
-      ret nc
-         ld hl, #bullet_death
-         ld b_up_h(ix), h
-         ld b_up_l(ix), l
-         ret
-
 
 ;; COLISION ENEMIGO-BALA
 bullet_check_death::
@@ -545,7 +466,6 @@ bullet_set_death:
    ret
 
 
-
 spawnEnemies::
     ld hl, #SpawnPoints
     ld a, (SpawnOffset)
@@ -574,3 +494,4 @@ spawnEnemies::
     ld e_x(iy),b
     ld e_y(iy),c
 ret
+

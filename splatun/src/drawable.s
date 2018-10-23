@@ -94,11 +94,19 @@ dw_draw::
    ld hl, #CoordMapMin
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
    sub (hl)
+   cp #71   ;
+   ret nc
+   cp #8
+   ret c
    ld     c,   a                        ;; x  [0-79]
 
    ld hl, #CoordMapMin+1
    ld a, e_y(ix)                        ;; Repito para Y
    sub (hl)
+   cp #160
+   ret nc
+   cp #32
+   ret c
    ld     b,   a                        ;; y  [0-199]
 
 
@@ -124,19 +132,6 @@ dw_draw::
    ;; cpct_drawSprite_asm
 ret
 
-;==================================
-; Clears the sprite (squeare now)
-;==================================
-dw_clear::
-    ld  a, e_col(ix)
-    ex af, af'            ;'
-
-    ld  e_col(ix), #0
-    call dw_draw
-    ex af, af'            ;'
-    ld e_col(ix), a
-
- ret
 
 ;;======================================================================
 ;;======================================================================
