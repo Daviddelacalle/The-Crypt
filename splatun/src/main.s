@@ -53,6 +53,8 @@ _main::
     init
     ;call drawMenu
 
+    menu::
+
     ld hl, #_titleScreen_end
     ld de, #buffer_end_img
     call cpct_zx7b_decrunch_s_asm

@@ -27,6 +27,8 @@ hero_x = .
 hero_y = . + 1
 DefineEntity hero, #INIT_X, #INIT_Y, 0x02, 0x08, 0x00, 0x00, 0x0F, 0x0000
 
+HERO_LIVES: .db #3
+
 ;;======================================================================
 ;;======================================================================
 ;; FUNCIONES PUBLICAS
@@ -252,12 +254,18 @@ checkTeleporter:
     cp b
     ret nz
 
-    ld e_x(ix), #INIT_X
-    ld e_y(ix), #INIT_Y
-    call resetCamera
-
     call loadNextLevel
 ret
 
+resetHero::
+    ld ix, #hero
+    ld e_x(ix), #INIT_X
+    ld e_y(ix), #INIT_Y
+    ld a, #3
+    ld (HERO_LIVES), a
+ret
 
+hero_get_iy::
+  ld iy, #hero
+ret
 

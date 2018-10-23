@@ -63,6 +63,8 @@ enemy_call_draw:
    jp dw_draw
 
 initEnemies::
+    ld a, #20
+    ld (flag_move), a
     ld    iy,   #vector_init      ;; IX apunta al inicio de vector de enemigos (a la primera entidad)
     init_loop:
        ld     a,   0(iy)                ;; Compruebo que no he llegado al final del vector
@@ -132,7 +134,7 @@ enemy_search:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
    call enemy_heroInRadius
-
+   call kill
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion
@@ -760,11 +762,55 @@ get_enemy_size::
    ld a, #enemy_size
    ret
 
+   kill::
+
+      ld     h, e_y(ix)
+      ld     l, e_x(ix)
+      call tile_a_mapa
+      call hero_get_iy
+
+      ld hl, #CoordMapMin
+      ld a, e_x(iy)
+      sub (hl)
+      ld d,a
+      ld a, c
+      add a,#4
+      dec a
+      cp a, d
+      jp c, noCol
+
+      ld hl, #CoordMapMin
+      ld a, e_x(iy)
+      sub (hl)
+      add a,#4
+      dec a
+      cp a,c
+      jp c, noCol
 
 
+      ld hl, #CoordMapMin+1
+      ld a, e_y(iy)
+      sub (hl)
+      ld d, a
+      ld a, b
+      add a,#8
+      dec a
+      cp a, d
+      jp c, noCol
 
+      ld hl, #CoordMapMin+1
+      ld a, e_y(iy)
+      sub (hl)
+      add a,#8
+      dec a
+      cp a, b
+      jp c, noCol
 
-
+      ;call initEnemies
+      ld sp, #0x8000
+      jp menu
+      noCol:
+  ret
 
 
 

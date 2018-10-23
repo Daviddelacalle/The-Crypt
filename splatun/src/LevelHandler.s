@@ -75,7 +75,10 @@ loadCurrentLevel::
 
     ld de, #level_end
     call cpct_zx7b_decrunch_s_asm
+    call resetHero
+    call resetCamera
     call initEnemies
+
 ret
 
 ;;  ---

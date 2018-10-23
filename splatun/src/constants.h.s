@@ -1,4 +1,4 @@
-INIT_X == #0x34
+INIT_X == #0x16
 INIT_Y == #0x40
 
 VIEWPORT_WIDTH == 16

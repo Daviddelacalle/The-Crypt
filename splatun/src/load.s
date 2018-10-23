@@ -38,15 +38,25 @@ load_control::
       ;;call cpct_etm_drawTilemap4x8_ag_asm
 
       ld hl,#decompress_buffer
-      ld de,#0xC280
+      ld a, (back_buffer)
+      ld d, a
+      inc d
+      inc d
+      ld e, #0x80
+      ;ld de,#0xC280
       ld c, #40
       ld b, #66
       call cpct_drawSprite_asm  ;; Inicio del buffer de descompresión ¬
       ld hl,#0xA90              ;;              Offeset = 2640 + 64 (0x40) = 2704 = 0xA90
-      ld de, #0xC2A8
+      ld a, (back_buffer)
+      ld d, a
+      inc d
+      inc d
+      ld e, #0xA8
+      ;ld de, #0xC2A8
       ld c, #40
       ld b, #66
       call cpct_drawSprite_asm
 
-
+      call swapBuffers
   ret
