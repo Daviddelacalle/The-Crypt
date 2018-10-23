@@ -42,9 +42,10 @@
 #$(eval $(call TMX2DATA, SET_BITSPERITEM , 4         ))
 $(eval $(call TMX2DATA, SET_FOLDER      , src/Mapas ))
 $(eval $(call TMX2DATA, SET_OUTPUTS     , hs bin    ))
-$(eval $(call TMX2DATA, CONVERT, assets/World1/Level1/Level1.tmx, level1 ))
-$(eval $(call TMX2DATA, CONVERT, assets/World1/Level2/Level2.tmx, level2 ))
-$(eval $(call TMX2DATA, CONVERT, assets/World1/Level3/Level3.tmx, level3 ))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level1/Level1.tmx, level1	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level2/Level2.tmx, level2	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level3/Level3.tmx, level3	))
+$(eval $(call TMX2DATA, CONVERT, assets/Hud/hud.tmx, hud	))
 
 ##
 ## OLD MACROS (For compatibility)

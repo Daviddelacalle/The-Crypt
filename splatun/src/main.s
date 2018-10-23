@@ -38,11 +38,6 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
     ld  bc,  #0x4000 - 1
     ldir
 
-    ld hl, #_g_00
-    ld c, #VIEWPORT_WIDTH        ;; Ancho
-    ld b, #VIEWPORT_HEIGHT        ;; Alto
-    ld de, #30
-    call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm
 
 ;; Punto de entrada de la funcion main
@@ -62,6 +57,14 @@ _main::
       call load_control
       jr loop_load
       map_start::
+
+      call drawHud
+
+      ld hl, #_g_00
+      ld c, #VIEWPORT_WIDTH        ;; Ancho
+      ld b, #VIEWPORT_HEIGHT        ;; Alto
+      ld de, #30
+      call cpct_etm_setDrawTilemap4x8_ag_asm
 
       call loadLevel1       ;; Cargo el nivel 1
       call drawMap
