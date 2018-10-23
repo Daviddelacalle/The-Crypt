@@ -14,7 +14,7 @@
 
 
 
-decompress_buffer       == 0x040
+decompress_buffer       == 0xdb
 imageMaxSize             = 0x14A0
 buffer_end_img = decompress_buffer + imageMaxSize - 1
 
@@ -27,6 +27,8 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
     ld    c, #0
     call cpct_setVideoMode_asm
 
+    ld de, #_song_ingame
+    call cpct_akp_musicInit_asm
     ld hl, #_g_palette
     ld de, #16
     call cpct_setPalette_asm
@@ -45,6 +47,36 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
     call cpct_etm_setDrawTilemap4x8_ag_asm
 .endm
 
+unavariable: .db #5
+
+isr:
+  ex af, af';'
+  exx
+  push af
+  push bc
+  push de
+  push hl
+  push iy
+
+  ld a, (unavariable)
+  dec a
+  ld (unavariable), a
+  jr nz, return
+
+  call z, cpct_akp_musicPlay_asm
+  ld a, #5
+  ld (unavariable), a
+
+  return:
+    pop iy
+    pop hl
+    pop de
+    pop bc
+    pop af
+    exx
+   ex af,af';'
+
+ret
 ;; Punto de entrada de la funcion main
 _main::
     ; --> Realocate stack memory <-- ;
@@ -62,7 +94,8 @@ _main::
       call load_control
       jr loop_load
       map_start::
-
+      ld hl, #isr
+      call cpct_setInterruptHandler_asm
       call loadLevel1       ;; Cargo el nivel 1
       call drawMap
 
