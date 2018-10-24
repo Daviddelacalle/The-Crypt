@@ -95,7 +95,7 @@ b_size = . - (_name)
  ;;-----------------------------------------------------------------------------------------;;
  ;; Entidad enemigo por defecto
  .macro DefineEnemyDefault _name, _suf
-    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0x0000, #0xFFFF, #0, #0, #0, #0, #0, #0, #0, #0, #0, #0, #1           ;;'
+    DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0x0000, #0xFFFF, #0, #0, #0, #0, #0, #0, #0, #0, #0, #0, #1, #1           ;;'
  .endm
 
  ;; Definir N entidades enemigo
@@ -108,7 +108,7 @@ b_size = . - (_name)
  .endm
 
  ;; Entidad enemigo
- .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _spr, _upd, _goal_flag, _goal_x, _goal_y, save_dX, save_dY, IncYr, IncXr, av, avR, avI, flag_vel
+ .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _spr, _upd, _goal_flag, _goal_x, _goal_y, save_dX, save_dY, IncYr, IncXr, av, avR, avI, flag_vel, alive
  _name:
     DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
     DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
@@ -128,6 +128,7 @@ b_size = . - (_name)
     .dw  avR         ;; Avance recto
     .dw  avI         ;; Avance inclinado
     .db  flag_vel    ;; 1 = Esta utilizando IncYi/IncXi |------------| 0 = Esta utilizando IncYr/IncXr
+    .db  alive
  ;; Aqui falta saber el tamanyo de la entidad
  en_size = . - (_name)
  .endm
@@ -150,7 +151,7 @@ b_size = . - (_name)
    en_av_l = 19     en_av_h = 20
   en_avR_l = 21    en_avR_h = 22
   en_avI_l = 23    en_avI_h = 24
-en_flagVel = 25
+en_flagVel = 25      en_alv = 26
 
 
 

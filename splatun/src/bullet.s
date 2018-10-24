@@ -27,7 +27,7 @@ K_VEL_Y = 8
 vector_index:  .dw #0x0000
 vector_init:                        ;; Marca el inicio de vector_bullets
 DefineNBullets vector_bullets, vector_size
-DefineBullet bullet_copy 0xFF, 0xFF, #1, #4, 0, 4, #_sp_hero_00, #10, bullet_checkUpdate
+DefineBullet bullet_copy 0xFF, 0xFF, #1, #4, 0, 4, #_sp_hero_00, #10, #bullet_checkUpdate
 
 save_a:        .db #0x00            ;; Guarda el valor de A
 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
@@ -438,13 +438,20 @@ bullet_check_death::
     jr nc, no_colision
 
     ; COLISION
+    COLLISION::
+
+    call bullet_set_death
+    ld en_alv(iy), #0
+
     ld a, (NumberOfEnemies)
     dec a
     ld (NumberOfEnemies), a
     cp #0
     call z, openTeleporter
 
-    call bullet_set_death
+    cp #k_max_enemies
+
+    ret c
     call spawnEnemies
 
     ret
@@ -491,6 +498,7 @@ spawnEnemies::
 
     jr nz, spawnEnemies
 
+    ld en_alv(iy), #1
     ld e_x(iy),b
     ld e_y(iy),c
 ret
