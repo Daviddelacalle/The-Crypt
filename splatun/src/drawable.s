@@ -86,6 +86,13 @@ dw_draw::
    ;; HAY QUE COMENTAR CABRONES!! @dani @dd
 
    call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
+   ld a, b
+   add   #OFFSET_CAMERA_POS_Y_PANT
+   ld b, a
+
+   ld a, c
+   add   #OFFSET_CAMERA_POS_X_PANT
+   ld c, a
 
    jr sigue_con_el_dro
    normal_dro:
@@ -164,7 +171,7 @@ tile_a_mapa::
       dec c             ;; C--
    jr nz, loop_y_tm
 
-   add   #OFFSET_CAMERA_POS_Y_PANT
+   ;add   #OFFSET_CAMERA_POS_Y_PANT
    ld b, a              ;; En B guardo la Y
 
    ;; Paso X
@@ -176,7 +183,7 @@ tile_a_mapa::
       dec c                      ;; ======================= ;;
    jr nz, loop_x_tm
 
-   add   #OFFSET_CAMERA_POS_X_PANT
+   ;add   #OFFSET_CAMERA_POS_X_PANT
    ld c, a              ;; En C guardo la X
    ret
 

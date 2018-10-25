@@ -376,15 +376,15 @@ bullet_check_death::
     ret z
   ;;tengo que comparar las variables b_x(ix)/b_y(ix) con la posicion de cada enemigo y ver si coinciden
 
-   call enemy_load
-   loop_bullet:
-   ld a, 0(iy)
+    call enemy_load
+    loop_bullet:
+    ld a, 0(iy)
       cp #0xFF
       ret z
 
-   ld     h, e_y(iy)
-   ld     l, e_x(iy)
-   call tile_a_mapa
+    ld     h, e_y(iy)
+    ld     l, e_x(iy)
+    call tile_a_mapa
 
     ;; B = Coordenadas de mapa en Y, esquina superior izq del tile
     ;; C = Coordenadas de mapa en X, esquina superior izq del tile
@@ -491,11 +491,6 @@ spawnEnemies::
     ld b, (hl)
     inc hl
     ld c, (hl)
-
-    ;; Si le das FF en X no mira mas spawns del binario
-    ld a, c
-    cp #0xFF
-    ret z
 
     push bc
     call checkViewport

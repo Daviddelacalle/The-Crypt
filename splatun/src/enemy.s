@@ -25,10 +25,10 @@ var_r_max   = 6
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector                       Bresenham
 ;DefineNEnemies enemy, k_max_enemies                                                 |
-DefineEnemy enemy1, #22, #25, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
-DefineEnemy enemy2, #28, #28, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
-DefineEnemy enemy3, #1, #28, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,   #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
-DefineEnemy enemy4, #28, #1, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,   #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
+DefineEnemy enemy1, #22, #25, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #10
+DefineEnemy enemy2, #28, #28, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #10
+DefineEnemy enemy3,  #1, #28, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #10
+DefineEnemy enemy4, #28,  #1, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #10
 
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
@@ -63,23 +63,38 @@ enemy_call_draw:
    jp dw_draw
 
 initEnemies::
-    ld a, #20
-    ld (flag_move), a
+
+    ld hl, #kill_enemy
+    call enemy_search
+
+    ld a, (NumberOfEnemies)
+    cp #0
+    ret z
+    ld c, a
 
     ld    iy,   #vector_init      ;; IX apunta al inicio de vector de enemigos (a la primera entidad)
     init_loop:
        ld     a,   0(iy)                ;; Compruebo que no he llegado al final del vector
        cp    #0xFF                      ;; A - 0xFF
-       ret    z                         ;; if(A==0xFF) -> Sale del vector
+       jr    z, END_INIT                         ;; if(A==0xFF) -> Sale del vector
 
+       push bc
        call spawnEnemies
+       pop bc
+
+       dec c
+       ret z
 
        ld    de,   #enemy_size          ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
        add   iy,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
     jr init_loop
-
+    END_INIT:
     ld a, #0
     ld (SpawnOffset), a
+ret
+
+kill_enemy::
+    ld en_alv(ix), #0
 ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -130,7 +145,6 @@ enemy_search:
 
       f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (siempre va a cambiar)
       call (0x0000)                    ;; LLAMADA A FUNCION PERSONALIZABLE
-
       go_next:
 
       ld    de,   #enemy_size          ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
@@ -189,6 +203,7 @@ enemy_randomGoal:
 
    ;; Guardo los registros HL, BC y DE
    ;; Los que importan son BC y E
+   push af
    push bc
    push de
    push hl
@@ -214,6 +229,7 @@ enemy_randomGoal:
    pop hl
    pop de
    pop bc
+   pop af
 
    ;; Miro si E = 0xEE
    ;; En ese caso, no se consigue ningun random en X nuevo

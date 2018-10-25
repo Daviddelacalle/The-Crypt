@@ -314,8 +314,9 @@ checkTeleporter:
     ld a, (Teleporter+1)
     cp b
     ret nz
-
+    push ix
     call loadNextLevel
+    pop ix
 ret
 
 resetHero::
