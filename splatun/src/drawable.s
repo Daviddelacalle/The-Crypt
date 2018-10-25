@@ -11,15 +11,17 @@
 .include "struct.h.s"
 .include "constants.h.s"
 
-front_buffer:   .db 0xC0
-back_buffer::   .db 0x80
-
 ;;======================================================================
 ;;======================================================================
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
 
+front_buffer:       .db 0xC0
+back_buffer::       .db 0x80
+
+ptr_spriteHeart:            .dw #_sp_hero_12
+ptr_spriteBlankHeart:       .dw #_sp_hero_13
 
 ;;======================================================================
 ;;======================================================================
@@ -248,6 +250,111 @@ checkViewport::
         ld a, #0
         ret
 ret
+
+;; DIBUJA LOS CORAZONES DE VIDA
+dw_drawHearts::
+    ;; Cargo en A las vidas del jugador
+    ;; Y hago un bucle dibujandolas en el hud
+    ld      a, (HERO_LIVES)
+    ld      d, a
+    ld      a, #K_HERO_LIVES
+    ld      e, a
+    ;; Lo guardo en la pila
+    push    de
+
+    ;; Cargo las posiciones iniciales
+    ;; donde se empiezan a dibujar la ristra de corazones
+    ld      c, #10
+    ld      b, #168
+    push bc         ;; Lo guardo para el bucle
+    hearts_loop:
+        ld      a, (back_buffer)                ;; Apunta al inicio de la memoria de video
+        ld      d, a
+        ld      e, #00
+        call cpct_getScreenPtr_asm
+
+        ex      de,     hl                      ;; Apunta a la posicion x,y
+        ld      hl,     (ptr_spriteHeart)       ;; Apuntar al sprite
+        ld      c,      #4                      ;; Ancho
+        ld      b,      #8                      ;; Alto
+        call cpct_drawSprite_asm
+
+        ;; Recupero la posicion inicial
+        ;; Aumento la posicion de X
+        pop     bc
+        ld      a, c
+        add     a, #6
+        ld      c, a
+
+        ;; Recupero el contador
+        pop     de
+        dec     e
+        dec     d
+        ;; Vuelvo a guardar los registros en la pila
+        push    de
+        push    bc
+    jr nz, hearts_loop
+
+    ;; Ahora miro el caso de que el heroe tenga
+    ;; menos de 3 corazones
+    ld      a, e
+    cp #0
+    jr z, end_drawHearts
+    ;; Si el heroe NO tiene las vidas maximas
+    ;; entra aqui
+
+    ;; Recupero DE y asigno a d el valor
+    ;; que tenia e, que ERA el de la constante
+    ;; de numero de vidas
+    ;; D = E
+    pop     bc
+    pop     de
+    ld      d, e
+
+    push    de
+    push    bc
+    blank_hearts_loop:
+        ld      a, (back_buffer)                ;; Apunta al inicio de la memoria de video
+        ld      d, a
+        ld      e, #00
+        call cpct_getScreenPtr_asm
+
+        ex      de,     hl                      ;; Apunta a la posicion x,y
+        ld      hl,     (ptr_spriteBlankHeart)  ;; Apuntar al sprite
+        ld      c,      #4                      ;; Ancho
+        ld      b,      #8                      ;; Alto
+        call cpct_drawSprite_asm
+
+        ;; Recupero la posicion inicial
+        ;; Aumento la posicion de X
+        pop     bc
+        ld      a, c
+        add     a, #6
+        ld      c, a
+
+        ;; Recupero el contador
+        pop     de
+        dec     d
+        ;; Vuelvo a guardar los registros en la pila
+        push    de
+        push    bc
+    jr nz, blank_hearts_loop
+    end_drawHearts:
+    ;; Hago pop de los registros
+    ;; que he metido en la pila
+    ;; para que el programa no pete bastamente
+    pop     hl
+    pop     hl
+ret
+
+
+
+
+
+
+
+
+
 
 
 

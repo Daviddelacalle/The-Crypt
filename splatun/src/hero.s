@@ -27,7 +27,7 @@ hero_x = .
 hero_y = . + 1
 DefineEntity hero, #INIT_X, #INIT_Y, #4, #8, 0x00, 0x00, #_sp_hero_00, 0x0000
 
-HERO_LIVES: .db #3
+HERO_LIVES:: .db #K_HERO_LIVES
 
 ;;======================================================================
 ;;======================================================================
@@ -286,7 +286,7 @@ resetHero::
     ld ix, #hero
     ld e_x(ix), #INIT_X
     ld e_y(ix), #INIT_Y
-    ld a, #3
+    ld a, #K_HERO_LIVES
     ld (HERO_LIVES), a
 ret
 

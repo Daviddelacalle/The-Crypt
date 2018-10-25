@@ -32,7 +32,7 @@ DefineEnemy enemy4, #28, #1, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0
 
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
-flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
+flag_move:     .db #5        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
 ptr_map:       .dw #decompress_buffer   ;; Puntero al array de id de tiles que forman el mapa
 
 k_update_count = 5
@@ -66,13 +66,20 @@ initEnemies::
     ld a, #20
     ld (flag_move), a
 
+    ld a, (NumberOfEnemies)
+    ld b, a
+
     ld    iy,   #vector_init      ;; IX apunta al inicio de vector de enemigos (a la primera entidad)
     init_loop:
        ld     a,   0(iy)                ;; Compruebo que no he llegado al final del vector
        cp    #0xFF                      ;; A - 0xFF
        ret    z                         ;; if(A==0xFF) -> Sale del vector
-
+       push bc
        call spawnEnemies
+       pop bc
+
+       dec b
+       ret z
 
        ld    de,   #enemy_size          ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
        add   iy,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
@@ -145,8 +152,8 @@ enemy_search:
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
-   ;call enemy_heroInRadius
-   ;call kill
+   call enemy_heroInRadius
+   call kill
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion
@@ -850,7 +857,6 @@ get_enemy_size::
       cp a,c
       jp c, noCol
 
-
       ld hl, #CoordMapMin+1
       ld a, e_y(iy)
       sub (hl)
@@ -868,6 +874,31 @@ get_enemy_size::
       dec a
       cp a, b
       jp c, noCol
+
+      ;; Compruebo las vidas del heroe
+      ;; y si son 0 se reinicia la partida entera
+      ld    a, (HERO_LIVES)
+      dec   a
+      ld (HERO_LIVES), a
+
+      ;; Salgo de la funcion en caso que las vidas del heroe no sean 0
+      jr z, game_reset
+          ;; Mato al enemigo y decremento el contador de enemigos
+          ld a, (NumberOfEnemies)
+          dec a
+          ld (NumberOfEnemies), a
+          ld en_alv(ix), #0
+          ;; Actualizo corasones
+          call dw_drawHearts
+          call swapBuffers
+          call dw_drawHearts
+          call swapBuffers
+          ret
+      game_reset:
+
+      ;; Reinicio las vidas del jugador
+      ld a, #K_HERO_LIVES
+      ld (HERO_LIVES), a
 
       ;call initEnemies
       ld sp, #0x8000

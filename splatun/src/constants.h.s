@@ -1,3 +1,5 @@
+K_HERO_LIVES == 5
+
 INIT_X == #0x16
 INIT_Y == #0x60
 

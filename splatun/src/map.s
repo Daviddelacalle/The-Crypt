@@ -192,8 +192,6 @@ ret
 
 ;; DIBUJADO DEL HUD
 drawHud::
-    call resetCamera
-
     ld hl, #_g_00
     ld c, #20        ;; Ancho en tiles -> 20*8 = 160
     ld b, #25        ;; Alto en tiles  -> 25*8 = 200
@@ -204,16 +202,6 @@ drawHud::
     ld de, #HUD_END_DECOMPRESSED
     ld hl, #_hud_end
     call cpct_zx7b_decrunch_s_asm
-
-    ; (2B HL) memory	Video memory location where to draw the tilemap (character & 4-byte aligned)
-    ; (2B DE) tilemap	Pointer to the upper-left tile of the view to be drawn of the tilemap
-    ld a, (back_buffer)
-    ld h, a
-    ld l, #0
-    ld de, (map_ptr)
-    call cpct_etm_drawTilemap4x8_ag_asm
-
-    call swapBuffers
 
     ld a, (back_buffer)
     ld h, a

@@ -60,7 +60,15 @@ _main::
       jr loop_load
       map_start::
 
+      call resetCamera
       call drawHud
+      call dw_drawHearts
+      ;; Cambio buffers y dibujo lo mismo
+      call swapBuffers
+      call drawHud
+      call dw_drawHearts
+      ;; Vuelvo al buffer inicial
+      call swapBuffers
 
       ld hl, #_g_00
       ld c, #VIEWPORT_WIDTH        ;; Ancho
@@ -73,7 +81,6 @@ _main::
 
     ;; Comienza el bucle del juego
     loop::
-
         ;; CLIAR
         ;call bullet_clear
         ;call obs_clear
