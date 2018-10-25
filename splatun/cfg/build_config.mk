@@ -50,7 +50,7 @@
 #   and Z80 memory location where code will start in the generated binary
 PROJNAME   := splatun
 #Z80CODELOC := 0x3C4			# 0 40 + 3 84
-Z80CODELOC := 0x1633			# 0 40 + 14 A0 + 153
+Z80CODELOC := 0x1615		# 0 40 + 14 A0 + df +56
 
 ##
 ## Folders

@@ -27,13 +27,16 @@
 ## NEW MACROS
 ##
 
+
+$(eval $(call AKS2C,src/Music/bso2chan.aks,song_ingame,src/Music/,0x0040))
+
 # Default values
-#$(eval $(call AKS2DATA, SET_FOLDER   , src/ ))
-#$(eval $(call AKS2DATA, SET_OUTPUTS  , h s  )) { bin, h, hs, s }
-#$(eval $(call AKS2DATA, SET_SFXONLY  , no   )) { yes, no       }
+$(eval $(call AKS2DATA, SET_FOLDER   , src/Music ))
+$(eval $(call AKS2DATA, SET_OUTPUTS  , h s  ))
+$(eval $(call AKS2DATA, SET_SFXONLY  , yes   ))
 #$(eval $(call AKS2DATA, SET_EXTRAPAR ,      ))
 # Conversion
-#$(eval $(call AKS2DATA, CONVERT      , music.aks , array , mem_address ))
+$(eval $(call AKS2DATA, CONVERT      , src/Music/sfx.aks , sfx , 0x11f ))
 
 
 
@@ -49,7 +52,7 @@
 ## placed at the 0x42A0 memory address in an absolue way.
 ##
 
-$(eval $(call AKS2C,src/Music/bso.aks,song_ingame,src/Music/,0x0040))
+
 
 ############################################################################
 ##              DETAILED INSTRUCTIONS AND PARAMETERS                      ##

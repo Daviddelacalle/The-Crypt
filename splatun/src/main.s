@@ -14,11 +14,11 @@
 
 
 
-decompress_buffer       == 0xdb
+decompress_buffer       == 0x175
 imageMaxSize             = 0x14A0
 buffer_end_img = decompress_buffer + imageMaxSize - 1
 
-;==========================================================;
+;===========0xdc===============================================;
 ;   Disable firmware to avoid configuration override
 ;   Load custom palette
 ;==========================================================;
@@ -29,6 +29,10 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
 
     ld de, #_song_ingame
     call cpct_akp_musicInit_asm
+
+    ld de, #_sfx
+    call cpct_akp_SFXInit_asm
+
     ld hl, #_g_palette
     ld de, #16
     call cpct_setPalette_asm
@@ -73,8 +77,9 @@ isr:
     pop de
     pop bc
     pop af
-    exx
-   ex af,af';'
+
+  exx
+  ex af,af';'
 
 ret
 ;; Punto de entrada de la funcion main
