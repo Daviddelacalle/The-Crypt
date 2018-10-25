@@ -15,7 +15,7 @@
 ;;======================================================================
 ;;======================================================================
 enemy_size = en_size           ;; Tamanyo parametrizado
-k_max_enemies = 1
+k_max_enemies == 4
 
 ;; ANCHO:   0 - 79
 ;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
@@ -23,12 +23,13 @@ x_range = 29
 y_range = 29
 var_r_max   = 6
 var_r_min   = 0
-vector_init:                  ;; Etiqueta de inicio del vector
-;DefineNEnemies enemy, k_max_enemies
-DefineEnemy enemy1, #22, #25, #4, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-; DefineEnemy enemy2, #28, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-; DefineEnemy enemy3, #1, #28, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
-; DefineEnemy enemy4, #28, #1, #2, #8, #0, #0, #0x0F, #enemy_randomGoal, #0, #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1
+vector_init:                  ;; Etiqueta de inicio del vector                       Bresenham
+;DefineNEnemies enemy, k_max_enemies                                                 |
+DefineEnemy enemy1, #22, #25, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
+DefineEnemy enemy2, #28, #28, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,  #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
+DefineEnemy enemy3, #1, #28, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,   #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
+DefineEnemy enemy4, #28, #1, #4, #8, #0, #0, #_sp_hero_11, #enemy_randomGoal, #0,   #0, #0, #0x0000, #0x0000, #0, #0, #0x0000, #0x0000, #0x0000, #1, #1
+
 vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 
 flag_move:     .db #20        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
@@ -53,8 +54,9 @@ enemy_draw_ALL::
     ld a, (NumberOfEnemies)
     cp #0
     ret z
-   ld hl, #enemy_call_draw
-   jp enemy_search
+
+    ld hl, #enemy_call_draw
+    jp enemy_search
 
 enemy_call_draw:
    ld a, #0xAA
@@ -63,6 +65,7 @@ enemy_call_draw:
 initEnemies::
     ld a, #20
     ld (flag_move), a
+
     ld    iy,   #vector_init      ;; IX apunta al inicio de vector de enemigos (a la primera entidad)
     init_loop:
        ld     a,   0(iy)                ;; Compruebo que no he llegado al final del vector
@@ -85,18 +88,22 @@ ret
 ;; DESTRUYE:   HL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update_ALL::
-   ld    a, (update_count)                ;; ======================== ;;
-   dec   a                                ;;     POR SI AL FINAL      ;;
-   ld    (update_count), a                ;;    SE QUIERE LIMITAR     ;;
-   cp    #0                               ;;  EL UPDATE DEL ENEMIGO   ;;
-   ret   nz                               ;; ======================== ;;
+    ld a, (NumberOfEnemies)
+    cp #0
+    ret z
 
-   ld hl, #enemy_update
-   call enemy_search
+    ld    a, (update_count)                ;; ======================== ;;
+    dec   a                                ;;     POR SI AL FINAL      ;;
+    ld    (update_count), a                ;;    SE QUIERE LIMITAR     ;;
+    cp    #0                               ;;  EL UPDATE DEL ENEMIGO   ;;
+    ret   nz                               ;; ======================== ;;
 
-   ld    a, #k_update_count               ;; REINICIAR EL CONTADOR
-   ld    (update_count), a                ;;       DEL UPDATE
-   ret
+    ld hl, #enemy_update
+    call enemy_search
+
+    ld    a, #k_update_count               ;; REINICIAR EL CONTADOR
+    ld    (update_count), a                ;;       DEL UPDATE
+ret
 
 ;;======================================================================
 ;;======================================================================
@@ -117,8 +124,15 @@ enemy_search:
       cp    #0xFF                      ;; A - 0xFF
       ret    z                         ;; if(A==0xFF) -> Sale del vector
 
+      ld a, en_alv(ix)
+      cp #0
+      jr z, go_next
+
       f_custom = . +1                  ;; . apunta a 'call' y con el '+1' apunta a '(0x0000)' -> (siempre va a cambiar)
       call (0x0000)                    ;; LLAMADA A FUNCION PERSONALIZABLE
+
+      go_next:
+
       ld    de,   #enemy_size          ;; Cargo en DE el tamanyo de la entidad bullet para despues sumarlo a HL
       add   ix,   de                   ;; IX + DE = Apunta a la siguiente entidad bullet
    jr search_loop
@@ -131,8 +145,8 @@ enemy_search:
 ;; ENTRADA:    IX -> Puntero a entidad enemigo del bucle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_update:
-   call enemy_heroInRadius
-   call kill
+   ;call enemy_heroInRadius
+   ;call kill
    ld    l, en_up_l(ix)     ;; Cargo el byte bajo en L
    ld    h, en_up_h(ix)     ;; Cargo el byte alto en H
    jp    (hl)              ;; Llamo a la funcion
@@ -175,7 +189,9 @@ enemy_randomGoal:
 
    ;; Guardo los registros HL, BC y DE
    ;; Los que importan son BC y E
-   exx
+   push bc
+   push de
+   push hl
    jr z, dont_do_random_x
       call enemy_getRandom_X     ;; A = X_fin
    dont_do_random_x:
@@ -195,7 +211,9 @@ enemy_randomGoal:
    continua_y:
 
    ;; Recupero BC y E
-   exx
+   pop hl
+   pop de
+   pop bc
 
    ;; Miro si E = 0xEE
    ;; En ese caso, no se consigue ningun random en X nuevo
@@ -801,6 +819,13 @@ get_enemy_size::
    ret
 
    kill::
+       ld a, (NumberOfEnemies)
+       cp #0
+       ret z
+
+       ld a, en_alv(ix)
+       cp #0
+       ret z
 
       ld     h, e_y(ix)
       ld     l, e_x(ix)

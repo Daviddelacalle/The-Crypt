@@ -67,8 +67,8 @@ hero_update::
         ld hl, #CoordMapMin
         ld a, e_x(ix)                       ;; Pruebo la primera condicion
         sub (hl)
-        cp #LEFT
-        jr nz, move_the_character_A         ;; Si no estoy en el centro, muevo el jugador
+        cp #LEFT+1
+        jr nc, move_the_character_A         ;; Si no estoy en el centro, muevo el jugador
 
         ld a, (cam_min)                    ;;
         cp #0                               ;; Borde izquierdo (0)
@@ -102,8 +102,8 @@ hero_update::
             ld hl, #CoordMapMin             ;; Le resto el borde izq de la cámara
             ld a, e_x(ix)
             sub (hl)
-            cp #RIGHT                       ;; Para comprobar si está en el punto dónde debe hacer scroll
-            jr nz, move_the_character_D     ;; Si no es ese punto, simplemente mueve el personaje
+            cp #RIGHT-1                       ;; Para comprobar si está en el punto dónde debe hacer scroll
+            jr c, move_the_character_D     ;; Si no es ese punto, simplemente mueve el personaje
 
             ld a, (cam_min)                 ;; Estamos en el punto!
             cp #LimitRight                  ;; Comprobemos ahora si la cámara no está en el borde ya
@@ -137,8 +137,8 @@ hero_update::
             ld a, e_y(ix)
             sub (hl)
 
-            cp #TOP
-            jr nz, move_the_character_W
+            cp #TOP+1
+            jr nc, move_the_character_W
 
             ld a, (cam_min+1)
             cp #0
@@ -171,8 +171,8 @@ hero_update::
             ld a, e_y(ix)
             sub (hl)
 
-            cp #BOTTOM
-            jr nz, move_the_character_S
+            cp #BOTTOM-1
+            jr c, move_the_character_S
 
             ld a, (cam_min+1)
             cp #LimitDown
