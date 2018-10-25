@@ -192,6 +192,8 @@ ret
 
 ;; DIBUJADO DEL HUD
 drawHud::
+    call resetCamera
+
     ld hl, #_g_00
     ld c, #20        ;; Ancho en tiles -> 20*8 = 160
     ld b, #25        ;; Alto en tiles  -> 25*8 = 200

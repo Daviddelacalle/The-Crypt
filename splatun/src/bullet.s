@@ -484,6 +484,12 @@ spawnEnemies::
     ld b, (hl)
     inc hl
     ld c, (hl)
+
+    ;; Si le das FF en X no mira mas spawns del binario
+    ld a, c
+    cp #0xFF
+    ret z
+
     push bc
     call checkViewport
     pop bc
