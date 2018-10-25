@@ -505,21 +505,48 @@ enemy_checkGoal:
 ;; SALIDA:     A  -> Posicion aleatoria  en X
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_getRandom_X:
-   ld a, en_x(ix)              ;; Cojo la X actual del jugador
-   sub #var_r_max              ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
-   ld b, a
-   jr nc, not_negative_x       ;; Si el mínimo es menor que 0
-       ld b, #0                ;; Se pone a 0
-   not_negative_x:
 
-   ld a, en_x(ix)              ;; Cojo la X actual de nuevo
-   add #var_r_max              ;; Le sumo la distancia maxima para sacar el maximo
-   ld c, a
-   cp #MAP_WIDTH               ;; Si el maximo es mayor que el ancho del mapa
-   jr c, not_over_Map_Max_x
-       ld c, #MAP_WIDTH        ;; Lo pongo al ancho total del mapa
-   not_over_Map_Max_x:
-   call getRandomInRange       ;; Genero un numero aleatorio entre MIN y MAX
+    call cpct_getRandom_mxor_u8_asm
+
+    ld a, #0x128
+    sub en_x(ix)
+    ld d, a         ; X máxima a la que puedo ir para no salirme del mapa
+
+    ld a, #120
+    sub en_x(ix)
+    ld d, a         ; X máxima a la que puedo ir para no salirme del mapa
+
+
+    ld a, l
+    cp en_x(ix)
+    jr c, goal_is_negative
+        ;;Positivo
+        cp #var_r_max
+        jr c, under_max
+            ld a, #var_r_max
+        under_max:
+        add en_x(ix)
+        cp #120                 ;; MAP_WIDTH
+
+
+
+    goal_is_negative:
+    cp #var_r_max
+
+   ;ld a, en_x(ix)              ;; Cojo la X actual del jugador
+   ;sub #var_r_max              ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
+   ;ld b, a
+   ;jr nc, not_negative_x       ;; Si el mínimo es menor que 0
+    ;   ld b, #0                ;; Se pone a 0
+   ;not_negative_x:
+
+   ;ld a, en_x(ix)              ;; Cojo la X actual de nuevo
+   ;add #var_r_max              ;; Le sumo la distancia maxima para sacar el maximo
+   ;ld c, a
+   ;cp #MAP_WIDTH               ;; Si el maximo es mayor que el ancho del mapa
+   ;jr c, not_over_Map_Max_x
+    ;   ld c, #MAP_WIDTH        ;; Lo pongo al ancho total del mapa
+   ;not_over_Map_Max_x:
 
    ld en_g_x(ix), a             ;; Cargo la posicion random en el enemigo
    ret
@@ -546,7 +573,7 @@ enemy_getRandom_Y:
    jr c, not_over_Map_Max_y
        ld c, #MAP_HEIGHT        ;; Lo pongo al ancho total del mapa
    not_over_Map_Max_y:
-   call getRandomInRange
+   ;call getRandomInRange
 
    ld en_g_y(ix), a                          ;; Cargo la posicion random en el enemigo
    ret
@@ -621,7 +648,7 @@ checkTileCollision::
 ;; COLISION DE MAPA CON IX EN COORDENADAS DE PANTALLA
 ;; NOTA:       Aplicar una comprobacion de z despues del call para comprobar colision
 ;; ___________________________________________________________________________________
-;; ENTRADA:    IX -> Entidad a comprobar con COORDENADAS en TILES
+;; ENTRADA:    L = X, H = Y
 ;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E CASI TOTALE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 checkTileCollision_m::
@@ -629,8 +656,6 @@ checkTileCollision_m::
    ;; IX EN COORDENADAS DE PANTALLA !! ;;
    ;; ================================ ;;
    ;; Guardar en AF' las coordenadas para que no se pierdan
-   ld    l,    en_x(ix)       ;; L = X_pantalla
-   ld    h,    en_y(ix)       ;; H = Y_pantalla
    call mapa_a_tile           ;; B = X, C = Y
 
    ;; Guardo en C,A (x,y) para las comprobaciones
@@ -790,25 +815,6 @@ enemy_heroInRadius:
    ld    e, #0xEE          ;; Senyal a enemy_randomGoal para que no busque ningun random
    jp enemy_randomGoal
    ;; ============================================================================================
-
-;=================================
-; Generates random number in range
-; Return: A = Random
-; Input: [B = MIN, C = MAX]
-;=================================
-getRandomInRange::
-    exx
-    call cpct_getRandom_mxor_u8_asm
-    ld a, l
-    exx
-    reduce_max:
-    cp c
-    jr c, ensure_min
-    sub c
-    jr reduce_max
-    ensure_min:
-    add b
-ret
 
 enemy_load::
    ld iy, #vector_init

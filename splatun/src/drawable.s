@@ -91,22 +91,23 @@ dw_draw::
    normal_dro:
 
    ;; Aqui solo entra si las coordenadas de la entidad IX NO ESTAN EN TILES
+
    ld hl, #CoordMapMin
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
    sub (hl)
-   cp #71   ;
+   cp #62   ;
    ret nc
-   cp #8
-   ret c
+
+   add #OFFSET_CAMERA_POS_X_PANT
    ld     c,   a                        ;; x  [0-79]
 
    ld hl, #CoordMapMin+1
    ld a, e_y(ix)                        ;; Repito para Y
    sub (hl)
-   cp #160
+   cp #120  ;; -8
    ret nc
-   cp #32
-   ret c
+
+   add #OFFSET_CAMERA_POS_Y_PANT
    ld     b,   a                        ;; y  [0-199]
 
 
@@ -183,7 +184,7 @@ tile_a_mapa::
 mapa_a_tile::
    ;; Paso Y
    ld    a, h           ;; A = Y
-   add   #-OFFSET_CAMERA_POS_Y_PANT
+   ;add   #-OFFSET_CAMERA_POS_Y_PANT
    ld    d, #8          ;; D = 8 -> Tamanyo en Y de cada tile en bytes
    ld    c, #0          ;; C = 0
    loop_y_mt:
@@ -200,7 +201,7 @@ mapa_a_tile::
 
    ;; Paso X
    ld    a, l           ;; A = X
-   add   #-OFFSET_CAMERA_POS_X_PANT
+   ;add   #-OFFSET_CAMERA_POS_X_PANT
    ld    d, #4          ;; D = 4 -> Tamanyo en X de cada tile en bytes
    ld    c, #0          ;; C = 0
    loop_x_mt:
