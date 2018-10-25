@@ -19,10 +19,6 @@
 CAMERA_TARGET_X = 3
 CAMERA_TARGET_Y = 5
 
-
-save_xm: .db #0x00      ;; Guarda
-save_ym: .db #0x00
-
 hero_x = .
 hero_y = . + 1
 DefineEntity hero, #INIT_X, #INIT_Y, #4, #8, 0x00, 0x00, #_sp_hero_00, 0x0000
@@ -52,12 +48,7 @@ hero_update::
 
     call checkTeleporter
 
-    ;; Reset
-    ld hl, #0x0000
-    ld (save_xm), hl
-
     call cpct_scanKeyboard_asm
-
 
     ld hl, #Key_A                           ;; Check Key A
     call cpct_isKeyPressed_asm
@@ -84,8 +75,16 @@ hero_update::
             ld e_spr_l(ix), l
             ld e_spr_h(ix), h
 
-            ld a, #-1                       ;; Para la comprobacion de colisiones
-            ld (save_xm), a
+            call getUpperLeftCorner
+            dec l
+            call check_colision
+            cp #1
+            jr z, d_no_pulsada
+            call getLowerLeftCorner
+            dec l
+            call check_colision
+            cp #1
+            jr z, d_no_pulsada
 
             ld b, #-1                       ;; Cambio la velocidad del jugador a 2
             ld e_vx(ix), b
@@ -119,8 +118,17 @@ hero_update::
                 ld e_spr_l(ix), l
                 ld e_spr_h(ix), h
 
-                ld a, #1                       ;; Para la comprobacion de colisiones
-                ld (save_xm), a
+                call getUpperRightCorner    ;; Obtengo la esquina superior derecha del personaje L = X
+                inc l                       ;; Incremento 1 la X, para comprobar si en el siguiente frame chocamos
+                call check_colision
+                cp #1
+                jr z, d_no_pulsada
+
+                call getLowerRightCorner    ;; Repeat
+                inc l
+                call check_colision
+                cp #1
+                jr z, d_no_pulsada
 
                 ld b, #1                    ;; Creo que esto no necesita explicación
                 ld e_vx(ix), b              ;; Simplmente pon la velocidad a 1
@@ -154,8 +162,21 @@ hero_update::
                 ld e_spr_l(ix), l
                 ld e_spr_h(ix), h
 
-                ld a, #-1                       ;; Para la comprobacion de colisiones
-                ld (save_ym), a
+                ld d, #-4
+                ld e, #0
+                call getUpperRightCorner
+                    add hl, de
+                call check_colision
+                cp #1
+                jr z, s_no_pulsada
+
+                ld d, #-4
+                ld e, #0
+                call getUpperLeftCorner
+                    add hl, de
+                call check_colision
+                cp #1
+                jr z, s_no_pulsada
 
                 ld b, #-4
                 ld e_vy(ix), b
@@ -188,8 +209,21 @@ hero_update::
                 ld e_spr_l(ix), l
                 ld e_spr_h(ix), h
 
-                ld a, #4                       ;; Para la comprobacion de colisiones
-                ld (save_ym), a
+                ld d, #4
+                ld e, #0
+                call getLowerLeftCorner
+                    add hl, de
+                call check_colision
+                cp #1
+                jr z, s_no_pulsada
+
+                ld d, #4
+                ld e, #0
+                call getLowerRightCorner
+                    add hl, de
+                call check_colision
+                cp #1
+                jr z, s_no_pulsada
 
                 ld b, #4
                 ld e_vy(ix), b
@@ -197,49 +231,11 @@ hero_update::
             jr s_no_pulsada
     s_no_pulsada:
 
-    ;; Consigo los valores según se hayan guardado
-    ;; Depende de si se han pulsado algunas teclas de movimiento
-    ld hl, (save_xm)
-    ;;  - EN L TENGO 4 (derecha)    o -4 (izquierda)
-    ;;  - EN H TENGO 8 (abajo)      o -8 (arriba)
-
-    ld  a, e_x(ix)                  ;; Consigue la posicion del jugador
-    add a, l                        ;; Le sumo la velocidad, lo hago aqui en vez del update de jugador para evitar restar en clear
-    ld  e_x(ix), a                  ;; Lo guardo en su registro
-
-    ld a, e_y(ix)                   ;; Repito para Y
-    add a, h
-    ld e_y(ix), a
-
-    ;; Comprueba la colision con las tiles del mapa
-    call    checkTileCollision_m
-    ;; L = C
-    ;; H = D
-    ld hl, (save_xm)
-    jr nz, hero_no_colisiona
-        ;; Reset del offset que se puede haber calculado de la camara
-        ld b, #0
-        call setTargetY
-        call setTargetX
-
-        ;; Hago reset de las posiciones
-        ld  a, e_x(ix)
-        sub a, l
-        ld  e_x(ix), a
-
-        ld a, e_y(ix)
-        sub a, h
-        ld e_y(ix), a
-
-        ret
-    hero_no_colisiona:
     ld  a, e_x(ix)
-    sub a, l
     add a, e_vx(ix)
     ld  e_x(ix), a
 
     ld a, e_y(ix)
-    sub a, h
     add a, e_vy(ix)
     ld e_y(ix), a
 
@@ -263,6 +259,46 @@ hero_get_position::
 ;;======================================================================
 ;;======================================================================
 
+
+getUpperRightCorner:
+    ld a, e_x(ix)       ;; Si mi personaje está en X = 0
+        add e_w(ix)     ;; y le sumo el ancho que es 8, X = 8
+        dec a           ;; que es el inicio del siguiente tile
+    ld l, a             ;; por eso le resto 1, el border derecho
+    ld h, e_y(ix)       ;; seria 7 realmente, [0, 7]
+ret
+
+getLowerRightCorner:
+    ld a, e_x(ix)
+        add e_w(ix)
+        dec a
+    ld l, a
+    ld a, e_y(ix)
+        add e_h(ix)
+        dec a
+    ld h, a
+ret
+
+getUpperLeftCorner:
+    ld l, e_x(ix)
+    ld h, e_y(ix)
+ret
+
+getLowerLeftCorner:
+    ld l, e_x(ix)
+    ld a, e_y(ix)
+        add e_h(ix)
+        dec a
+    ld h, a
+ret
+
+check_colision::
+    call    checkTileCollision_m
+    ld a, #1
+    ret z
+    ld a, #0
+ret
+
 checkTeleporter:
     ld a, (NumberOfEnemies)
     cp #0
@@ -278,8 +314,9 @@ checkTeleporter:
     ld a, (Teleporter+1)
     cp b
     ret nz
-
+    push ix
     call loadNextLevel
+    pop ix
 ret
 
 resetHero::
