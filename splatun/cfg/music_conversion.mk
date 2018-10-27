@@ -1,5 +1,5 @@
 ##-----------------------------LICENSE NOTICE------------------------------------
-##  This file is part of CPCtelera: An Amstrad CPC Game Engine 
+##  This file is part of CPCtelera: An Amstrad CPC Game Engine
 ##  Copyright (C) 2018 ronaldo / Fremos / Cheesetea / ByteRealms (@FranGallegoBR)
 ##
 ##  This program is free software: you can redistribute it and/or modify
@@ -31,10 +31,18 @@
 #$(eval $(call AKS2DATA, SET_FOLDER   , src/ ))
 #$(eval $(call AKS2DATA, SET_OUTPUTS  , h s  )) { bin, h, hs, s }
 #$(eval $(call AKS2DATA, SET_SFXONLY  , no   )) { yes, no       }
-#$(eval $(call AKS2DATA, SET_EXTRAPAR ,      )) 
+#$(eval $(call AKS2DATA, SET_EXTRAPAR ,      ))
 # Conversion
 #$(eval $(call AKS2DATA, CONVERT      , music.aks , array , mem_address ))
 
+
+$(eval $(call AKS2DATA, SET_FOLDER   , src/Music ))
+$(eval $(call AKS2DATA, SET_OUTPUTS  , h s  ))
+$(eval $(call AKS2C,src/Music/bso2chan.aks,song_ingame,src/Music/,0x0040))
+$(eval $(call AKS2DATA, SET_SFXONLY  , yes   ))
+#$(eval $(call AKS2DATA, SET_EXTRAPAR ,      ))
+# Conversion
+$(eval $(call AKS2DATA, CONVERT , src/Music/sfx.aks , sfx , 0x11f ))
 
 
 ##
@@ -44,7 +52,7 @@
 ## AUTOMATED MUSIC CONVERSION EXAMPLE (Uncomment EVAL line to use)
 
 ## Convert music/song.aks to src/music/song.s and src/music/song.h
-##		This file contains a music created with Arkos Tracker. This macro 
+##		This file contains a music created with Arkos Tracker. This macro
 ## will convert the music into a data array called g_mysong that will be
 ## placed at the 0x42A0 memory address in an absolue way.
 ##

@@ -261,7 +261,7 @@ bullet_checkInit:
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1 -> INICIALIZO
    ret   nz                      ;; Si ya esta inicializada, hago ret
-
+   call shoot_sfx
    ;; REALIZA UNA COPIA DE LA ENTIDAD POR DEFECTO
    push  ix                      ;; Guardo IX en la pila
    pop   de                      ;; Entidad DESTINO
@@ -423,7 +423,7 @@ bullet_check_death::
 
     ; COLISION
     COLLISION::
-
+    call enemy_death_sfx
     call bullet_set_death
     ld en_alv(iy), #0
 
@@ -488,3 +488,90 @@ spawnEnemies::
     ld e_y(iy),c
 ret
 
+;SONIDO DESPAROS
+shoot_sfx::
+ ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+  push ix
+  push af
+  push bc
+  push de
+  push hl
+  push iy
+  ld l, #2  ;INSRUMENTO
+  ld h, #15  ;VOLUMEN
+  ld e, #48  ;NOTA
+  ld d, #0   ;VELOCIDAD
+  ld bc, #0  ;PITCH
+  ld a, #2   ;CANAL
+  call cpct_akp_SFXPlay_asm
+
+  pop iy
+  pop hl
+  pop de
+  pop bc
+  pop af
+  pop ix
+
+  ret
+
+  ;SONIDO MUERTE ENEMIGOS
+  enemy_death_sfx::
+   ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+   push ix
+   push af
+   push bc
+   push de
+   push hl
+   push iy
+
+
+   ld l, #1 ;INSRUMENTO
+   ld h, #15  ;VOLUMEN
+   ld e, #10  ;NOTA
+   ld d, #2   ;VELOCIDAD
+   ld bc, #0  ;PITCH
+   ld a, #1   ;CANAL
+   call cpct_akp_SFXPlay_asm
+
+   pop iy
+   pop hl
+   pop de
+   pop bc
+   pop af
+   pop ix
+
+
+
+    ret
+
+    hero_death_sfx::
+     ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+     push ix
+     push af
+     push bc
+     push de
+     push hl
+     push iy
+
+
+     ld l, #2 ;INSRUMENTO
+     ld h, #15  ;VOLUMEN
+     ld e, #40  ;NOTA
+     ld d, #2   ;VELOCIDAD
+     ld bc, #0  ;PITCH
+     ld a, #1   ;CANAL
+     call cpct_akp_SFXPlay_asm
+
+     pop iy
+     pop hl
+     pop de
+     pop bc
+     pop af
+     pop ix
+
+
+
+ret

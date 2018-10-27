@@ -857,6 +857,7 @@ get_enemy_size::
       ;; Salgo de la funcion en caso que las vidas del heroe no sean 0
       jr z, game_reset
           ;; Mato al enemigo y decremento el contador de enemigos
+          call hero_death_sfx
           ld a, (NumberOfEnemies)
           dec a
           ld (NumberOfEnemies), a
@@ -878,6 +879,3 @@ get_enemy_size::
       jp menu
       noCol:
   ret
-
-
-

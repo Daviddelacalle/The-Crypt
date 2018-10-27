@@ -14,7 +14,7 @@
 
 
 
-decompress_buffer       == 0x040
+decompress_buffer       == 0x176
 imageMaxSize             = 0x14A0
 buffer_end_img = decompress_buffer + imageMaxSize - 1
 
@@ -40,12 +40,67 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
 
 .endm
 
+unavariable: .db #5
+
+isr:
+
+  ex af,af';'
+  exx
+
+  push ix
+  push af
+  push bc
+  push de
+  push hl
+  push iy
+
+  ld a, (unavariable)
+  dec a
+  ld (unavariable), a
+  jr nz, return
+
+  call z, cpct_akp_musicPlay_asm
+  ld a, #5
+  ld (unavariable), a
+
+  return:
+    ; ld a, #_cpct_akp_songLoopTimes
+    ; cp #1
+    ; jr nz, noparar
+    ; call cpct_akp_stop_asm
+    ; noparar:
+    pop iy
+    pop hl
+    pop de
+    pop bc
+    pop af
+    pop ix
+
+    exx
+    ex af,af';'
+
+
+
+
+ret
+
+
+
+
 ;; Punto de entrada de la funcion main
 _main::
     ; --> Realocate stack memory <-- ;
     ld sp, #0x8000
 
     init
+    ld hl, #isr
+    call cpct_setInterruptHandler_asm
+    ld de, #_song_ingame
+    call cpct_akp_musicInit_asm
+
+    ld de, #_sfx
+    call cpct_akp_SFXInit_asm
+
     ;call drawMenu
 
     menu::
