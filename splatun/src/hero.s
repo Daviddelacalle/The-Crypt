@@ -299,7 +299,7 @@ check_colision::
     ld a, #0
 ret
 
-checkTeleporter:
+checkTeleporter::
     ld a, (NumberOfEnemies)
     cp #0
     ret nz

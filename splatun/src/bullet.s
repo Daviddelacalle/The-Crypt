@@ -339,7 +339,7 @@ bullet_checkUpdate:
    add b_vy(ix)                  ;; Le aumento la velocidad en Y
    ld  b_y(ix), a                ;; Guardo el dato actualizado
 
-   ret
+ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MUERTE DE LA BALA
