@@ -313,11 +313,12 @@ bullet_searchUpdate::
       jp (hl)
    no_tile_collision:
 
+   ;; Checkear la colision con el enemigo
    call bullet_check_death
 
    ld l, b_up_l(ix)           ;; Carga el byte bajo en L
    ld h, b_up_h(ix)           ;; Carga el byte alto en H
-   jp (hl)                    ;; Llama a la funcion propia de cada entidad
+   jp (hl)                    ;; Llama a la funcion de UPDATE propia de cada entidad
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0 Y LO ACTUALIZO

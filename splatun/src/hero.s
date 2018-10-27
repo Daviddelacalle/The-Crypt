@@ -323,8 +323,8 @@ resetHero::
     ld ix, #hero
     ld e_x(ix), #INIT_X
     ld e_y(ix), #INIT_Y
-    ld a, #K_HERO_LIVES
-    ld (HERO_LIVES), a
+    ; ld a, #K_HERO_LIVES
+    ; ld (HERO_LIVES), a
 ret
 
 hero_get_iy::
