@@ -824,7 +824,7 @@ get_enemy_size::
    push ix
    pop iy
    call spawnEnemies
-   call enemy_death_sfx
+   call hero_death_sfx
 
    noCol:
    ret

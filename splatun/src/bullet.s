@@ -513,16 +513,17 @@ bullet_check_death::
         ld a, b             ;; A = Y del borde superior del enemigo
 
         cp d                ;; Comprobamos si el borde inferior de la bala está
-                            ;; por encima del borde superior del enemigo
+                exx
+    ex af, af';'              ;; por encima del borde superior del enemigo
     jr nc, no_colision
-    call enemy_death_sfx
+
     ; COLISION
     ld a, (NumberOfEnemies)
     dec a
     ld (NumberOfEnemies), a
     cp #0
     call z, openTeleporter
-
+    call enemy_death_sfx
     call bullet_set_death
     call spawnEnemies
 
@@ -579,18 +580,17 @@ ret
 ;SONIDO DESPAROS
 shoot_sfx::
  ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
- ex af, af';'
-  exx
+
   push ix
   push af
   push bc
   push de
   push hl
   push iy
-  ld b, #02  ;INSRUMENTO
+  ld l, #2  ;INSRUMENTO
   ld h, #15  ;VOLUMEN
-  ld e, #25  ;NOTA
-  ld d, #1   ;VELOCIDAD
+  ld e, #48  ;NOTA
+  ld d, #0   ;VELOCIDAD
   ld bc, #0  ;PITCH
   ld a, #2   ;CANAL
   call cpct_akp_SFXPlay_asm
@@ -601,36 +601,66 @@ shoot_sfx::
   pop bc
   pop af
   pop ix
-  exx
-  ex af, af';'
+
   ret
 
   ;SONIDO MUERTE ENEMIGOS
   enemy_death_sfx::
    ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
 
-   ex af, af';'
-    exx
-    push ix
-    push af
-    push bc
-    push de
-    push hl
-    push iy
-    ld b, #02  ;INSRUMENTO
-    ld h, #15  ;VOLUMEN
-    ld e, #25  ;NOTA
-    ld d, #1   ;VELOCIDAD
-    ld bc, #0  ;PITCH
-    ld a, #2   ;CANAL
-    call cpct_akp_SFXPlay_asm
+   push ix
+   push af
+   push bc
+   push de
+   push hl
+   push iy
 
-    pop iy
-    pop hl
-    pop de
-    pop bc
-    pop af
-    pop ix
-    exx
-    ex af, af';'
+
+   ld l, #1 ;INSRUMENTO
+   ld h, #15  ;VOLUMEN
+   ld e, #10  ;NOTA
+   ld d, #2   ;VELOCIDAD
+   ld bc, #0  ;PITCH
+   ld a, #1   ;CANAL
+   call cpct_akp_SFXPlay_asm
+
+   pop iy
+   pop hl
+   pop de
+   pop bc
+   pop af
+   pop ix
+
+
+
     ret
+
+    hero_death_sfx::
+     ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+     push ix
+     push af
+     push bc
+     push de
+     push hl
+     push iy
+
+
+     ld l, #2 ;INSRUMENTO
+     ld h, #15  ;VOLUMEN
+     ld e, #40  ;NOTA
+     ld d, #2   ;VELOCIDAD
+     ld bc, #0  ;PITCH
+     ld a, #1   ;CANAL
+     call cpct_akp_SFXPlay_asm
+
+     pop iy
+     pop hl
+     pop de
+     pop bc
+     pop af
+     pop ix
+
+
+
+      ret
