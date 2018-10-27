@@ -671,10 +671,6 @@ checkTileCollision::
 ;; DESTRUYE:   A,BC,DE,HL -> LA DETRUCCIONE E CASI TOTALE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 checkTileCollision_m::
-   ;; ================================ ;;
-   ;; IX EN COORDENADAS DE PANTALLA !! ;;
-   ;; ================================ ;;
-   ;; Guardar en AF' las coordenadas para que no se pierdan
    call mapa_a_tile           ;; B = X, C = Y
 
    ;; Guardo en C,A (x,y) para las comprobaciones

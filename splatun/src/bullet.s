@@ -322,7 +322,12 @@ bullet_searchUpdate:
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
    ret    z                      ;; Si no se ha inicialiado, poco podemos hacer
 
-   ; call checkTileCollision
+   ;; Cargo Y,X en H y L
+   ;; antes de llamar a checkTileCollision_m
+   ;;   L = X
+   ;;   H = Y
+   ld h, e_y(ix)
+   ld l, e_x(ix)
    call checkTileCollision_m
    jr nz, no_tile_collision
       ld hl, #bullet_death
@@ -330,11 +335,12 @@ bullet_searchUpdate:
       ld b_up_l(ix), l
    no_tile_collision:
 
+   ;; Checkear la colision con el enemigo
    call bullet_check_death
 
    ld l, b_up_l(ix)           ;; Carga el byte bajo en L
    ld h, b_up_h(ix)           ;; Carga el byte alto en H
-   jp (hl)                    ;; Llama a la funcion propia de cada entidad
+   jp (hl)                    ;; Llama a la funcion de UPDATE propia de cada entidad
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; COMPROBAR SI EN LA ENTIDAD BULLET alive > 0 Y LO ACTUALIZO
