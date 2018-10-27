@@ -12,7 +12,7 @@ CameraTargetY:: .db #0
 
 map_ptr:    .dw #decompress_buffer
 
-HUD_END_DECOMPRESSED = 499 + 0x0040
+HUD_END_DECOMPRESSED = 499 + 0x176
 ;========================================================================;
 ;   Inreases ptr for the map
 ;   Input:  DE => Incremento del mapa
@@ -209,10 +209,3 @@ drawHud::
     ld de, (map_ptr)
     call cpct_etm_drawTilemap4x8_ag_asm
 ret
-
-
-
-
-
-
-

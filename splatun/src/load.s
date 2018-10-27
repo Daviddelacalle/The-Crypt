@@ -47,7 +47,7 @@ load_control::
       ld c, #40
       ld b, #66
       call cpct_drawSprite_asm  ;; Inicio del buffer de descompresión ¬
-      ld hl,#0xA90              ;;              Offeset = 2640 + 64 (0x40) = 2704 = 0xA90
+      ld hl,#0xBC6              ;;              Offeset = 2640 + 64 (0x40) = 2704 = 0xA90
       ld a, (back_buffer)
       ld d, a
       inc d

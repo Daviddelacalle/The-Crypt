@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 5
+vector_size = 1
 bullet_size = b_size                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 K_VEL_X = 2
@@ -87,27 +87,6 @@ bullet_update::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_inputs::
    call cpct_scanKeyboard_asm
-
-   ;; ¡¡¡¡¡¡¡¡HAY QUE ARREGLAR ESTO!!!!!!!!
-   ;;ld    hl,   #vector_keys         ;; IX apunta al vector de codigos de teclado
-   ;;loop:
-   ;;   ld     a,   (hl)              ;; A = 0(ix)
-   ;;   cp  #0xFF                     ;; El final del vector lo marca un FF
-   ;;   jr     z,   end_loop          ;; Sale del bucle en caso que A == FF
-   ;;      push  hl
-   ;;      call  cpct_isKeyPressed_asm   ;; CPC
-   ;;      pop   hl
-   ;;   inc   hl                      ;; HL ++
-   ;;   inc   hl                      ;; HL ++
-   ;;   ld     c,   (hl)              ;; Guardo en BC el valor al que apunta HL
-   ;;   inc   hl                      ;; HL ++
-   ;;   ld     b,   (hl)              ;; Guardo en BC el valor al que apunta HL
-   ;;   inc   hl                      ;; HL ++
-   ;;   ld (k_custom), bc             ;;
-   ;;      k_custom = . + 1           ;; CARGAR LA FUNCION PROPIA DE CADA KEY
-   ;;      call nz, (0x0000)          ;;
-   ;;   jr    loop                    ;; Vuelta arriba
-   ;;end_loop:
 
    ;; Bucle mas costoso
    ld    ix,   #vector_keys         ;; IX apunta al vector de codigos de teclado
@@ -282,7 +261,7 @@ bullet_checkInit:
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1 -> INICIALIZO
    ret   nz                      ;; Si ya esta inicializada, hago ret
-
+   call shoot_sfx
    ;; REALIZA UNA COPIA DE LA ENTIDAD POR DEFECTO
    push  ix                      ;; Guardo IX en la pila
    pop   de                      ;; Entidad DESTINO
@@ -293,9 +272,6 @@ bullet_checkInit:
 
    ;; DEBO CONSEGUIR UNAS POSICIONES DE TILE DEL HERO
    call hero_get_position           ;; A = hero_x // B = hero_y
-   ; ld l, a                       ;; L = X
-   ; ld h, b                       ;; H = Y
-   ; call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
 
    ;; Si debo cambiar algo de la entidad, aqui
    ld    b_x(ix), a              ;; Asigno X
@@ -317,22 +293,24 @@ bullet_checkInit:
 ;; ENTRADA:    IX -> Puntero a entidad BULLET
 ;; DESTRUYE:   HL, A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_searchUpdate:
+bullet_searchUpdate::
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
    ret    z                      ;; Si no se ha inicialiado, poco podemos hacer
 
-   ;; Cargo Y,X en H y L
-   ;; antes de llamar a checkTileCollision_m
-   ;;   L = X
-   ;;   H = Y
-   ld h, e_y(ix)
-   ld l, e_x(ix)
+   ld a, b_y(ix)
+   add b_vy(ix)
+   ld h, a
+
+   ld a, b_x(ix)
+   add b_vx(ix)
+   ld l, a
    call checkTileCollision_m
    jr nz, no_tile_collision
       ld hl, #bullet_death
       ld b_up_h(ix), h
       ld b_up_l(ix), l
+      jp (hl)
    no_tile_collision:
 
    ;; Checkear la colision con el enemigo
@@ -361,7 +339,7 @@ bullet_checkUpdate:
    add b_vy(ix)                  ;; Le aumento la velocidad en Y
    ld  b_y(ix), a                ;; Guardo el dato actualizado
 
-   ret
+ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MUERTE DE LA BALA
@@ -445,7 +423,7 @@ bullet_check_death::
 
     ; COLISION
     COLLISION::
-
+    call enemy_death_sfx
     call bullet_set_death
     ld en_alv(iy), #0
 
@@ -510,3 +488,90 @@ spawnEnemies::
     ld e_y(iy),c
 ret
 
+;SONIDO DESPAROS
+shoot_sfx::
+ ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+  push ix
+  push af
+  push bc
+  push de
+  push hl
+  push iy
+  ld l, #2  ;INSRUMENTO
+  ld h, #15  ;VOLUMEN
+  ld e, #48  ;NOTA
+  ld d, #0   ;VELOCIDAD
+  ld bc, #0  ;PITCH
+  ld a, #2   ;CANAL
+  call cpct_akp_SFXPlay_asm
+
+  pop iy
+  pop hl
+  pop de
+  pop bc
+  pop af
+  pop ix
+
+  ret
+
+  ;SONIDO MUERTE ENEMIGOS
+  enemy_death_sfx::
+   ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+   push ix
+   push af
+   push bc
+   push de
+   push hl
+   push iy
+
+
+   ld l, #1 ;INSRUMENTO
+   ld h, #15  ;VOLUMEN
+   ld e, #10  ;NOTA
+   ld d, #2   ;VELOCIDAD
+   ld bc, #0  ;PITCH
+   ld a, #1   ;CANAL
+   call cpct_akp_SFXPlay_asm
+
+   pop iy
+   pop hl
+   pop de
+   pop bc
+   pop af
+   pop ix
+
+
+
+    ret
+
+    hero_death_sfx::
+     ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+     push ix
+     push af
+     push bc
+     push de
+     push hl
+     push iy
+
+
+     ld l, #2 ;INSRUMENTO
+     ld h, #15  ;VOLUMEN
+     ld e, #40  ;NOTA
+     ld d, #2   ;VELOCIDAD
+     ld bc, #0  ;PITCH
+     ld a, #1   ;CANAL
+     call cpct_akp_SFXPlay_asm
+
+     pop iy
+     pop hl
+     pop de
+     pop bc
+     pop af
+     pop ix
+
+
+
+ret

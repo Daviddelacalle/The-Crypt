@@ -14,7 +14,7 @@
 
 
 
-decompress_buffer       == 0x040
+decompress_buffer       == 0x176
 imageMaxSize             = 0x14A0
 buffer_end_img = decompress_buffer + imageMaxSize - 1
 
@@ -40,12 +40,67 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
 
 .endm
 
+unavariable: .db #5
+
+isr:
+
+  ex af,af';'
+  exx
+
+  push ix
+  push af
+  push bc
+  push de
+  push hl
+  push iy
+
+  ld a, (unavariable)
+  dec a
+  ld (unavariable), a
+  jr nz, return
+
+  call z, cpct_akp_musicPlay_asm
+  ld a, #5
+  ld (unavariable), a
+
+  return:
+    ; ld a, #_cpct_akp_songLoopTimes
+    ; cp #1
+    ; jr nz, noparar
+    ; call cpct_akp_stop_asm
+    ; noparar:
+    pop iy
+    pop hl
+    pop de
+    pop bc
+    pop af
+    pop ix
+
+    exx
+    ex af,af';'
+
+
+
+
+ret
+
+
+
+
 ;; Punto de entrada de la funcion main
 _main::
     ; --> Realocate stack memory <-- ;
     ld sp, #0x8000
 
     init
+    ld hl, #isr
+    call cpct_setInterruptHandler_asm
+    ld de, #_song_ingame
+    call cpct_akp_musicInit_asm
+
+    ld de, #_sfx
+    call cpct_akp_SFXInit_asm
+
     ;call drawMenu
 
     menu::
@@ -55,42 +110,36 @@ _main::
     call cpct_zx7b_decrunch_s_asm
 
     loop_load::
+        call cpct_nextRandom_mxor_u8_asm
+        call load_control
+        jr loop_load
+        map_start::
 
-      call load_control
-      jr loop_load
-      map_start::
+        call resetCamera
+        call drawHud
+        call dw_drawHearts
+        ;; Cambio buffers y dibujo lo mismo
+        call swapBuffers
+        call drawHud
+        call dw_drawHearts
+        ;; Vuelvo al buffer inicial
+        call swapBuffers
 
-      call resetCamera
-      call drawHud
-      call dw_drawHearts
-      ;; Cambio buffers y dibujo lo mismo
-      call swapBuffers
-      call drawHud
-      call dw_drawHearts
-      ;; Vuelvo al buffer inicial
-      call swapBuffers
+        ld hl, #_g_00
+        ld c, #VIEWPORT_WIDTH        ;; Ancho
+        ld b, #VIEWPORT_HEIGHT        ;; Alto
+        ld de, #30
+        call cpct_etm_setDrawTilemap4x8_ag_asm
 
-      ld hl, #_g_00
-      ld c, #VIEWPORT_WIDTH        ;; Ancho
-      ld b, #VIEWPORT_HEIGHT        ;; Alto
-      ld de, #30
-      call cpct_etm_setDrawTilemap4x8_ag_asm
-
-      call loadLevel1       ;; Cargo el nivel 1
-      call drawMap
+        call loadLevel1       ;; Cargo el nivel 1
 
     ;; Comienza el bucle del juego
     loop::
-        ;; CLIAR
-        ;call bullet_clear
-        ;call obs_clear
-        ;call enemy_clear_ALL
-        ;call hero_clear
 
         ;; DRO
         call drawMap
-        call bullet_draw
         call enemy_draw_ALL
+        call bullet_draw
         call hero_draw
 
         ;; UPDEIT

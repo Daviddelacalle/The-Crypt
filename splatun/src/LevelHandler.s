@@ -2,10 +2,10 @@
 current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
 
-TIMEOUT         = 4         ;; Segundos (aprox.)
+TIMEOUT         = 2         ;; Segundos (aprox.)
 CLEAR_COLOR     = 0
 
-decompress_buffer        = 0x040
+decompress_buffer        = 0x176
 MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384
@@ -98,8 +98,11 @@ loadCurrentLevel::
 
     ld de, #level_end
     call cpct_zx7b_decrunch_s_asm
+
     call resetHero
     call resetCamera
+    ld a, #0
+    ld (SpawnOffset), a
     call initEnemies
 
     call updateLevelNumber
