@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 5
+vector_size = 1
 bullet_size = b_size                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 K_VEL_X = 2
@@ -87,27 +87,6 @@ bullet_update::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bullet_inputs::
    call cpct_scanKeyboard_asm
-
-   ;; ¡¡¡¡¡¡¡¡HAY QUE ARREGLAR ESTO!!!!!!!!
-   ;;ld    hl,   #vector_keys         ;; IX apunta al vector de codigos de teclado
-   ;;loop:
-   ;;   ld     a,   (hl)              ;; A = 0(ix)
-   ;;   cp  #0xFF                     ;; El final del vector lo marca un FF
-   ;;   jr     z,   end_loop          ;; Sale del bucle en caso que A == FF
-   ;;      push  hl
-   ;;      call  cpct_isKeyPressed_asm   ;; CPC
-   ;;      pop   hl
-   ;;   inc   hl                      ;; HL ++
-   ;;   inc   hl                      ;; HL ++
-   ;;   ld     c,   (hl)              ;; Guardo en BC el valor al que apunta HL
-   ;;   inc   hl                      ;; HL ++
-   ;;   ld     b,   (hl)              ;; Guardo en BC el valor al que apunta HL
-   ;;   inc   hl                      ;; HL ++
-   ;;   ld (k_custom), bc             ;;
-   ;;      k_custom = . + 1           ;; CARGAR LA FUNCION PROPIA DE CADA KEY
-   ;;      call nz, (0x0000)          ;;
-   ;;   jr    loop                    ;; Vuelta arriba
-   ;;end_loop:
 
    ;; Bucle mas costoso
    ld    ix,   #vector_keys         ;; IX apunta al vector de codigos de teclado
@@ -293,9 +272,6 @@ bullet_checkInit:
 
    ;; DEBO CONSEGUIR UNAS POSICIONES DE TILE DEL HERO
    call hero_get_position           ;; A = hero_x // B = hero_y
-   ; ld l, a                       ;; L = X
-   ; ld h, b                       ;; H = Y
-   ; call mapa_a_tile              ;; Aplica el offset de la camara automaticamente
 
    ;; Si debo cambiar algo de la entidad, aqui
    ld    b_x(ix), a              ;; Asigno X
@@ -317,17 +293,24 @@ bullet_checkInit:
 ;; ENTRADA:    IX -> Puntero a entidad BULLET
 ;; DESTRUYE:   HL, A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-bullet_searchUpdate:
+bullet_searchUpdate::
    ld     a,   b_alive(ix)       ;; Cargo el valor de alive en A
    cp    #0                      ;; Si el valor es 0 y le resto 0 -> Z=1
    ret    z                      ;; Si no se ha inicialiado, poco podemos hacer
 
-   ; call checkTileCollision
+   ld a, b_y(ix)
+   add b_vy(ix)
+   ld h, a
+
+   ld a, b_x(ix)
+   add b_vx(ix)
+   ld l, a
    call checkTileCollision_m
    jr nz, no_tile_collision
       ld hl, #bullet_death
       ld b_up_h(ix), h
       ld b_up_l(ix), l
+      jp (hl)
    no_tile_collision:
 
    call bullet_check_death

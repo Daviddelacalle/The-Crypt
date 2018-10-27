@@ -55,42 +55,36 @@ _main::
     call cpct_zx7b_decrunch_s_asm
 
     loop_load::
+        call cpct_nextRandom_mxor_u8_asm
+        call load_control
+        jr loop_load
+        map_start::
 
-      call load_control
-      jr loop_load
-      map_start::
+        call resetCamera
+        call drawHud
+        call dw_drawHearts
+        ;; Cambio buffers y dibujo lo mismo
+        call swapBuffers
+        call drawHud
+        call dw_drawHearts
+        ;; Vuelvo al buffer inicial
+        call swapBuffers
 
-      call resetCamera
-      call drawHud
-      call dw_drawHearts
-      ;; Cambio buffers y dibujo lo mismo
-      call swapBuffers
-      call drawHud
-      call dw_drawHearts
-      ;; Vuelvo al buffer inicial
-      call swapBuffers
+        ld hl, #_g_00
+        ld c, #VIEWPORT_WIDTH        ;; Ancho
+        ld b, #VIEWPORT_HEIGHT        ;; Alto
+        ld de, #30
+        call cpct_etm_setDrawTilemap4x8_ag_asm
 
-      ld hl, #_g_00
-      ld c, #VIEWPORT_WIDTH        ;; Ancho
-      ld b, #VIEWPORT_HEIGHT        ;; Alto
-      ld de, #30
-      call cpct_etm_setDrawTilemap4x8_ag_asm
-
-      call loadLevel1       ;; Cargo el nivel 1
-      call drawMap
+        call loadLevel1       ;; Cargo el nivel 1
 
     ;; Comienza el bucle del juego
     loop::
-        ;; CLIAR
-        ;call bullet_clear
-        ;call obs_clear
-        ;call enemy_clear_ALL
-        ;call hero_clear
 
         ;; DRO
         call drawMap
-        call bullet_draw
         call enemy_draw_ALL
+        call bullet_draw
         call hero_draw
 
         ;; UPDEIT

@@ -13,10 +13,10 @@ ScreenSizeX = 16*4
 ScreenSizeY = 16*8
 ;;X = Width * 4 / 4 <~ Múltiplo de 4
 ;;Y = Height * 8 / 4 <~ Múltiplo de 6
-LEFT    == 12
-RIGHT   == ScreenSizeX-12
-TOP     == 32
-BOTTOM  == ScreenSizeY-32
+LEFT    == 16
+RIGHT   == ScreenSizeX-16
+TOP     == 40
+BOTTOM  == ScreenSizeY-40
 
 MAP_WIDTH == 30
 MAP_HEIGHT == 30

@@ -77,6 +77,8 @@ loadCurrentLevel::
     call cpct_zx7b_decrunch_s_asm
     call resetHero
     call resetCamera
+    ld a, #0
+    ld (SpawnOffset), a
     call initEnemies
 
 ret

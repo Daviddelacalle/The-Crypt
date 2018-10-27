@@ -72,14 +72,11 @@ initEnemies::
     ret z
     ld c, a
 
-    ld a, (NumberOfEnemies)
-    ld b, a
-
     ld    iy,   #vector_init      ;; IX apunta al inicio de vector de enemigos (a la primera entidad)
     init_loop:
        ld     a,   0(iy)                ;; Compruebo que no he llegado al final del vector
        cp    #0xFF                      ;; A - 0xFF
-       jr    z, END_INIT                         ;; if(A==0xFF) -> Sale del vector
+       jr    z, END_INIT                ;; if(A==0xFF) -> Sale del vector
 
        push bc
        call spawnEnemies
@@ -526,49 +523,17 @@ enemy_checkGoal:
 enemy_getRandom_X:
 
     call cpct_getRandom_mxor_u8_asm
-
-    ld a, #0x128
-    sub en_x(ix)
-    ld d, a         ; X máxima a la que puedo ir para no salirme del mapa
-
-    ld a, #120
-    sub en_x(ix)
-    ld d, a         ; X máxima a la que puedo ir para no salirme del mapa
-
-
     ld a, l
-    cp en_x(ix)
-    jr c, goal_is_negative
-        ;;Positivo
-        cp #var_r_max
-        jr c, under_max
-            ld a, #var_r_max
-        under_max:
-        add en_x(ix)
-        cp #120                 ;; MAP_WIDTH
 
-
-
-    goal_is_negative:
-    cp #var_r_max
-
-   ;ld a, en_x(ix)              ;; Cojo la X actual del jugador
-   ;sub #var_r_max              ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
-   ;ld b, a
-   ;jr nc, not_negative_x       ;; Si el mínimo es menor que 0
-    ;   ld b, #0                ;; Se pone a 0
-   ;not_negative_x:
-
-   ;ld a, en_x(ix)              ;; Cojo la X actual de nuevo
-   ;add #var_r_max              ;; Le sumo la distancia maxima para sacar el maximo
-   ;ld c, a
-   ;cp #MAP_WIDTH               ;; Si el maximo es mayor que el ancho del mapa
-   ;jr c, not_over_Map_Max_x
-    ;   ld c, #MAP_WIDTH        ;; Lo pongo al ancho total del mapa
-   ;not_over_Map_Max_x:
-
-   ld en_g_x(ix), a             ;; Cargo la posicion random en el enemigo
-   ret
+    cp #127
+    jr c, go_left
+        ld a, #var_r_max
+        jr save_randomX
+    go_left:
+        ld a, #-var_r_max
+    save_randomX:
+    ld en_g_x(ix), a             ;; Cargo la posicion random en el enemigo
+ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONSIGUE UN VALOR ALEATORIO CORRESPONDIENTE CON LA POSICION EN Y
@@ -578,24 +543,18 @@ enemy_getRandom_X:
 ;; SALIDA:     A  -> Posicion aleatoria  en Y
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 enemy_getRandom_Y:
-   ld a, en_y(ix)               ;; Cojo la Y actual del jugador
-   sub #var_r_max               ;; Le resto la distancia maxima a la que quiero ir para sacar el minimo
-   ld b, a
-   jr nc, not_negative_y        ;; Si el mínimo es menor que 0
-       ld b, #0                 ;; Lo pongo a 0
-   not_negative_y:
+    call cpct_getRandom_mxor_u8_asm
+    ld a, l
 
-   ld a, en_y(ix)               ;; Cojo la Y actual de nuevo
-   add #var_r_max               ;; Le sumo la distancia maxima para sacar el maximo
-   ld c, a
-   cp #MAP_HEIGHT               ;; Si el maximo es mayor que el ancho del mapa
-   jr c, not_over_Map_Max_y
-       ld c, #MAP_HEIGHT        ;; Lo pongo al ancho total del mapa
-   not_over_Map_Max_y:
-   ;call getRandomInRange
-
-   ld en_g_y(ix), a                          ;; Cargo la posicion random en el enemigo
-   ret
+    cp #127
+    jr c, go_up
+        ld a, #var_r_max
+        jr save_randomY
+    go_up:
+        ld a, #-var_r_max
+    save_randomY:
+    ld en_g_y(ix), a             ;; Cargo la posicion random en el enemigo
+ret
 
 ;; ENTRADA:    HL -> Valor de 2 bytes a llevar a valor positivo, en caso que sea negativo
 ;; DESTRUYE:   A, HL
