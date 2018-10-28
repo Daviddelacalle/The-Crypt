@@ -18,7 +18,7 @@
 ;; DATOS PRIVADOS
 ;;======================================================================
 ;;======================================================================
-vector_size = 1
+vector_size = 2
 bullet_size = b_size                    ;; Debe de ser parametrizado, CUANTO ANTES!
 
 K_VEL_X = 2

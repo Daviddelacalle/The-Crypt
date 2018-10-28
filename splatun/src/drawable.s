@@ -53,7 +53,7 @@ ptr_FontNumberInfo:
 HUD_DRAWING_OFFSET      = 1
 HUD_HEARTS_INIT_X       = 10
 HUD_LEVELINFO_INIT_X    = HUD_HEARTS_INIT_X+((4+HUD_DRAWING_OFFSET)*K_HERO_LIVES)
-HUD_INIT_Y              = 168
+HUD_INIT_Y              = 172
 
 ;;======================================================================
 ;;======================================================================

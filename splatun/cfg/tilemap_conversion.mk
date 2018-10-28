@@ -45,6 +45,13 @@ $(eval $(call TMX2DATA, SET_OUTPUTS     , hs bin    ))
 $(eval $(call TMX2DATA, CONVERT, assets/World1/Level1/Level1.tmx, level1	))
 $(eval $(call TMX2DATA, CONVERT, assets/World1/Level2/Level2.tmx, level2	))
 $(eval $(call TMX2DATA, CONVERT, assets/World1/Level3/Level3.tmx, level3	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level4/Level4.tmx, level4	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level5/Level5.tmx, level5	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level6/Level6.tmx, level6	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level7/Level7.tmx, level7	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level8/Level8.tmx, level8	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level9/Level9.tmx, level9	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level10/Level10.tmx, level10	))
 $(eval $(call TMX2DATA, CONVERT, assets/Hud/hud.tmx, hud	))
 
 ##
