@@ -79,9 +79,6 @@ isr:
     exx
     ex af,af';'
 
-
-
-
 ret
 
 
@@ -100,8 +97,6 @@ _main::
 
     ld de, #_sfx
     call cpct_akp_SFXInit_asm
-
-    ;call drawMenu
 
     menu::
 
@@ -125,11 +120,7 @@ _main::
         ;; Vuelvo al buffer inicial
         call swapBuffers
 
-        ld hl, #_g_00
-        ld c, #VIEWPORT_WIDTH        ;; Ancho
-        ld b, #VIEWPORT_HEIGHT        ;; Alto
-        ld de, #30
-        call cpct_etm_setDrawTilemap4x8_ag_asm
+        call resetTilemap
 
         call loadLevel1       ;; Cargo el nivel 1
 
