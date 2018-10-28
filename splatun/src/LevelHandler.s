@@ -138,6 +138,7 @@ ret
 ;;==================================================================
 toggleTransition:
     call fillAlternativeBuffer      ;; Lleno con #29 un "buffer" alternativo
+
     ld hl, #alternative_buffer      ;; Le digo a la funcion que pinta por columnas
     ld (map), hl                    ;; dónde está mi "mapa" lleno de #29
     call clearPlayableAreaAlt
@@ -148,7 +149,7 @@ toggleTransition:
         dec e
     jr nz, Timeout
 
-    ld hl, #decompress_buffer       ;; Ahora le digo que dónde está el verdadero
+    ld hl, #decompress_buffer       ;; Ahora le digo dónde está el verdadero mapa
     ld (map), hl                    ;; descomprimido del siguiente nivel, y vuelvo
     call clearPlayableAreaAlt       ;; a dibujar por columnas
     call resetTilemap               ;; Dejo al configuración del tilemap como estaba

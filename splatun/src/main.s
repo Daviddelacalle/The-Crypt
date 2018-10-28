@@ -12,12 +12,6 @@
     ;call cpct_setPALColour_asm
 .endm
 
-
-
-decompress_buffer       == 0x176
-imageMaxSize             = 0x14A0
-buffer_end_img = decompress_buffer + imageMaxSize - 1
-
 ;==========================================================;
 ;   Disable firmware to avoid configuration override
 ;   Load custom palette
@@ -26,10 +20,6 @@ buffer_end_img = decompress_buffer + imageMaxSize - 1
     call cpct_disableFirmware_asm
     ld    c, #0
     call cpct_setVideoMode_asm
-
-    ld hl, #_g_palette
-    ld de, #16
-    call cpct_setPalette_asm
 
     ;; Clean 16K: 0x8000 -> 0xC000
     ld  hl,  #0x8000
@@ -99,16 +89,16 @@ _main::
     call cpct_akp_SFXInit_asm
 
     menu::
+    call loadMenu
 
-    ld hl, #_titleScreen_end
-    ld de, #buffer_end_img
-    call cpct_zx7b_decrunch_s_asm
-
+    ld hl, #2340
     loop_load::
         call cpct_nextRandom_mxor_u8_asm
+        push hl
         call load_control
-        jr loop_load
-        map_start::
+        pop hl
+    jr loop_load
+    map_start::
 
         call recalculateCameraOffset
         call drawHud

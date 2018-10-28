@@ -38,8 +38,29 @@
 #$(eval $(call ADD2PACK,mygraphics,gfx/background.bin))
 #$(eval $(call PACKZX7B,mygraphics,src/))
 
-$(eval $(call ADD2PACK,titleScreen,src/Sprites/PRESSA2.bin))
-$(eval $(call PACKZX7B,titleScreen,src/Compression/))
+$(eval $(call ADD2PACK,Menu_1,src/Sprites/Menu_1.bin))
+$(eval $(call PACKZX7B,Menu_1,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_2,src/Sprites/Menu_2.bin))
+$(eval $(call PACKZX7B,Menu_2,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_3,src/Sprites/Menu_3.bin))
+$(eval $(call PACKZX7B,Menu_3,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_4,src/Sprites/Menu_4.bin))
+$(eval $(call PACKZX7B,Menu_4,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_5,src/Sprites/Menu_5.bin))
+$(eval $(call PACKZX7B,Menu_5,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_6,src/Sprites/Menu_6.bin))
+$(eval $(call PACKZX7B,Menu_6,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_7,src/Sprites/Menu_7.bin))
+$(eval $(call PACKZX7B,Menu_7,src/Compression/))
+
+$(eval $(call ADD2PACK,Menu_8,src/Sprites/Menu_8.bin))
+$(eval $(call PACKZX7B,Menu_8,src/Compression/))
 
 # El jud
 $(eval $(call ADD2PACK,hud,src/Mapas/hud.bin))

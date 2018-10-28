@@ -43,7 +43,7 @@
 
 PALETTE			=0 1 2 3 4 5 8 15 6 7 16 9 20 24 12 26
 # PALETTE_HERO	=0 1 2 3 4 6 8 15 6 7 16 18 20 24 25 26
-PALETTEMENU		=0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26
+PALETTEMENU		=0 1 2 3 6 7 9 10 12 13 15 16 17 24 25 26
 
 $(eval $(call IMG2SP, SET_MODE        , 0                  ))
 $(eval $(call IMG2SP, SET_FOLDER      , src/Sprites        ))
@@ -60,6 +60,7 @@ $(eval $(call IMG2SP, SET_IMG_FORMAT  , zgtiles            ))
 #(eval $(call IMG2SP, SET_OUTPUT      , c                  ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)         ))
 $(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTE), g_palette ))
+$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTEMENU), g_palette_menu ))
 #$(eval $(call IMG2SP, CONVERT_PALETTE , $(PALETTEALT), g2_palette ))
 $(eval $(call IMG2SP, CONVERT         , assets/World1/Tileset.png, 8, 8, g, ))
 
@@ -67,7 +68,14 @@ $(eval $(call IMG2SP, CONVERT         , assets/World1/Tileset.png, 8, 8, g, ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTEMENU)     ))
 $(eval $(call IMG2SP, SET_IMG_FORMAT  , sprites            ))
 $(eval $(call IMG2SP, SET_OUTPUT      , bin                ))
-$(eval $(call IMG2SP, CONVERT         , assets/PRESSA2.png, 80, 66,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_1.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_2.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_3.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_4.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_5.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_6.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_7.png, 40, 91,t, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Menu_8.png, 40, 91,t, ))
 #$(eval $(call IMG2SPRITES,assets/PRESSA2.png,0,m,80,66,$(PALETTEMENU),,src/Sprites))
 
 
