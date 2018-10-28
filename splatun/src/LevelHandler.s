@@ -27,6 +27,13 @@ level_list:
     .dw #_level1_end
     .dw #_level2_end
     .dw #_level3_end
+    .dw #_level4_end
+    .dw #_level5_end
+    .dw #_level6_end
+    .dw #_level7_end
+    .dw #_level8_end
+    .dw #_level9_end
+    .dw #_level10_end
 
 ;   Public
 ;=================================

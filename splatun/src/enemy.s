@@ -853,6 +853,11 @@ get_enemy_size::
       ld a, #K_HERO_LIVES
       ld (HERO_LIVES), a
 
+      ;; Reset de la info del nivel
+      ld a, #0
+      ld (number_decenas), a
+      ld (number_unidades), a
+
       ;call initEnemies
       ld sp, #0x8000
       jp menu
