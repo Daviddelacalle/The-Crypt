@@ -86,7 +86,7 @@ dw_draw::
    ld hl, #CoordMapMin
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
    sub (hl)
-   cp #61   ;
+   cp #60   ;
    ret nc
 
    add #OFFSET_CAMERA_POS_X_PANT
@@ -95,7 +95,7 @@ dw_draw::
    ld hl, #CoordMapMin+1
    ld a, e_y(ix)                        ;; Repito para Y
    sub (hl)
-   cp #116  ;; -8
+   cp #120  ;; -8
    ret nc
 
    add #OFFSET_CAMERA_POS_Y_PANT

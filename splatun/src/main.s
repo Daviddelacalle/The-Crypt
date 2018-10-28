@@ -115,7 +115,7 @@ _main::
         jr loop_load
         map_start::
 
-        call resetCamera
+        call recalculateCameraOffset
         call drawHud
         call dw_drawHearts
         ;; Cambio buffers y dibujo lo mismo

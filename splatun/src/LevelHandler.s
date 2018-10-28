@@ -109,8 +109,8 @@ loadCurrentLevel:
     call cpct_zx7b_decrunch_s_asm
 
     call resetHero
-    call resetCamera        ;; Importante que este método vaya justo después
-                            ;; de resetHero, por IX, y ahorrar un par de bytes
+    call recalculateCameraOffset        ;; Importante que este método vaya justo después
+                                        ;; de resetHero, por IX, y ahorrar un par de bytes
     ld a, #0
     ld (SpawnOffset), a
     call initEnemies
@@ -121,6 +121,12 @@ loadCurrentLevel:
     call dw_drawLevelInfo
     call swapBuffers
 
+    ld    a, (HERO_LIVES)
+    inc   a
+    cp #K_HERO_LIVES+1
+    ret nc
+    ld (HERO_LIVES), a
+    call HEARTS_UPDATE
 ret
 
 ;;  ---

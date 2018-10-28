@@ -817,15 +817,14 @@ get_enemy_size::
         cp #0
         ret z
 
-      ld     b, e_y(ix)
-      ld     c, e_x(ix)
-      call hero_get_iy
+        ld     b, e_y(ix)
+        ld     c, e_x(ix)
+        call hero_get_iy
 
 
-      call checkEntityCollision
-      cp #0
-      jr z, noCol
-
+        call checkEntityCollision
+        cp #0
+        jr z, noCol
 
       ;; Compruebo las vidas del heroe
       ;; y si son 0 se reinicia la partida entera
@@ -837,15 +836,16 @@ get_enemy_size::
       jr z, game_reset
           ;; Mato al enemigo y decremento el contador de enemigos
           call hero_death_sfx
-          ld a, (NumberOfEnemies)
-          dec a
-          ld (NumberOfEnemies), a
-          ld en_alv(ix), #0
-          ;; Actualizo corasones
-          call dw_drawHearts
-          call swapBuffers
-          call dw_drawHearts
-          call swapBuffers
+          push iy
+          push ix
+          pop iy
+          pop ix
+          call handleEnemyDeath
+          push iy
+          push ix
+          pop iy
+          pop ix
+          call HEARTS_UPDATE
           ret
       game_reset:
 
@@ -863,3 +863,4 @@ get_enemy_size::
       jp menu
       noCol:
   ret
+

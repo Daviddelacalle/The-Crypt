@@ -378,20 +378,10 @@ bullet_check_death::
     COLLISION::
     call enemy_death_sfx
     call bullet_set_death
-    ld en_alv(iy), #0
 
-    ld a, (NumberOfEnemies)
-    dec a
-    ld (NumberOfEnemies), a
-    cp #0
-    call z, openTeleporter
+    jp handleEnemyDeath
 
-    cp #k_max_enemies
-
-    ret c
-    call spawnEnemies
-
-    ret
+    ;ret
 
     no_colision:
         call get_enemy_size

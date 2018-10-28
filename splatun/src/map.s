@@ -40,7 +40,7 @@ ret
 ;;  Calculate camera offset from hero position
 ;;  DESTROYS:   A, BC, HL, DE
 ;;============================================
-resetCamera::
+recalculateCameraOffset::
     ld hl, #decompress_buffer
     ld de, #30
 
