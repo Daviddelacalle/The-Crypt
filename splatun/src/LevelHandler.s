@@ -10,13 +10,15 @@ MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384
 SpawnPointsSize          = 0xA
+TeleporterSize           = 0x2
 
-levelMaxSize             = 0x391
+levelMaxSize             = 0x393
 
 level_end           == decompress_buffer + levelMaxSize - 1
 NumberOfEnemies     == decompress_buffer + MapSize
 SpawnPoints         == NumberOfEnemies + EnemiesSize
 Teleporter          == SpawnPoints + SpawnPointsSize
+HeroSpawn           == Teleporter + TeleporterSize
 
 SpawnOffset::    .db #0
 
@@ -100,7 +102,8 @@ loadCurrentLevel:
     call cpct_zx7b_decrunch_s_asm
 
     call resetHero
-    call resetCamera
+    call resetCamera        ;; Importante que este método vaya justo después
+                            ;; de resetHero, por IX, y ahorrar un par de bytes
     ld a, #0
     ld (SpawnOffset), a
     call initEnemies

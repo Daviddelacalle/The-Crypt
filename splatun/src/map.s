@@ -4,7 +4,6 @@
 .include "struct.h.s"
 
 cam_min::       .db #0, #0
-cam_max::       .db #16, #16
 CoordMapMin::   .db #0, #0
 
 CameraTargetX:: .db #0
@@ -25,13 +24,7 @@ inc_map::
                             ;; depende de lo que me hayan pasado
     add b                   ;; Le añado B, que será 1 o -1
     ld (hl), a              ;; Lo guardo
-    inc hl
-    inc hl                  ;; Aumento 2 veces el puntero para llegar al max
-    ld a, (hl)              ;; Hago lo mismo
-    add b
-    ld (hl), a              ;; Incremento el min de la camara
-
-    inc hl                  ;; Vuelvo a aumentar 2 para llegar al
+    inc hl                  ;; Aumento 2 veces el puntero para llegar al
     inc hl                  ;; minimo en coordenadas de mapa, no de tile
     ld a, (hl)              ;; A = CoordManMin
     add c                   ;; A += C, donde C será 4 o -4 en X, 8 o -8 en Y
@@ -43,23 +36,64 @@ inc_map::
 
 ret
 
+;;============================================
+;;  Calculate camera offset from hero position
+;;  DESTROYS:   A, BC, HL, DE
+;;============================================
 resetCamera::
+    ld hl, #decompress_buffer
+    ld de, #30
+
+    ld a, e_x(ix)
+    sub #32
+    jr c, setCamMinXToZero
+    jr z, setCamMinXToZero
+    ld b, a
+    ld a, #0        ;; CoordMapMin
+    ld c, #0        ;; cam_min
+    X_iterator:
+        inc c
+        add #4
+        inc hl
+        cp b
+    jr c, X_iterator
+        ld (CoordMapMin), a
+        ld a, c
+        ld (cam_min), a
+    jr calculate_y
+    setCamMinXToZero:
+        ld a, #0
+        ld (CoordMapMin), a
+        ld (cam_min), a
+
+    calculate_y:
+    ld a, e_y(ix)
+    sub #64
+    jr c, setCamMinYToZero
+    jr z, setCamMinYToZero
+    ld b, a
+    ld a, #0        ;; CoordMapMin
+    ld c, #0        ;; cam_min
+    Y_iterator:
+        inc c
+        add #8
+        add hl, de
+        cp b
+    jr c, Y_iterator
+        ld (CoordMapMin+1), a
+        ld a, c
+        ld (cam_min+1), a
+    jr finish
+    setCamMinYToZero:
+        ld a, #0
+        ld (CoordMapMin+1), a
+        ld (cam_min+1), a
+    finish:
+    ld (map_ptr), hl
+
     ld a, #0
-    ld (cam_min),   a
-    ld (cam_min+1), a
-
-    ld (CoordMapMin), a
-    ld (CoordMapMin+1), a
-
     ld (CameraTargetX), a
     ld (CameraTargetY), a
-
-    ld a, #16
-    ld (cam_max),   a
-    ld (cam_max+1), a
-
-    ld hl, #decompress_buffer
-    ld (map_ptr), hl
 ret
 
 ;;  ENTRADA:    B -> Incremento molon de camara
@@ -206,6 +240,6 @@ drawHud::
     ld a, (back_buffer)
     ld h, a
     ld l, #0
-    ld de, (map_ptr)
+    ld de, #decompress_buffer
     call cpct_etm_drawTilemap4x8_ag_asm
 ret

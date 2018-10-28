@@ -95,7 +95,7 @@ dw_draw::
    ld hl, #CoordMapMin+1
    ld a, e_y(ix)                        ;; Repito para Y
    sub (hl)
-   cp #112  ;; -8
+   cp #116  ;; -8
    ret nc
 
    add #OFFSET_CAMERA_POS_Y_PANT

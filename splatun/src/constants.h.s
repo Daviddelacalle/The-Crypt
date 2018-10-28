@@ -13,9 +13,9 @@ ScreenSizeX = 16*4
 ScreenSizeY = 16*8
 ;;X = Width * 4 / 4 <~ Múltiplo de 4
 ;;Y = Height * 8 / 4 <~ Múltiplo de 6
-LEFT    == 20
+LEFT    == 18
 RIGHT   == ScreenSizeX-LEFT
-TOP     == 48
+TOP     == 44
 BOTTOM  == ScreenSizeY-TOP
 
 MAP_WIDTH == 30

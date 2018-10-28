@@ -248,9 +248,13 @@ checkTeleporter::
 ret
 
 resetHero::
+    ld hl, #HeroSpawn
     ld ix, #hero
-    ld e_x(ix), #INIT_X
-    ld e_y(ix), #INIT_Y
+    ld a, (hl)
+    ld e_x(ix), a
+    inc hl
+    ld a, (hl)
+    ld e_y(ix), a
     ; ld a, #K_HERO_LIVES
     ; ld (HERO_LIVES), a
 ret

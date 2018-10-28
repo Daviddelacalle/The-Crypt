@@ -50,6 +50,7 @@ $(eval $(call ADD2PACK,level1,src/Mapas/Level1.bin))
 $(eval $(call ADD2PACK,level1,assets/World1/Level1/Enemies.bin))
 $(eval $(call ADD2PACK,level1,assets/World1/Level1/Spawns.bin))
 $(eval $(call ADD2PACK,level1,assets/World1/Level1/Teleporter.bin))
+$(eval $(call ADD2PACK,level1,assets/World1/Level1/HeroSpawn.bin))
 $(eval $(call PACKZX7B,level1,src/Compression/))
 
 # Mundo 1 - Nivel 2
@@ -57,6 +58,7 @@ $(eval $(call ADD2PACK,level2,src/Mapas/Level2.bin))
 $(eval $(call ADD2PACK,level2,assets/World1/Level2/Enemies.bin))
 $(eval $(call ADD2PACK,level2,assets/World1/Level2/Spawns.bin))
 $(eval $(call ADD2PACK,level2,assets/World1/Level2/Teleporter.bin))
+$(eval $(call ADD2PACK,level2,assets/World1/Level2/HeroSpawn.bin))
 $(eval $(call PACKZX7B,level2,src/Compression/))
 
 # Mundo 1 - Nivel 3
@@ -64,6 +66,7 @@ $(eval $(call ADD2PACK,level3,src/Mapas/Level3.bin))
 $(eval $(call ADD2PACK,level3,assets/World1/Level3/Enemies.bin))
 $(eval $(call ADD2PACK,level3,assets/World1/Level3/Spawns.bin))
 $(eval $(call ADD2PACK,level3,assets/World1/Level3/Teleporter.bin))
+$(eval $(call ADD2PACK,level3,assets/World1/Level3/HeroSpawn.bin))
 $(eval $(call PACKZX7B,level3,src/Compression/))
 
 
