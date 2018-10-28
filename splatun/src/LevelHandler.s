@@ -43,7 +43,6 @@ loadLevel1::
 ;;  DESTROYS: A, B, DE, HL
 ;;========================================================
 loadNextLevel::
-
     call displayLoadingScreen
 
     ld a, (current_level)
@@ -55,6 +54,30 @@ loadNextLevel::
 
 ;   Private
 ;=================================
+
+;; AUMENTA EL NUMERO DE NIVEL: 1,2,3,4,...
+;; ¡¡¡Y LAS DECENAS!!!
+;; SE UTILIZAN A LA HORA DE DIBUJAR EL JUD
+updateLevelNumber:
+    ;; Primero actualizo unidades
+    ld a, (number_unidades)
+    inc a
+    ld (number_unidades), a
+
+    ;; Ahora las decenas en el caso que
+    ;; las unidades lleguen a 10
+    cp #10
+    ret nz
+        ;; Actualizo las decenas
+        ld  a, (number_decenas)
+        inc a
+        ld (number_decenas), a
+
+        ;;Pongo a 0 las unidades
+        ld a, #0
+        ld (number_unidades), a
+    ret
+
 
 ;;  ---
 ;;  Loads the level that current_level adding the offset
@@ -81,6 +104,12 @@ loadCurrentLevel:
     ld a, #0
     ld (SpawnOffset), a
     call initEnemies
+
+    call updateLevelNumber
+    call dw_drawLevelInfo
+    call swapBuffers
+    call dw_drawLevelInfo
+    call swapBuffers
 
 ret
 

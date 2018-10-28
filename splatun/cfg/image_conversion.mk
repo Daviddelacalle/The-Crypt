@@ -51,6 +51,7 @@ $(eval $(call IMG2SP, SET_IMG_FORMAT  , sprites            ))
 $(eval $(call IMG2SP, SET_PALETTE_FW  , $(PALETTE)    ))
 $(eval $(call IMG2SP, CONVERT         , assets/Sprites/p1.png, 8, 8, sp_hero, ))
 $(eval $(call IMG2SP, CONVERT         , assets/Sprites/mage_shot.png, 4, 4, sp_shot, ))
+$(eval $(call IMG2SP, CONVERT         , assets/Sprites/font_levels.png, 8, 8, sp_font_levels, ))
 
 
 $(eval $(call IMG2SP, SET_MODE        , 0                  ))
