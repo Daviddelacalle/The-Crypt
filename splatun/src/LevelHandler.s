@@ -60,7 +60,7 @@ loadNextLevel::
 ;;  Loads the level that current_level adding the offset
 ;;  DESTROYS: A, B, DE, HL
 ;;========================================================
-loadCurrentLevel::
+loadCurrentLevel:
     ld d, #0            ;; Cargo en DE el offset
     ld e, a
     ld hl, #level_list  ;; HL apunta al inicio de la lista de mapas

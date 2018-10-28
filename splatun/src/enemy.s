@@ -21,7 +21,7 @@ k_max_enemies == 4
 ;; ALTO:    0 - ~100 -> COMO ESTAMOS EN MODO 0, SE CONSIGUE LA MITAD DE RESOLUCION EN Y
 x_range = 29
 y_range = 29
-var_r_max   = 6
+var_r_max   = 48
 var_r_min   = 0
 vector_init:                  ;; Etiqueta de inicio del vector                       Bresenham
 ;DefineNEnemies enemy, k_max_enemies                                                 |
@@ -35,7 +35,7 @@ vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 flag_move:     .db #5        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
 ptr_map:       .dw #decompress_buffer   ;; Puntero al array de id de tiles que forman el mapa
 
-k_update_count = 5
+k_update_count = 2
 update_count:  .db #k_update_count        ;; Limita el update a cada k_update_count frames
 
 ;;======================================================================
@@ -59,7 +59,7 @@ enemy_draw_ALL::
     jp enemy_search
 
 enemy_call_draw:
-   ld a, #0xAA
+
    jp dw_draw
 
 initEnemies::
@@ -250,10 +250,10 @@ enemy_randomGoal:
    ld    en_dY_l(ix), a          ;; Guardo el valor para despues
    ;cp    #200                   ;; |
    jr c, vy_neg                  ;; Si C==0 la distancia es negativa -> COMPROBAR EN EJECUCION
-      ld    en_vy(ix), #1        ;; VY =  1
+      ld    en_vy(ix), #4        ;; VY =  1
       jr continua_fin
    vy_neg:
-      ld    en_vy(ix), #-1       ;; VY = -1
+      ld    en_vy(ix), #-4       ;; VY = -1
       neg
       ld en_dY_l(ix), a          ;; Lo guardo de nuevo
       ld    a,    #0x00          ;; | A = 0xFF
@@ -461,13 +461,13 @@ enemy_checkGoal:
    ;; Se sobreentiende que W es arriba y así todas las demás
    ;; -------------------------------------------------------
    ld a, en_vy(ix)
-   cp #-1
+   cp #-4
    jr nz, en_changeSprite_S
         ;; W PULSADA
         ld hl, #_sp_hero_08
         jr en_changeSprite_X
    en_changeSprite_S:
-   cp #1
+   cp #4
    jr nz, en_changeSprite_X
         ;; S PULSADA
         ld hl, #_sp_hero_11
@@ -493,7 +493,31 @@ enemy_checkGoal:
    ;; a la que se va a mover NO ES UN OBSTACULO
    ;; - OBSTACULO = EL BIT MAS SIGNIFICATIVO ES 0 (por ahora)
 
-   call checkTileCollision
+    ld a, en_vy(ix)
+    cp #4
+    ld a, en_y(ix)
+    jr z, goindDown
+        add en_vy(ix)
+        jr procced_x
+    goindDown:
+        add en_h(ix)
+        dec a
+        add en_vy(ix)
+    procced_x:
+    ld h, a
+
+    ld a, en_vx(ix)
+    cp #1
+    ld a, en_x(ix)
+    jr z, goingRight
+        add en_vx(ix)
+        jr proceed_y
+    goingRight:
+        add en_w(ix)
+        dec a
+    proceed_y:
+    ld l, a
+   call checkTileCollision_m
    jr nz, no_colision       ;; SI EL BIT 3 ES 1 -> HAY COLISION
       ld en_vx(ix),  #0          ;; Pongo a 0 -> RESET
       ld en_vy(ix),  #0          ;; Pongo a 0 -> RESET
@@ -701,26 +725,15 @@ enemy_heroInRadius:
    ;;          A = X
    ;;          B = Y
    call hero_get_position
-
-   ;; ==============================================================================
-   ;; Paso las coordenadas del heroe
-   ;;     a coordenadas de tile
-   ;;          L = X
-   ;;          H = Y
-   ld    l,    a
-   ld    a,    b
-   ld    h,    a
-   call mapa_a_tile
    ;; Ahora tengo las coordenadas
    ;;     del heroe en tiles
-   ;;          C = X
+   ;;          A = X
    ;;          B = Y
    ;; ==============================================================================
 
    ;; ==============================================================================
    ;; Comparo las posiciones de X
    ;; y consigo la distancia en el eje X
-   ld    a,    c
    sub   en_x(ix)
    jr nc, hIR_x_positive
       neg
@@ -728,7 +741,7 @@ enemy_heroInRadius:
 
    ;; Aplico el rango que se elija
    ;;       RANGE = 4
-   cp    #5
+   cp    #16
    jr    nc, hIR_end
       jr hIR_check_y
    ;; ==============================================================================
@@ -745,7 +758,7 @@ enemy_heroInRadius:
 
    ;; Aplico el rango que se elija
    ;;       RANGE = 6
-   cp    #7
+   cp    #48
    jr    nc, hIR_end
       jr hIR_doThings
       ;; ==============================================================================
@@ -772,10 +785,7 @@ enemy_heroInRadius:
    ;;     a coordenadas de tile
    ;;          L = X
    ;;          H = Y
-   ld    l,    a
-   ld    a,    b
-   ld    h,    a
-   call mapa_a_tile
+   ld c, a
 
    ;; Libero el registro del
    ;; contenido de la pila
@@ -795,58 +805,27 @@ enemy_load::
    ret
 
 get_enemy_size::
-   ld a, #enemy_size
-   ret
+    ld a, #enemy_size
+    ret
 
-   kill::
-       ld a, (NumberOfEnemies)
-       cp #0
-       ret z
+    kill::
+        ld a, (NumberOfEnemies)
+        cp #0
+        ret z
 
-       ld a, en_alv(ix)
-       cp #0
-       ret z
+        ld a, en_alv(ix)
+        cp #0
+        ret z
 
-      ld     h, e_y(ix)
-      ld     l, e_x(ix)
-      call tile_a_mapa
+      ld     b, e_y(ix)
+      ld     c, e_x(ix)
       call hero_get_iy
 
-      ld hl, #CoordMapMin
-      ld a, e_x(iy)
-      sub (hl)
-      ld d,a
-      ld a, c
-      add a,#4
-      dec a
-      cp a, d
-      jp c, noCol
 
-      ld hl, #CoordMapMin
-      ld a, e_x(iy)
-      sub (hl)
-      add a,#4
-      dec a
-      cp a,c
-      jp c, noCol
+      call checkEntityCollision
+      cp #0
+      jr z, noCol
 
-      ld hl, #CoordMapMin+1
-      ld a, e_y(iy)
-      sub (hl)
-      ld d, a
-      ld a, b
-      add a,#8
-      dec a
-      cp a, d
-      jp c, noCol
-
-      ld hl, #CoordMapMin+1
-      ld a, e_y(iy)
-      sub (hl)
-      add a,#8
-      dec a
-      cp a, b
-      jp c, noCol
 
       ;; Compruebo las vidas del heroe
       ;; y si son 0 se reinicia la partida entera

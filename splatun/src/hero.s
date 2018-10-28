@@ -75,14 +75,8 @@ hero_update::
             ld e_spr_l(ix), l
             ld e_spr_h(ix), h
 
-            call getUpperLeftCorner
-            dec l
-            call check_colision
-            cp #1
-            jr z, d_no_pulsada
-            call getLowerLeftCorner
-            dec l
-            call check_colision
+            ld b, #-1                       ;Speed
+            call checkLeftBorderForTilemapCollision
             cp #1
             jr z, d_no_pulsada
 
@@ -118,15 +112,8 @@ hero_update::
                 ld e_spr_l(ix), l
                 ld e_spr_h(ix), h
 
-                call getUpperRightCorner    ;; Obtengo la esquina superior derecha del personaje L = X
-                inc l                       ;; Incremento 1 la X, para comprobar si en el siguiente frame chocamos
-                call check_colision
-                cp #1
-                jr z, d_no_pulsada
-
-                call getLowerRightCorner    ;; Repeat
-                inc l
-                call check_colision
+                ld b, #1                        ;Speed
+                call checkRightBorderForTilemapCollision
                 cp #1
                 jr z, d_no_pulsada
 
@@ -162,19 +149,8 @@ hero_update::
                 ld e_spr_l(ix), l
                 ld e_spr_h(ix), h
 
-                ld d, #-4
-                ld e, #0
-                call getUpperRightCorner
-                    add hl, de
-                call check_colision
-                cp #1
-                jr z, s_no_pulsada
-
-                ld d, #-4
-                ld e, #0
-                call getUpperLeftCorner
-                    add hl, de
-                call check_colision
+                ld b, #-4                       ;Speed
+                call checkUpperBorderForTilemapCollision
                 cp #1
                 jr z, s_no_pulsada
 
@@ -209,19 +185,8 @@ hero_update::
                 ld e_spr_l(ix), l
                 ld e_spr_h(ix), h
 
-                ld d, #4
-                ld e, #0
-                call getLowerLeftCorner
-                    add hl, de
-                call check_colision
-                cp #1
-                jr z, s_no_pulsada
-
-                ld d, #4
-                ld e, #0
-                call getLowerRightCorner
-                    add hl, de
-                call check_colision
+                ld b, #4                       ;Speed
+                call checkLowerBorderForTilemapCollision
                 cp #1
                 jr z, s_no_pulsada
 
@@ -248,10 +213,10 @@ hero_update::
 ;; DESTRUYE: A, B
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 hero_get_position::
-   ld    a,    (hero_y)
-   ld    b,    a
-   ld    a,    (hero_x)
-   ret
+    ld    a,    (hero_y)
+    ld    b,    a
+    ld    a,    (hero_x)
+ret
 
 ;;======================================================================
 ;;======================================================================
@@ -260,44 +225,7 @@ hero_get_position::
 ;;======================================================================
 
 
-getUpperRightCorner:
-    ld a, e_x(ix)       ;; Si mi personaje está en X = 0
-        add e_w(ix)     ;; y le sumo el ancho que es 8, X = 8
-        dec a           ;; que es el inicio del siguiente tile
-    ld l, a             ;; por eso le resto 1, el border derecho
-    ld h, e_y(ix)       ;; seria 7 realmente, [0, 7]
-ret
 
-getLowerRightCorner:
-    ld a, e_x(ix)
-        add e_w(ix)
-        dec a
-    ld l, a
-    ld a, e_y(ix)
-        add e_h(ix)
-        dec a
-    ld h, a
-ret
-
-getUpperLeftCorner:
-    ld l, e_x(ix)
-    ld h, e_y(ix)
-ret
-
-getLowerLeftCorner:
-    ld l, e_x(ix)
-    ld a, e_y(ix)
-        add e_h(ix)
-        dec a
-    ld h, a
-ret
-
-check_colision::
-    call    checkTileCollision_m
-    ld a, #1
-    ret z
-    ld a, #0
-ret
 
 checkTeleporter::
     ld a, (NumberOfEnemies)

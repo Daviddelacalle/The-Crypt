@@ -363,63 +363,16 @@ bullet_check_death::
     call enemy_load
     loop_bullet:
     ld a, 0(iy)
-      cp #0xFF
-      ret z
+        cp #0xFF
+        ret z
 
-    ld     h, e_y(iy)
-    ld     l, e_x(iy)
-    call tile_a_mapa
+    ld a, en_alv(iy)
+    cp #0
+    jr z, no_colision
 
-    ;; B = Coordenadas de mapa en Y, esquina superior izq del tile
-    ;; C = Coordenadas de mapa en X, esquina superior izq del tile
-    ld hl, #CoordMapMin
-    ld a, b_x(ix)           ;; Cordenada X de la bala - el offset en X de la cámara
-    sub (hl)
-    ld d, a                 ;; D = X del borde izquierdo de la bala
-
-    ld a, c                 ;; A = X del borde izquierdo del enemigo
-    add e_w(iy)             ;; A = X del borde derecho del enemigo
-
-    cp d                    ;; Comprobamos si el borde izquierdo de la bala
-                            ;; está a la derecha del borde derecho del enemigo
-
-    jr nc, checkLeftBorder  ;; No lo está, comprueba la izq
-    jr no_colision          ;; Si lo está, no hay colisión
-
-    checkLeftBorder:
-        ld a, d             ;; A = X del borde izquierdo de la bala
-        add b_w(ix)         ;; A = X del borde derecho de la bala
-        ld d, a             ;; D = X del borde derecho de la bala
-        ld a, c             ;; A = X del borde izquiedo del enemigo
-
-        cp d                ;; Comprobamos si el borde derecho de la bala, está
-                            ;; a la derecha del borde izq del enemigo
-    jr nc, no_colision
-
-    ; Hay colision en X, comprobemos en Y
-    ld hl, #CoordMapMin+1
-    ld a, b_y(ix)           ;; Coordenada Y de la bala - offset en Y de la cámara
-    sub (hl)
-    ld d, a                 ;; D = Y del borde superior de la bala
-
-    ld a, b                 ;; A = Y del borde superior del enemigo
-    add e_h(iy)             ;; A = Y del borde inferior del enemigo
-
-    cp d                    ;; Compruebo si el borde superior de la bala está
-                            ;; por debajo del borde inferior del enemigo
-
-    jr nc, checkTopBorder   ;; No está por debajo, comprueba la parte de arriba
-    jr no_colision          ;; Si lo está, no hay colisión
-
-    checkTopBorder:
-        ld a, d             ;; A = Y del borde superior de la bala
-        add b_h(ix)         ;; A = Y del borde inferior de la bala
-        ld d, a             ;; D = Y del borde inferior de la bala
-        ld a, b             ;; A = Y del borde superior del enemigo
-
-        cp d                ;; Comprobamos si el borde inferior de la bala está
-                            ;; por encima del borde superior del enemigo
-    jr nc, no_colision
+    call checkEntityCollision
+    cp #0
+    jr z, no_colision
 
     ; COLISION
     COLLISION::

@@ -51,60 +51,10 @@ swapBuffers::
 dw_draw::
    ;; Funcion dibujado de las entidades que cuelgan de drawable.s
 
-   ;; Si A == AA -> LAS COORDENADAS DEL OBJETO AL QUE APUNTA IX ESTAN EN TILES
-   ;; Si lo es, entonces -> pasar a coordenadas de MAPA y ver si hay que dibujarlo
-
-   ;; Primero se checkea si A == AA
-   cp    #0xAA
-   jr nz, normal_dro
-
-   ;; Si llega aqui significa que esta dentro de los limites
-   ;; Corregir offset de la camara
-      ;; HAY QUE COGER UNAS COORDENADAS RELATIVAS A LA POSICION DE LA CAMARA
-      ;; SINO SIEMPRE LA CAMARA ESTARA EN min(0,0) Y max(20,20)
-   ld a, e_x(ix)
-   ld b, a
-   ld a, e_y(ix)
-   ld c, a
-
-   call checkViewport
-   cp #0
-   ret z
-   ;; Cargar las coordenadas en HL
-   ld l, e_x(ix)           ;; L = X
-   ld h, e_y(ix)           ;; H = Y
-
-   ;; ============================================================== ;;
-   ;;                  SOBRE EL OFFSET DE LA CAMARA                  ;;
-   ;; ______________________________________________________________ ;;
-   ;; La camara empieza con el borde arriba-izquierda a (0,0)        ;;
-   ;; Si la camara es movida una vez hacia la derecha                ;;
-   ;; entonces el offset offset sube a (1,1).                        ;;
-   ;; - La posicion de comprobación de coordenadas se hace con esto  ;;
-   ;; - Hay que restarle este offset a las posiciones en tiles       ;;
-   ;;   de la entidad que se le pase en IX                           ;;
-   ;; ============================================================== ;;
-
-   ;; HAY QUE COMENTAR CABRONES!! @dani @dd
-
-   call tile_a_mapa     ;; INFO COMPLETA EN LA FUNCION
-   ld a, b
-   add   #OFFSET_CAMERA_POS_Y_PANT
-   ld b, a
-
-   ld a, c
-   add   #OFFSET_CAMERA_POS_X_PANT
-   ld c, a
-
-   jr sigue_con_el_dro
-   normal_dro:
-
-   ;; Aqui solo entra si las coordenadas de la entidad IX NO ESTAN EN TILES
-
    ld hl, #CoordMapMin
    ld a, e_x(ix)                        ;; Consigue la posicion del jugador
    sub (hl)
-   cp #62   ;
+   cp #61   ;
    ret nc
 
    add #OFFSET_CAMERA_POS_X_PANT
@@ -113,14 +63,11 @@ dw_draw::
    ld hl, #CoordMapMin+1
    ld a, e_y(ix)                        ;; Repito para Y
    sub (hl)
-   cp #120  ;; -8
+   cp #112  ;; -8
    ret nc
 
    add #OFFSET_CAMERA_POS_Y_PANT
    ld     b,   a                        ;; y  [0-199]
-
-
-   sigue_con_el_dro:
 
    ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
    ld d, a
@@ -143,51 +90,6 @@ ret
 ;;======================================================================
 ;;======================================================================
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PASA LAS COORDENADAS DE TILE A COORDENADAS DE MAPA
-;; __________________________________________________
-;; ENTRADA:    L -> Coordenada de TILE en X
-;;             H -> Coordenada de TILE en Y
-;; SALIDA:     C -> Coordenada de MAPA en X
-;;             B -> Coordenada de MAPA en Y
-;; DESTRUYE:   A,D,BC
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-tile_a_mapa::
-   ld a, (cam_min)
-   neg                  ;; Tengo el negativo de A
-   add   l
-   ld    l,    a        ;; L tiene la coordenada X corregida
-
-   ;; Hay offset en Y?
-   ld a, (cam_min+1)
-   neg                  ;; Tengo el negativo de A
-   add   h
-   ld    h,    a        ;; H tiene la coordenada Y corregida
-
-   ;; Paso Y
-   ld    a,    h           ;; A = Y
-   ld    c,    #7          ;; Iteraciones del loop
-   ld    d,    a           ;; D = Y
-   loop_y_tm:
-      add a, d          ;; A = A + D = A + A_inicial
-      dec c             ;; C--
-   jr nz, loop_y_tm
-
-   ;add   #OFFSET_CAMERA_POS_Y_PANT
-   ld b, a              ;; En B guardo la Y
-
-   ;; Paso X
-   ld    a, l                    ;; ======================= ;;
-   ld    c, #3                   ;;                         ;;
-   ld    d, a                    ;; Hago lo mismo que antes ;;
-   loop_x_tm:                    ;;      pero con la X      ;;
-      add a, d                   ;;                         ;;
-      dec c                      ;; ======================= ;;
-   jr nz, loop_x_tm
-
-   ;add   #OFFSET_CAMERA_POS_X_PANT
-   ld c, a              ;; En C guardo la X
-   ret
 
 ;; Misma ejecucion que tile_a_mapa
 mapa_a_tile::
@@ -235,15 +137,21 @@ mapa_a_tile::
 ;===============================================
 checkViewport::
     ;; OPERACIONES EN COORDENADAS DE TILES, NO EN COORDENADAS DE MAPA
-    ld    hl, (cam_max)
-    ex    de, hl            ;; E = X, D = Y -> Coordenadas maximas
-    ld    hl, (cam_min)     ;; L = X, H = Y -> Coordenadas minimas
+    ld a, (CoordMapMin)
+    ld l, a
+    add #64
+    ld e, a
 
     ld a, b
     cp    l                 ;; Ver si X es mayor que la coordenada X minima
     jr    c, is_outside     ;; Si A > x_min <----> C = 0
     cp    e                 ;; Ver si X es menor que la coordenada X maxima
     jr   nc, is_outside        ;; Si A < x_max <----> C = 1
+
+    ld a, (CoordMapMin+1)
+    ld h, a
+    add #128
+    ld d, a
 
     ld    a, c              ;; A = enemy_y
     cp    h                 ;; Ver si X es mayor que la coordenada Y minima
