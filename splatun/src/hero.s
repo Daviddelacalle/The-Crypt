@@ -225,11 +225,9 @@ ret
 ;;======================================================================
 
 
-
-
 checkTeleporter::
     ld a, (NumberOfEnemies)
-    cp #0
+        cp #0
     ret nz
 
     ld h, e_y(ix)
@@ -237,13 +235,14 @@ checkTeleporter::
     call mapa_a_tile
 
     ld a, (Teleporter)
-    cp c
+        cp c
     ret nz
     ld a, (Teleporter+1)
-    cp b
+        cp b
     ret nz
     push ix
-    call loadNextLevel
+        call teleport_sfx
+        call loadNextLevel
     pop ix
 ret
 
@@ -263,3 +262,28 @@ hero_get_iy::
   ld iy, #hero
 ret
 
+teleport_sfx::
+    ;SALVO TODOS LOS REGISTROS PARA NO SOBREESRIBIR NADA
+
+    push ix
+    push af
+    push bc
+    push de
+    push hl
+    push iy
+    ld l, #2  ;INSRUMENTO
+    ld h, #15  ;VOLUMEN
+    ld e, #22 ;NOTA
+    ld d, #05   ;VELOCIDAD
+    ld bc, #0  ;PITCH
+    ld a, #2   ;CANAL
+    call cpct_akp_SFXPlay_asm
+
+    pop iy
+    pop hl
+    pop de
+    pop bc
+    pop af
+    pop ix
+
+  ret

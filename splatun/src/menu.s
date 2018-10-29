@@ -19,15 +19,14 @@
 ;; BUCLE PARA EL MENU
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-decompress_buffer       == 0x176
+decompress_buffer       == 0x1DB
 imageMaxSize             = 0x71C
 buffer_end_menu = decompress_buffer + imageMaxSize - 1
 
-setMenuPalette:
-
-ret
 
 loadMenu::
+
+    call clearUpperMenuZone
 
     ld hl, #_Menu_1_end
     call uncompress
@@ -86,15 +85,27 @@ drawMenu:
     call cpct_drawSprite_asm  ;; Inicio del buffer de descompresión ¬
 ret
 
-load_control::
-  call cpct_scanKeyboard_asm     ;; scanear el teclado para ver si hay alguna tecla pulsada
-  ld 		hl, #Key_A 			 ;; Cargamos en el registro HL la tecla que quermos comprobar
-  call cpct_isKeyPressed_asm
-  jp nz, map_start
-ret
 
 
 uncompress:
     ld de, #buffer_end_menu
     call cpct_zx7b_decrunch_s_asm
+ret
+
+clearUpperMenuZone:
+
+    call fillAlternativeBuffer
+    ld hl, #_g_00
+    ld de, #30
+    ld b, #3
+    ld c, #20
+    call cpct_etm_setDrawTilemap4x8_ag_asm
+
+    ld de, #alternative_buffer
+    ld a, (back_buffer)
+    ld h, a
+    ld l, #0x00
+
+    call cpct_etm_drawTilemap4x8_ag_asm
+
 ret

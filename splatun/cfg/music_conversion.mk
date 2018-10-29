@@ -38,11 +38,12 @@
 
 $(eval $(call AKS2DATA, SET_FOLDER   , src/Music ))
 $(eval $(call AKS2DATA, SET_OUTPUTS  , h s  ))
-$(eval $(call AKS2C,src/Music/bso2chan.aks,song_ingame,src/Music/,0x0040))
+$(eval $(call AKS2C,assets/Music/bso2chan.aks,song_ingame,src/Music/,0x0040))
+$(eval $(call AKS2C,assets/Music/Game_overdd.aks,GameOver,src/Music/,0x0175))
 $(eval $(call AKS2DATA, SET_SFXONLY  , yes   ))
 #$(eval $(call AKS2DATA, SET_EXTRAPAR ,      ))
 # Conversion
-$(eval $(call AKS2DATA, CONVERT , src/Music/sfx.aks , sfx , 0x11f ))
+$(eval $(call AKS2DATA, CONVERT , assets/Music/sfx.aks , sfx , 0x11f ))
 
 
 ##

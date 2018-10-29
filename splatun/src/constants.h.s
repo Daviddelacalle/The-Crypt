@@ -1,3 +1,5 @@
+SEED == 2340
+
 K_HERO_LIVES == 5
 
 INIT_X == #12

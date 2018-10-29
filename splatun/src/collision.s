@@ -5,9 +5,10 @@
 ;;  INPUT:  B => Speed
 ;;==================================================
 
-;; 4 Funciones de código automficable, simplemente se
-;; encargan de cambiar que dos bordes comprobar para
-;; reutilizar la misma funcion
+;; 4 self-modifying functions, they simply change which
+;; two borders get, and they change those calls in
+;; "checkBorderForTileMapCollision" so we can reuse the same
+;; function
 
 ; 7C = ld a, h
 ; 7D = ld a, l

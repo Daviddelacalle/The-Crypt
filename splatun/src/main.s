@@ -24,7 +24,7 @@
     ld hl, #_g_palette
     ld de, #16
     call cpct_setPalette_asm
-    
+
     ;; Clean 16K: 0x8000 -> 0xC000
     ld  hl,  #0x8000
     ld (hl), #0
@@ -76,8 +76,6 @@ isr:
 ret
 
 
-
-
 ;; Punto de entrada de la funcion main
 _main::
     ; --> Realocate stack memory <-- ;
@@ -86,39 +84,35 @@ _main::
     init
     ld hl, #isr
     call cpct_setInterruptHandler_asm
-    ld de, #_song_ingame
-    call cpct_akp_musicInit_asm
 
     ld de, #_sfx
     call cpct_akp_SFXInit_asm
 
     menu::
+    ld de, #_song_ingame
+    call cpct_akp_musicInit_asm
     call loadMenu
 
-    ld hl, #2340
-    loop_load::
-        call cpct_nextRandom_mxor_u8_asm
-        push hl
-        call load_control
-        pop hl
-    jr loop_load
+    ld hl, #SEED    ;; SEED
+    ld de, #map_start
+    call waitInput  ;; In util.s
     map_start::
 
         call recalculateCameraOffset
         call drawHud
         call dw_drawHearts
-        ;; Cambio buffers y dibujo lo mismo
+        ;; Switch buffers and draw the same
         call swapBuffers
         call drawHud
         call dw_drawHearts
-        ;; Vuelvo al buffer inicial
+        ;; Back to the original buffer
         call swapBuffers
 
         call resetTilemap
 
-        call loadLevel1       ;; Cargo el nivel 1
+        call loadLevel1       ;; Loads level 1
 
-    ;; Comienza el bucle del juego
+    ;; GAME LOOP
     loop::
 
         ;; DRO

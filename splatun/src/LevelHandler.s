@@ -4,7 +4,7 @@ current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
 
 CLEAR_COLOR     = 0
 
-decompress_buffer        = 0x176
+decompress_buffer        = 0x1DB
 MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384
@@ -19,7 +19,7 @@ SpawnPoints         == NumberOfEnemies + EnemiesSize
 Teleporter          == SpawnPoints + SpawnPointsSize
 HeroSpawn           == Teleporter + TeleporterSize
 
-alternative_buffer = HeroSpawn + 2
+alternative_buffer == HeroSpawn + 2
 
 SpawnOffset::    .db #0
 
@@ -175,7 +175,7 @@ ret
 ;;  Draws a map by columns, from left to right
 ;;  DESTROYS: A, BC, DE, HL
 ;;=========================================================================
-clearPlayableAreaAlt:
+clearPlayableAreaAlt::
 
     ld b, #16
     ld c, #2
@@ -188,7 +188,7 @@ clearPlayableAreaAlt:
         inc a
         ld h, a
         ld l, #0x48
-        map = . + 1
+        map == . + 1
         ld de, #alternative_buffer
         push bc
         call cpct_etm_drawTilemap4x8_ag_asm

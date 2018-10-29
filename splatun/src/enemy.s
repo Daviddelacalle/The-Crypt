@@ -849,18 +849,17 @@ get_enemy_size::
           ret
       game_reset:
 
-      ;; Reinicio las vidas del jugador
-      ld a, #K_HERO_LIVES
-      ld (HERO_LIVES), a
+      call HEARTS_UPDATE
 
       ;; Reset de la info del nivel
       ld a, #0
       ld (number_decenas), a
       ld (number_unidades), a
 
-      ;call initEnemies
       ld sp, #0x8000
-      jp menu
+      call drawGameOver
+      ld de, #menu
+      call waitInput
       noCol:
   ret
 
