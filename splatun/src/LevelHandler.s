@@ -120,8 +120,10 @@ update_nextLevelInfo:
 
     call updateLevelNumber
     call dw_drawLevelInfo
+    call dw_drawAndUpdateHUDEnemies
     call swapBuffers
     call dw_drawLevelInfo
+    call dw_drawAndUpdateHUDEnemies
     call swapBuffers
 
     ld    a, (HERO_LIVES)
