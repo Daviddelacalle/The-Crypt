@@ -28,9 +28,6 @@ setMenuPalette:
 ret
 
 loadMenu::
-    ld hl, #_g_palette_menu
-    ld de, #16
-    call cpct_setPalette_asm
 
     ld hl, #_Menu_1_end
     call uncompress
@@ -72,7 +69,6 @@ loadMenu::
     ld de, #0x2C4C
     call drawMenu
     call swapBuffers
-    call resetPalette
 ret
 
 ;; 0x50 + 0x50 + 0x800 + 0x800 = 0x10A0

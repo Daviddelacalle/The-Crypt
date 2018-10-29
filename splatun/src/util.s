@@ -30,9 +30,3 @@ resetTilemap::
     ld de, #30
     call cpct_etm_setDrawTilemap4x8_ag_asm
 ret
-
-resetPalette::
-    ld hl, #_g_palette
-    ld de, #16
-    call cpct_setPalette_asm
-ret

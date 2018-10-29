@@ -21,6 +21,10 @@
     ld    c, #0
     call cpct_setVideoMode_asm
 
+    ld hl, #_g_palette
+    ld de, #16
+    call cpct_setPalette_asm
+    
     ;; Clean 16K: 0x8000 -> 0xC000
     ld  hl,  #0x8000
     ld (hl), #0
