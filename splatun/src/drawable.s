@@ -22,13 +22,17 @@ back_buffer::       .db 0x80
 
 ptr_spriteHeart:            .dw #_sp_hero_12
 ptr_spriteBlankHeart:       .dw #_sp_hero_13
+ptr_fSpriteEnemy:           .dw #_sp_hero_11
+
+enemies_unidades:   .db #0
+enemies_decenas:   .db #0
 
 ptr_fontLevelInfo:
     .dw #_sp_font_levels_00     ;; L
-    .dw #_sp_font_levels_01     ;; E
-    .dw #_sp_font_levels_02     ;; V
-    .dw #_sp_font_levels_01     ;; E
-    .dw #_sp_font_levels_00     ;; L
+    ; .dw #_sp_font_levels_01     ;; E
+    ; .dw #_sp_font_levels_02     ;; V
+    ; .dw #_sp_font_levels_01     ;; E
+    ; .dw #_sp_font_levels_00     ;; L
 .db #0xFF
 
 ;; Se calcula solo al pasar de nivel
@@ -52,7 +56,8 @@ ptr_FontNumberInfo:
 ;; y de la info del nivel
 HUD_DRAWING_OFFSET      = 1
 HUD_HEARTS_INIT_X       = 10
-HUD_LEVELINFO_INIT_X    = HUD_HEARTS_INIT_X+((4+HUD_DRAWING_OFFSET)*K_HERO_LIVES)
+HUD_LEVELINFO_INIT_X    = HUD_HEARTS_INIT_X+((4+HUD_DRAWING_OFFSET)*K_HERO_LIVES)+20
+HUD_ENEMIES_INIT_X      = HUD_HEARTS_INIT_X+((4+HUD_DRAWING_OFFSET)*K_HERO_LIVES)
 HUD_INIT_Y              = 172
 
 ;;======================================================================
@@ -380,7 +385,8 @@ dw_drawLevelInfo::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PINTA EN PANTALLA EL NUMERO DE LAS DECENAS DE LA INFO DEL NIVEL
 ;; ----------------------------------------------------------------
-;; ENTRADA:     A -> Numero a dibujar 0-9
+;; ENTRADA:     A  -> Numero a dibujar 0-9
+;;              BC -> Direccion X,Y en pantalla
 ;; DESTRUYE:    AF,DE,HL,BC -> EBRIZIN
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 dw_drawNumber:
@@ -429,6 +435,62 @@ dw_drawNumber:
     ld      b,      #8          ;; Alto
     jp cpct_drawSprite_asm
 
+dw_drawAndUpdateHUDEnemies::
+    ;; Cargo en bc la posicion de dibujado
+    ld a, #HUD_ENEMIES_INIT_X
+    ld c, a
+    ld b, #HUD_INIT_Y
+    push bc
 
+    ld      a, (back_buffer)                ;; Apunta al inicio de la memoria de video
+    ld      d, a
+    ld      e, #00
+    call cpct_getScreenPtr_asm
+
+    ex      de,     hl                      ;; Apunta a la posicion x,y
+    ld      hl,     (ptr_fSpriteEnemy)      ;; Apuntar al sprite
+    ld      c,      #4                      ;; Ancho
+    ld      b,      #8                      ;; Alto
+    call cpct_drawSprite_asm
+
+    ;; Aumento la posicion en X
+    pop     bc
+    ld      a, c
+    add     a, #4+HUD_DRAWING_OFFSET
+    ld      c, a
+    push    bc
+
+    ;; Calculo el numero de enemigos
+    ;; En NumberOfEnemies tengo el numero de enemigos total
+    ;;      11 - 10 =  1   -> NO DA CARRY, AUMENTA LAS DECENAS
+    ;;      1  - 10 = -9   -> DA CARRY, 1 SE LE SUMA A LAS UNIDADES
+    ld a, (NumberOfEnemies)
+    ld c, #0        ;; DECENAS
+    enemy_count_loop:
+        cp #10
+        jr c, fin_count_loop
+        sub #10
+        inc c       ;; DECENAS++
+    jr enemy_count_loop
+    fin_count_loop:
+    ld (enemies_unidades), a
+
+    ld a, c
+    ld (enemies_decenas), a
+
+    ;; Guardo en A el numero de las decenas
+    ;; antes de llamar a dw_drawNumber
+    pop     bc
+    push    bc
+    call dw_drawNumber
+
+    pop     bc
+    ld      a, c
+    add     a, #4+HUD_DRAWING_OFFSET
+    ld      c, a
+
+    ld a, (enemies_unidades)
+    call dw_drawNumber
+    ret
 
 

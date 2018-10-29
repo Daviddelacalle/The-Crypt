@@ -17,10 +17,20 @@ handleEnemyDeath::
     cp #0
     call z, openTeleporter
 
+    push af
+
+    call dw_drawAndUpdateHUDEnemies
+    call swapBuffers
+    call dw_drawAndUpdateHUDEnemies
+    call swapBuffers
+
+    pop af
     cp #k_max_enemies
 
-    ret c
+    ret  c
     call spawnEnemies
+
+
 ret
 
 resetTilemap::

@@ -35,7 +35,7 @@ vector_end:    .db #0xFF      ;; Indico 0xFF como fin del vector
 flag_move:     .db #5        ;; Cambia en cada frame [0,1] -> 1 = Se mueve
 ptr_map:       .dw #decompress_buffer   ;; Puntero al array de id de tiles que forman el mapa
 
-k_update_count = 2
+k_update_count = 1
 update_count:  .db #k_update_count        ;; Limita el update a cada k_update_count frames
 
 ;;======================================================================
