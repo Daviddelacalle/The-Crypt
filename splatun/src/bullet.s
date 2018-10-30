@@ -274,8 +274,12 @@ bullet_checkInit:
    call hero_get_position           ;; A = hero_x // B = hero_y
 
    ;; Si debo cambiar algo de la entidad, aqui
+   add   #1
    ld    b_x(ix), a              ;; Asigno X
-   ld    b_y(ix), b              ;; Asigno Y
+
+   ld    a, b
+   add   #2
+   ld    b_y(ix), a              ;; Asigno Y
 
    ld    a,    (flag_vx)         ;;
    ld    b_vx(ix), a             ;; Asigno VX

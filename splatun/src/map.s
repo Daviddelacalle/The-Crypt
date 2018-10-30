@@ -11,7 +11,8 @@ CameraTargetY:: .db #0
 
 map_ptr:    .dw #decompress_buffer
 
-HUD_END_DECOMPRESSED = 499 + 0x1DB
+decompress_buffer == 0x1DB
+HUD_END_DECOMPRESSED = 499 + decompress_buffer
 ;========================================================================;
 ;   Inreases ptr for the map
 ;   Input:  DE => Incremento del mapa

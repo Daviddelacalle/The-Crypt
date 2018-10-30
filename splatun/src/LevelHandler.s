@@ -1,10 +1,11 @@
+.include "constants.h.s"
 
-current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
+current_level::   .db #0     ;; Offset desde el inicio de la lista de niveles
                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
+current_level_1by1:: .db #0
 
 CLEAR_COLOR     = 0
 
-decompress_buffer        = 0x1DB
 MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384
@@ -26,6 +27,7 @@ SpawnOffset::    .db #0
 
 level_list:
     .dw #_level1_end
+    .dw #_level21_end
     .dw #_level2_end
     .dw #_level3_end
     .dw #_level4_end
@@ -35,9 +37,15 @@ level_list:
     .dw #_level8_end
     .dw #_level9_end
     .dw #_level10_end
+    .dw #_level11_end
     .dw #_level12_end
+    .dw #_level13_end
+    .dw #_level14_end
     .dw #_level15_end
+    .dw #_level16_end
+    .dw #_level17_end
     .dw #_level18_end
+    .dw #_level20_end
 
 ;   Public
 ;=================================
@@ -57,10 +65,15 @@ loadLevel1::
 ;;========================================================
 loadNextLevel::
 
+    ld a, (current_level_1by1)
+    inc a
+    ld (current_level_1by1), a
+
     ld a, (current_level)
     inc a
     inc a
     ld (current_level), a
+
     call loadCurrentLevel
     jp toggleTransition
 

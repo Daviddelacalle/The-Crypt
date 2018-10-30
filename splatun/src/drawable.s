@@ -220,6 +220,11 @@ dw_drawHearts::
     ld      c, #HUD_HEARTS_INIT_X
     ld      b, #HUD_INIT_Y
     push bc         ;; Lo guardo para el bucle
+
+    ;; Compruebo que las vidas del heroe sean mayor de 0
+    ld      a, (HERO_LIVES)
+    cp      #0
+    jr z, hero_no_hearts
     hearts_loop:
         ld      a, (back_buffer)                ;; Apunta al inicio de la memoria de video
         ld      d, a
@@ -249,13 +254,14 @@ dw_drawHearts::
     jr nz, hearts_loop
 
     ;; Ahora miro el caso de que el heroe tenga
-    ;; menos de 3 corazones
+    ;; menos de K corazones
     ld      a, e
     cp #0
     jr z, end_drawHearts
     ;; Si el heroe NO tiene las vidas maximas
     ;; entra aqui
 
+    hero_no_hearts:
     ;; Recupero DE y asigno a d el valor
     ;; que tenia e, que ERA el de la constante
     ;; de numero de vidas

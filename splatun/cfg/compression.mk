@@ -38,6 +38,9 @@
 #$(eval $(call ADD2PACK,mygraphics,gfx/background.bin))
 #$(eval $(call PACKZX7B,mygraphics,src/))
 
+$(eval $(call ADD2PACK,PRESSANY,src/Sprites/PRESSANY.bin))
+$(eval $(call PACKZX7B,PRESSANY,src/Compression/))
+
 $(eval $(call ADD2PACK,Menu_1,src/Sprites/Menu_1.bin))
 $(eval $(call PACKZX7B,Menu_1,src/Compression/))
 
@@ -61,6 +64,20 @@ $(eval $(call PACKZX7B,Menu_7,src/Compression/))
 
 $(eval $(call ADD2PACK,Menu_8,src/Sprites/Menu_8.bin))
 $(eval $(call PACKZX7B,Menu_8,src/Compression/))
+
+# GAMEOVER
+$(eval $(call ADD2PACK,GameOver1,src/Sprites/GAMEOVER_1.bin))
+$(eval $(call PACKZX7B,GameOver1,src/Compression/))
+
+$(eval $(call ADD2PACK,GameOver2,src/Sprites/GAMEOVER_2.bin))
+$(eval $(call PACKZX7B,GameOver2,src/Compression/))
+
+$(eval $(call ADD2PACK,GameOver3,src/Sprites/GAMEOVER_3.bin))
+$(eval $(call PACKZX7B,GameOver3,src/Compression/))
+
+$(eval $(call ADD2PACK,GameOver4,src/Sprites/GAMEOVER_4.bin))
+$(eval $(call PACKZX7B,GameOver4,src/Compression/))
+
 
 # El jud
 $(eval $(call ADD2PACK,hud,src/Mapas/hud.bin))
@@ -170,6 +187,61 @@ $(eval $(call ADD2PACK,level18,assets/World1/Level18/Teleporter.bin))
 $(eval $(call ADD2PACK,level18,assets/World1/Level18/HeroSpawn.bin))
 $(eval $(call PACKZX7B,level18,src/Compression/))
 
+# Mundo 1 - Nivel 11
+$(eval $(call ADD2PACK,level11,src/Mapas/Level11.bin))
+$(eval $(call ADD2PACK,level11,assets/World1/Level11/Enemies.bin))
+$(eval $(call ADD2PACK,level11,assets/World1/Level11/Spawns.bin))
+$(eval $(call ADD2PACK,level11,assets/World1/Level11/Teleporter.bin))
+$(eval $(call ADD2PACK,level11,assets/World1/Level11/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level11,src/Compression/))
+
+# Mundo 1 - Nivel 13
+$(eval $(call ADD2PACK,level13,src/Mapas/Level13.bin))
+$(eval $(call ADD2PACK,level13,assets/World1/Level13/Enemies.bin))
+$(eval $(call ADD2PACK,level13,assets/World1/Level13/Spawns.bin))
+$(eval $(call ADD2PACK,level13,assets/World1/Level13/Teleporter.bin))
+$(eval $(call ADD2PACK,level13,assets/World1/Level13/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level13,src/Compression/))
+
+# Mundo 1 - Nivel 14
+$(eval $(call ADD2PACK,level14,src/Mapas/Level14.bin))
+$(eval $(call ADD2PACK,level14,assets/World1/Level14/Enemies.bin))
+$(eval $(call ADD2PACK,level14,assets/World1/Level14/Spawns.bin))
+$(eval $(call ADD2PACK,level14,assets/World1/Level14/Teleporter.bin))
+$(eval $(call ADD2PACK,level14,assets/World1/Level14/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level14,src/Compression/))
+
+# Mundo 1 - Nivel 16
+$(eval $(call ADD2PACK,level16,src/Mapas/Level16.bin))
+$(eval $(call ADD2PACK,level16,assets/World1/Level16/Enemies.bin))
+$(eval $(call ADD2PACK,level16,assets/World1/Level16/Spawns.bin))
+$(eval $(call ADD2PACK,level16,assets/World1/Level16/Teleporter.bin))
+$(eval $(call ADD2PACK,level16,assets/World1/Level16/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level16,src/Compression/))
+
+# Mundo 1 - Nivel 17
+$(eval $(call ADD2PACK,level17,src/Mapas/Level17.bin))
+$(eval $(call ADD2PACK,level17,assets/World1/Level17/Enemies.bin))
+$(eval $(call ADD2PACK,level17,assets/World1/Level17/Spawns.bin))
+$(eval $(call ADD2PACK,level17,assets/World1/Level17/Teleporter.bin))
+$(eval $(call ADD2PACK,level17,assets/World1/Level17/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level17,src/Compression/))
+
+# Mundo 1 - Nivel 20
+$(eval $(call ADD2PACK,level20,src/Mapas/Level20.bin))
+$(eval $(call ADD2PACK,level20,assets/World1/Level20/Enemies.bin))
+$(eval $(call ADD2PACK,level20,assets/World1/Level20/Spawns.bin))
+$(eval $(call ADD2PACK,level20,assets/World1/Level20/Teleporter.bin))
+$(eval $(call ADD2PACK,level20,assets/World1/Level20/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level20,src/Compression/))
+
+# Mundo 1 - Nivel 21
+$(eval $(call ADD2PACK,level21,src/Mapas/Level21.bin))
+$(eval $(call ADD2PACK,level21,assets/World1/Level21/Enemies.bin))
+$(eval $(call ADD2PACK,level21,assets/World1/Level21/Spawns.bin))
+$(eval $(call ADD2PACK,level21,assets/World1/Level21/Teleporter.bin))
+$(eval $(call ADD2PACK,level21,assets/World1/Level21/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level21,src/Compression/))
 
 ############################################################################
 ##              DETAILED INSTRUCTIONS AND PARAMETERS                      ##
