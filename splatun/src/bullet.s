@@ -33,10 +33,10 @@ save_a:        .db #0x00            ;; Guarda el valor de A
 flag_init:     .db #0x00            ;; if(flag_init==1) Hay una entidad bullet que se ha inicializado
 
 vector_keys:
-   .dw #Key_CursorUp,      #keyUp_ON      ;; Flecha de arriba
-   .dw #Key_CursorDown,    #keyDown_ON    ;; Flecha de abajo
-   .dw #Key_CursorRight,   #keyRight_ON   ;; Flecha de derecha
-   .dw #Key_CursorLeft,    #keyLeft_ON    ;; Flecha de izquierda
+   .dw #Key_I,   #keyUp_ON      ;; Flecha de arriba
+   .dw #Key_K,   #keyDown_ON    ;; Flecha de abajo
+   .dw #Key_L,   #keyRight_ON   ;; Flecha de derecha
+   .dw #Key_J,   #keyLeft_ON    ;; Flecha de izquierda
    .db #0xFF                              ;; Fin
 flag_vx:       .db #0
 flag_vy:       .db #0

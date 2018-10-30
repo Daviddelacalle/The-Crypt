@@ -27,7 +27,6 @@ SpawnOffset::    .db #0
 
 level_list:
     .dw #_level1_end
-    .dw #_level21_end
     .dw #_level2_end
     .dw #_level3_end
     .dw #_level4_end
@@ -46,6 +45,7 @@ level_list:
     .dw #_level17_end
     .dw #_level18_end
     .dw #_level20_end
+    .dw #_level21_end
 
 ;   Public
 ;=================================

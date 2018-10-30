@@ -292,7 +292,7 @@ teleport_sfx::
 checkFinalaco:
     ;; Primero miro si el nivel es el 21
     ld a, (current_level_1by1)
-    cp #1
+    cp #19
     ret nz
 
     ;; Miro si el heroe pisa el tile en concreto
@@ -306,7 +306,6 @@ checkFinalaco:
     cp #24
     ret nz
     call loadVictory
-    ld a, #0xFF
 ret
 
 
