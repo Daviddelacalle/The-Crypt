@@ -305,9 +305,9 @@ checkFinalaco:
     ld a, (hl)
     cp #24
     ret nz
-    ; call loadVictory
+    call loadVictory
     ld a, #0xFF
-    ret
+ret
 
 
 
