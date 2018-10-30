@@ -51,6 +51,10 @@ loadVictory::
     ld de, #_win
     call cpct_akp_musicInit_asm
 
+    ld a, #0
+    ld (number_unidades), a
+    ld (number_decenas), a
+
     call drawVictory
     call swapBuffers
     call drawVictory
