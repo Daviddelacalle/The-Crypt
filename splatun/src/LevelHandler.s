@@ -37,10 +37,13 @@ level_list:
     .dw #_level9_end
     .dw #_level10_end
     .dw #_level11_end
+    .dw #_level12_end
     .dw #_level13_end
     .dw #_level14_end
+    .dw #_level15_end
     .dw #_level16_end
     .dw #_level17_end
+    .dw #_level18_end
     .dw #_level20_end
     .dw #_level21_end
 

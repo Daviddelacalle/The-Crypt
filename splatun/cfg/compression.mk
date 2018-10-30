@@ -163,6 +163,30 @@ $(eval $(call ADD2PACK,level10,assets/World1/Level10/Teleporter.bin))
 $(eval $(call ADD2PACK,level10,assets/World1/Level10/HeroSpawn.bin))
 $(eval $(call PACKZX7B,level10,src/Compression/))
 
+# Mundo 1 - Nivel 10
+$(eval $(call ADD2PACK,level12,src/Mapas/Level12.bin))
+$(eval $(call ADD2PACK,level12,assets/World1/Level12/Enemies.bin))
+$(eval $(call ADD2PACK,level12,assets/World1/Level12/Spawns.bin))
+$(eval $(call ADD2PACK,level12,assets/World1/Level12/Teleporter.bin))
+$(eval $(call ADD2PACK,level12,assets/World1/Level12/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level12,src/Compression/))
+
+# Mundo 1 - Nivel 10
+$(eval $(call ADD2PACK,level15,src/Mapas/Level15.bin))
+$(eval $(call ADD2PACK,level15,assets/World1/Level15/Enemies.bin))
+$(eval $(call ADD2PACK,level15,assets/World1/Level15/Spawns.bin))
+$(eval $(call ADD2PACK,level15,assets/World1/Level15/Teleporter.bin))
+$(eval $(call ADD2PACK,level15,assets/World1/Level15/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level15,src/Compression/))
+
+# Mundo 1 - Nivel 10
+$(eval $(call ADD2PACK,level18,src/Mapas/Level18.bin))
+$(eval $(call ADD2PACK,level18,assets/World1/Level18/Enemies.bin))
+$(eval $(call ADD2PACK,level18,assets/World1/Level18/Spawns.bin))
+$(eval $(call ADD2PACK,level18,assets/World1/Level18/Teleporter.bin))
+$(eval $(call ADD2PACK,level18,assets/World1/Level18/HeroSpawn.bin))
+$(eval $(call PACKZX7B,level18,src/Compression/))
+
 # Mundo 1 - Nivel 11
 $(eval $(call ADD2PACK,level11,src/Mapas/Level11.bin))
 $(eval $(call ADD2PACK,level11,assets/World1/Level11/Enemies.bin))
