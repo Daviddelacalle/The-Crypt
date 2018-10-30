@@ -47,6 +47,7 @@ hero_update::
     ld e_vy(ix), #0
 
     call checkTeleporter
+    call checkFinalaco
 
     call cpct_scanKeyboard_asm
 
@@ -287,3 +288,31 @@ teleport_sfx::
     pop ix
 
   ret
+
+checkFinalaco:
+    ;; Primero miro si el nivel es el 21
+    ld a, (current_level_1by1)
+    cp #19
+    ret nz
+
+    ;; Miro si el heroe pisa el tile en concreto
+    ld l, e_x(ix)
+    ld h, e_y(ix)
+    call checkTileCollision_m
+
+    ;; En HL tengo el tile en concreto
+    ;; Miro si es el 24 -> COFRE
+    ld a, (hl)
+    cp #24
+    ret nz
+    ; call loadVictory
+    ld a, #0xFF
+    ret
+
+
+
+
+
+
+
+
