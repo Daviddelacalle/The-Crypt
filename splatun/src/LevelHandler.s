@@ -167,7 +167,7 @@ toggleTransition:
         dec e
     jr nz, Timeout
 
-    ld hl, #decompress_buffer       ;; Ahora le digo dónde está el verdadero mapa
+    ld hl, (map_ptr)       ;; Ahora le digo dónde está el verdadero mapa
     ld (map), hl                    ;; descomprimido del siguiente nivel, y vuelvo
     call clearPlayableAreaAlt       ;; a dibujar por columnas
     call resetTilemap               ;; Dejo al configuración del tilemap como estaba

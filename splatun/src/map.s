@@ -9,7 +9,7 @@ CoordMapMin::   .db #0, #0
 CameraTargetX:: .db #0
 CameraTargetY:: .db #0
 
-map_ptr:    .dw #decompress_buffer
+map_ptr::    .dw #decompress_buffer
 
 decompress_buffer == 0x1DB
 HUD_END_DECOMPRESSED = 499 + decompress_buffer
