@@ -38,6 +38,9 @@
 #$(eval $(call ADD2PACK,mygraphics,gfx/background.bin))
 #$(eval $(call PACKZX7B,mygraphics,src/))
 
+$(eval $(call ADD2PACK,PRESSANY,src/Sprites/PRESSANY.bin))
+$(eval $(call PACKZX7B,PRESSANY,src/Compression/))
+
 $(eval $(call ADD2PACK,Menu_1,src/Sprites/Menu_1.bin))
 $(eval $(call PACKZX7B,Menu_1,src/Compression/))
 
@@ -61,6 +64,20 @@ $(eval $(call PACKZX7B,Menu_7,src/Compression/))
 
 $(eval $(call ADD2PACK,Menu_8,src/Sprites/Menu_8.bin))
 $(eval $(call PACKZX7B,Menu_8,src/Compression/))
+
+# GAMEOVER
+$(eval $(call ADD2PACK,GameOver1,src/Sprites/GAMEOVER_1.bin))
+$(eval $(call PACKZX7B,GameOver1,src/Compression/))
+
+$(eval $(call ADD2PACK,GameOver2,src/Sprites/GAMEOVER_2.bin))
+$(eval $(call PACKZX7B,GameOver2,src/Compression/))
+
+$(eval $(call ADD2PACK,GameOver3,src/Sprites/GAMEOVER_3.bin))
+$(eval $(call PACKZX7B,GameOver3,src/Compression/))
+
+$(eval $(call ADD2PACK,GameOver4,src/Sprites/GAMEOVER_4.bin))
+$(eval $(call PACKZX7B,GameOver4,src/Compression/))
+
 
 # El jud
 $(eval $(call ADD2PACK,hud,src/Mapas/hud.bin))

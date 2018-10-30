@@ -844,7 +844,7 @@ get_enemy_size::
       ld (number_unidades), a
 
       ld sp, #0x8000
-      call drawGameOver
+      call loadGameOver
       ld de, #menu
       call waitInput
       noCol:

@@ -1,3 +1,4 @@
+.include "constants.h.s"
 
 current_level::   .db #0     ;; Offset desde el inicio de la lista de niveles
                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
@@ -5,7 +6,6 @@ current_level_1by1:: .db #0
 
 CLEAR_COLOR     = 0
 
-decompress_buffer        = 0x1DB
 MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384

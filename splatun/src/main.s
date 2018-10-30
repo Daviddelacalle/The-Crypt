@@ -91,11 +91,11 @@ _main::
     menu::
     ld de, #_song_ingame
     call cpct_akp_musicInit_asm
+    ld hl, #SEED    ;; SEED
     call loadMenu
 
-    ld hl, #SEED    ;; SEED
-    ld de, #map_start
-    call waitInput  ;; In util.s
+    ;ld de, #map_start
+    ;call waitInput  ;; In util.s
     map_start::
 
         call recalculateCameraOffset
