@@ -1,0 +1,34 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     CLEAR_CO=  0000     |     EnemiesS=  0001 
+    HEARTS_U   **** GX  |     HERO_LIV   **** GX  |     HeroSpaw=  056C G
+    K_HERO_L   **** GX  |     MapSize =  0384     |     NumberOf=  055F G
+  0 SpawnOff   0001 GR  |     SpawnPoi=  0560 G   |     SpawnPoi=  000A 
+    Teleport=  056A G   |     Teleport=  0002     |   0 Timeout    009A R
+    _g_00      **** GX  |     _level10   **** GX  |     _level12   **** GX
+    _level15   **** GX  |     _level18   **** GX  |     _level1_   **** GX
+    _level2_   **** GX  |     _level3_   **** GX  |     _level4_   **** GX
+    _level5_   **** GX  |     _level6_   **** GX  |     _level7_   **** GX
+    _level8_   **** GX  |     _level9_   **** GX  |     alternat=  056E G
+  0 blackInn   00C5 R   |   0 clearPla   00C1 GR  |     cpct_etm   **** GX
+    cpct_etm   **** GX  |     cpct_wai   **** GX  |     cpct_zx7   **** GX
+  0 current_   0000 R   |     decompre=  01DB     |     drawMap    **** GX
+    dw_drawA   **** GX  |     dw_drawL   **** GX  |   0 fillAlte   00B3 GR
+    front_bu   **** GX  |     initEnem   **** GX  |     levelMax=  0393 
+    level_en=  056D G   |   0 level_li   0002 R   |   0 loadCurr   0049 R
+  0 loadLeve   001C GR  |   0 loadNext   0024 GR  |   0 map     =  00D6 GR
+    number_d   **** GX  |     number_u   **** GX  |     recalcul   **** GX
+    resetHer   **** GX  |     resetTil   **** GX  |     swapBuff   **** GX
+  0 toggleTr   008C R   |   0 updateLe   0032 R   |   0 update_n   005B R
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size   E5   flags    0
+

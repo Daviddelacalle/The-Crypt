@@ -1,0 +1,267 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+
+
+                              1 
+   0000 00                    2 current_level:   .db #0     ;; Offset desde el inicio de la lista de niveles
+                              3                             ;; Como cada nivel son 2 bytes, aumentará de 2 en 2
+                              4 
+                     0000     5 CLEAR_COLOR     = 0
+                              6 
+                     01DB     7 decompress_buffer        = 0x1DB
+                     0384     8 MapSize                  = 0x384
+                     0001     9 EnemiesSize              = 0x1
+                     0384    10 MapSize                  = 0x384
+                     000A    11 SpawnPointsSize          = 0xA
+                     0002    12 TeleporterSize           = 0x2
+                             13 
+                     0393    14 levelMaxSize             = 0x393
+                             15 
+                     056D    16 level_end           == decompress_buffer + levelMaxSize - 1
+                     055F    17 NumberOfEnemies     == decompress_buffer + MapSize
+                     0560    18 SpawnPoints         == NumberOfEnemies + EnemiesSize
+                     056A    19 Teleporter          == SpawnPoints + SpawnPointsSize
+                     056C    20 HeroSpawn           == Teleporter + TeleporterSize
+                             21 
+                     056E    22 alternative_buffer == HeroSpawn + 2
+                             23 
+   0001 00                   24 SpawnOffset::    .db #0
+                             25 
+                             26 
+   0002                      27 level_list:
+   0002 00 00                28     .dw #_level1_end
+   0004 00 00                29     .dw #_level18_end
+   0006 00 00                30     .dw #_level15_end
+   0008 00 00                31     .dw #_level12_end
+   000A 00 00                32     .dw #_level2_end
+   000C 00 00                33     .dw #_level3_end
+   000E 00 00                34     .dw #_level4_end
+   0010 00 00                35     .dw #_level5_end
+   0012 00 00                36     .dw #_level6_end
+   0014 00 00                37     .dw #_level7_end
+   0016 00 00                38     .dw #_level8_end
+   0018 00 00                39     .dw #_level9_end
+   001A 00 00                40     .dw #_level10_end
+                             41 
+                             42 ;   Public
+                             43 ;=================================
+                             44 
+                             45 ;;  ---
+                             46 ;;  Loads the first level
+                             47 ;;  DESTROYS: A, B, DE, HL
+                             48 ;;========================================================
+   001C                      49 loadLevel1::
+   001C 3E 00         [ 7]   50     ld a, #0                ;; Pongo un 0 en el offset
+   001E 32 00 00      [13]   51     ld (current_level), a
+   0021 C3 49 00      [10]   52     jp loadCurrentLevel
+                             53 
+                             54 ;;  ---
+                             55 ;;  Loads the next level from the current one
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+
+
+                             56 ;;  DESTROYS: A, B, DE, HL
+                             57 ;;========================================================
+   0024                      58 loadNextLevel::
+                             59 
+   0024 3A 00 00      [13]   60     ld a, (current_level)
+   0027 3C            [ 4]   61     inc a
+   0028 3C            [ 4]   62     inc a
+   0029 32 00 00      [13]   63     ld (current_level), a
+   002C CD 49 00      [17]   64     call loadCurrentLevel
+   002F C3 8C 00      [10]   65     jp toggleTransition
+                             66 
+                             67 
+                             68 ;   Private
+                             69 ;=================================
+                             70 
+                             71 ;; AUMENTA EL NUMERO DE NIVEL: 1,2,3,4,...
+                             72 ;; ¡¡¡Y LAS DECENAS!!!
+                             73 ;; SE UTILIZAN A LA HORA DE DIBUJAR EL JUD
+   0032                      74 updateLevelNumber:
+                             75     ;; Primero actualizo unidades
+   0032 3A 00 00      [13]   76     ld a, (number_unidades)
+   0035 3C            [ 4]   77     inc a
+   0036 32 00 00      [13]   78     ld (number_unidades), a
+                             79 
+                             80     ;; Ahora las decenas en el caso que
+                             81     ;; las unidades lleguen a 10
+   0039 FE 0A         [ 7]   82     cp #10
+   003B C0            [11]   83     ret nz
+                             84         ;; Actualizo las decenas
+   003C 3A 00 00      [13]   85         ld  a, (number_decenas)
+   003F 3C            [ 4]   86         inc a
+   0040 32 00 00      [13]   87         ld (number_decenas), a
+                             88 
+                             89         ;;Pongo a 0 las unidades
+   0043 3E 00         [ 7]   90         ld a, #0
+   0045 32 00 00      [13]   91         ld (number_unidades), a
+   0048 C9            [10]   92     ret
+                             93 
+                             94 
+                             95 ;;  ---
+                             96 ;;  Loads the level that "current_level" is pointing to, adding the offset
+                             97 ;;  DESTROYS: A, B, DE, HL
+                             98 ;;=========================================================================
+   0049                      99 loadCurrentLevel:
+   0049 16 00         [ 7]  100     ld d, #0            ;; Cargo en DE el offset
+   004B 5F            [ 4]  101     ld e, a
+   004C 21 02 00      [10]  102     ld hl, #level_list  ;; HL apunta al inicio de la lista de mapas
+   004F 19            [11]  103     add hl, de          ;; Sumo el offset a HL
+                            104 
+   0050 7E            [ 7]  105     ld a, (hl)
+   0051 23            [ 6]  106     inc hl
+   0052 46            [ 7]  107     ld b, (hl)
+                            108 
+   0053 6F            [ 4]  109     ld l, a
+   0054 60            [ 4]  110     ld h, b             ;; HL contiene el puntero al mapa a descomprimir
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+Hexadecimal [16-Bits]
+
+
+
+                            111 
+   0055 11 6D 05      [10]  112     ld de, #level_end
+   0058 CD 00 00      [17]  113     call cpct_zx7b_decrunch_s_asm
+                            114 
+                            115 
+   005B                     116 update_nextLevelInfo:
+   005B CD 00 00      [17]  117     call resetHero
+   005E CD 00 00      [17]  118     call recalculateCameraOffset        ;; Importante que este método vaya justo después
+                            119                                         ;; de resetHero, por IX, y ahorrar un par de bytes
+   0061 3E 00         [ 7]  120     ld a, #0
+   0063 32 01 00      [13]  121     ld (SpawnOffset), a
+   0066 CD 00 00      [17]  122     call initEnemies
+                            123 
+   0069 CD 32 00      [17]  124     call updateLevelNumber
+   006C CD 00 00      [17]  125     call dw_drawLevelInfo
+   006F CD 00 00      [17]  126     call dw_drawAndUpdateHUDEnemies
+   0072 CD 00 00      [17]  127     call swapBuffers
+   0075 CD 00 00      [17]  128     call dw_drawLevelInfo
+   0078 CD 00 00      [17]  129     call dw_drawAndUpdateHUDEnemies
+   007B CD 00 00      [17]  130     call swapBuffers
+                            131 
+   007E 3A 00 00      [13]  132     ld    a, (HERO_LIVES)
+   0081 3C            [ 4]  133     inc   a
+   0082 FE 01         [ 7]  134     cp #K_HERO_LIVES+1
+   0084 D0            [11]  135     ret nc
+   0085 32 00 00      [13]  136     ld (HERO_LIVES), a
+   0088 CD 00 00      [17]  137     call HEARTS_UPDATE
+   008B C9            [10]  138 ret
+                            139 
+                            140 ;;  ---
+                            141 ;;  Displays de loading screen
+                            142 ;;  DESTROYS: A, B, DE, HL
+                            143 ;;==================================================================
+   008C                     144 toggleTransition:
+   008C CD B3 00      [17]  145     call fillAlternativeBuffer      ;; Lleno con #29 un "buffer" alternativo
+                            146 
+   008F 21 6E 05      [10]  147     ld hl, #alternative_buffer      ;; Le digo a la funcion que pinta por columnas
+   0092 22 D6 00      [16]  148     ld (map), hl                    ;; dónde está mi "mapa" lleno de #29
+   0095 CD C1 00      [17]  149     call clearPlayableAreaAlt
+                            150 
+   0098 1E FF         [ 7]  151     ld e, #0xFF
+   009A                     152     Timeout:
+   009A CD 00 00      [17]  153         call cpct_waitVSYNC_asm
+   009D 1D            [ 4]  154         dec e
+   009E 20 FA         [12]  155     jr nz, Timeout
+                            156 
+   00A0 21 DB 01      [10]  157     ld hl, #decompress_buffer       ;; Ahora le digo dónde está el verdadero mapa
+   00A3 22 D6 00      [16]  158     ld (map), hl                    ;; descomprimido del siguiente nivel, y vuelvo
+   00A6 CD C1 00      [17]  159     call clearPlayableAreaAlt       ;; a dibujar por columnas
+   00A9 CD 00 00      [17]  160     call resetTilemap               ;; Dejo al configuración del tilemap como estaba
+                            161 
+   00AC CD 00 00      [17]  162     call drawMap                    ;; Como hemos estado dibujando en el frontBuffer,
+   00AF CD 00 00      [17]  163     call swapBuffers                ;; dibujo el mapa completo en el backBuffer y hago swap
+   00B2 C9            [10]  164 ret
+                            165 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+Hexadecimal [16-Bits]
+
+
+
+                            166 ;;  ---
+                            167 ;;  Fills with #29 (0x1D) a mapSize (#0x384) from end of decompress_buffer
+                            168 ;;  DESTROYS: HL, DE
+                            169 ;;=========================================================================
+   00B3                     170 fillAlternativeBuffer::
+   00B3 21 6E 05      [10]  171     ld  hl,  #alternative_buffer
+   00B6 36 1D         [10]  172     ld (hl), #29
+   00B8 11 6F 05      [10]  173     ld  de,  #alternative_buffer + 1
+   00BB 01 83 03      [10]  174     ld  bc,  #0x384-1
+   00BE ED B0         [21]  175     ldir
+   00C0 C9            [10]  176 ret
+                            177 
+                            178 
+                            179 ;;  ---
+                            180 ;;  Draws a map by columns, from left to right
+                            181 ;;  DESTROYS: A, BC, DE, HL
+                            182 ;;=========================================================================
+   00C1                     183 clearPlayableAreaAlt::
+                            184 
+   00C1 06 10         [ 7]  185     ld b, #16
+   00C3 0E 02         [ 7]  186     ld c, #2
+   00C5                     187     blackInnerLoop:
+   00C5 21 00 00      [10]  188         ld hl, #_g_00
+   00C8 11 1E 00      [10]  189         ld de, #30
+   00CB CD 00 00      [17]  190         call cpct_etm_setDrawTilemap4x8_ag_asm
+                            191 
+   00CE 3A 00 00      [13]  192         ld a, (front_buffer)                  ;; Apunta al inicio de la memoria de video
+   00D1 3C            [ 4]  193         inc a
+   00D2 67            [ 4]  194         ld h, a
+   00D3 2E 48         [ 7]  195         ld l, #0x48
+                     00D6   196         map == . + 1
+   00D5 11 6E 05      [10]  197         ld de, #alternative_buffer
+   00D8 C5            [11]  198         push bc
+   00D9 CD 00 00      [17]  199         call cpct_etm_drawTilemap4x8_ag_asm
+                            200         ;call swapBuffers
+   00DC C1            [10]  201         pop bc
+   00DD 0C            [ 4]  202         inc c
+   00DE 0C            [ 4]  203         inc c
+   00DF 79            [ 4]  204         ld a, c
+   00E0 FE 12         [ 7]  205         cp #18
+   00E2 20 E1         [12]  206     jr nz, blackInnerLoop
+                            207 
+   00E4 C9            [10]  208 ret
+                            209 
+                            210 ;   ---
+                            211 ;   Fills with zeros the playable area
+                            212 ;   DESTROYS: EVERYTHING
+                            213 ;=====================================
+                            214 ;clearPlayableArea:
+                            215 ;    ld a, (front_buffer)
+                            216 ;    inc a
+                            217 ;    ld h, a
+                            218 ;    ld l, #0x48
+                            219 ;
+                            220 ;    ld a, #16
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+Hexadecimal [16-Bits]
+
+
+
+                            221 ;    supreme_loop:
+                            222 ;        push hl
+                            223 ;        exx
+                            224 ;        pop hl
+                            225 ;        ld c, #8
+                            226 ;        outer_loop:
+                            227 ;            ld b, #64
+                            228 ;            inner_loop:
+                            229 ;                ld (hl), #CLEAR_COLOR
+                            230 ;                inc hl
+                            231 ;                dec b
+                            232 ;            jr nz, inner_loop
+                            233 ;            ld de, #0x7C0 ;; #0x800 - #0x40 (64) = #0x7C0
+                            234 ;            add hl, de
+                            235 ;            dec c
+                            236 ;        jr nz, outer_loop
+                            237 ;        exx
+                            238 ;        ld de, #0x50
+                            239 ;        add hl, de
+                            240 ;        dec a
+                            241 ;    jr nz, supreme_loop
+                            242 ;ret

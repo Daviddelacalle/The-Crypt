@@ -1,0 +1,31 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     b_alive =  0008     |     b_h     =  0003 
+    b_spr_h =  0007     |     b_spr_l =  0006     |     b_up_h  =  000A 
+    b_up_l  =  0009     |     b_vx    =  0004     |     b_vy    =  0005 
+    b_w     =  0002     |     b_x     =  0000     |     b_y     =  0001 
+    e_h     =  0003     |     e_spr_h =  0007     |     e_spr_l =  0006 
+    e_up_h  =  0009     |     e_up_l  =  0008     |     e_vx    =  0004 
+    e_vy    =  0005     |     e_w     =  0002     |     e_x     =  0000 
+    e_y     =  0001     |     en_alv  =  001A     |     en_avI_h=  0018 
+    en_avI_l=  0017     |     en_avR_h=  0016     |     en_avR_l=  0015 
+    en_av_h =  0014     |     en_av_l =  0013     |     en_dX_h =  000E 
+    en_dX_l =  000D     |     en_dY_h =  0010     |     en_dY_l =  000F 
+    en_flagV=  0019     |     en_g_fla=  000A     |     en_g_x  =  000B 
+    en_g_y  =  000C     |     en_h    =  0003     |     en_incXr=  0012 
+    en_incYr=  0011     |     en_spr_h=  0007     |     en_spr_l=  0006 
+    en_up_h =  0009     |     en_up_l =  0008     |     en_vx   =  0004 
+    en_vy   =  0005     |     en_w    =  0002     |     en_x    =  0000 
+    en_y    =  0001 
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE      size    0   flags    0
+

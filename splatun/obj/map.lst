@@ -1,0 +1,453 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+
+
+                              1 .area _DATA
+                              2 .area _CODE
+                              3 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+
+
+                              4 .include "struct.h.s"
+                              1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              2 ;; DEFINICION DE LAS MACROS PARA LA CREACION DE ENTIDADES ;;
+                              3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              4 
+                              5 ;; Entidad drawable
+                              6 .macro DefineDrawableEnt _name, _x, _y, _w, _h
+                              7 _name:
+                              8    .db   _x, _y      ;; Posicion    (x,y)
+                              9    .db   _w, _h      ;; Dimensiones (w,h)
+                             10 .endm
+                             11 
+                             12 ;; Entidad movable
+                             13 .macro DefineMovableEnt _name, _vx, _vy
+                             14 _name:
+                             15    .db   _vx, _vy    ;; Variables de la velocidad
+                             16 .endm
+                             17 
+                             18 ;; Entidad por defecto
+                             19 .macro DefineEntityDefault _name, _suf
+                             20    DefineEntity _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0x0000, 0xFFFF           ;;'
+                             21 .endm
+                             22 
+                             23 ;; Definir N entidades
+                             24 .macro DefineNEntities _name, _n
+                             25    _c = 0
+                             26    .rept _n
+                             27       DefineEntityDefault _name, \_c
+                             28       _c = _c + 1
+                             29    .endm
+                             30 .endm
+                             31 
+                             32 ;; Entidad heroe/enemigo
+                             33 .macro DefineEntity  _name, _x, _y, _w, _h, _vx, _vy, _spr, _upd
+                             34 _name:
+                             35     DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                             36     DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                             37 ;; Si tiene sprite
+                             38     .dw   _spr
+                             39     .dw   _upd        ;; Puntero a la funcion de update
+                             40 
+                             41 ;; Aqui falta saber el tamanyo de la entidad
+                             42 e_size = . - (_name)
+                             43 .endm
+                             44 
+                             45 ;;;;;;;;;;;;;;;;;;;
+                             46 ;; Constantes de las entidades hero/enemy
+                             47 ;;;;;;;;;;;;;;;;;;;
+                     0001    48     e_x = 0      e_y = 1
+                     0003    49     e_w = 2      e_h = 3
+                     0005    50    e_vx = 4     e_vy = 5
+                     0007    51 e_spr_l = 6  e_spr_h = 7
+                     0009    52  e_up_l = 8   e_up_h = 9
+                             53 
+                             54 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+Hexadecimal [16-Bits]
+
+
+
+                             55 ;;-----------------------------------------------------------------------------------------;;
+                             56 ;; Entidad bullet
+                             57 .macro DefineBullet  _name, _x, _y, _w, _h, _vx, _vy, _spr, _alive, _upd
+                             58 _name:
+                             59    DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                             60    DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                             61    .dw   _spr        ;; Color / Sprite (cuando haya)
+                             62    .db   _alive      ;; _alive>0? Se actualiza/dibuja
+                             63    .dw   _upd        ;; Funcion de update
+                             64 
+                             65 ;; Saber tamanyo de entidad bala
+                             66 b_size = . - (_name)
+                             67 .endm
+                             68 
+                             69 ;; Entidad por defecto de bullet
+                             70 .macro DefineBulletDefault _name, _suf
+                             71    DefineBullet _name'_suf, 0xAA, 0, 0, 0, 0, 0, 0x0000, 0, 0xFFFF        ;;'
+                             72 .endm
+                             73 
+                             74 ;; Bucle de crear entidades bullet
+                             75 .macro DefineNBullets _name, _n
+                             76    _c = 0
+                             77    .rept _n
+                             78       DefineBulletDefault _name, \_c
+                             79       _c = _c + 1
+                             80    .endm
+                             81 .endm
+                             82 
+                             83 ;;;;;;;;;;;;;;;;;;;
+                             84 ;; Constantes de las entidades bullet
+                             85 ;;;;;;;;;;;;;;;;;;;
+                     0001    86      b_x = 0      b_y = 1
+                     0003    87      b_w = 2      b_h = 3
+                     0005    88     b_vx = 4     b_vy = 5
+                     0007    89  b_spr_l = 6  b_spr_h = 7
+                     0008    90  b_alive = 8
+                     000A    91   b_up_l = 9   b_up_h = 10
+                             92 
+                             93 
+                             94 
+                             95  ;;-----------------------------------------------------------------------------------------;;
+                             96  ;; Entidad enemigo por defecto
+                             97  .macro DefineEnemyDefault _name, _suf
+                             98     DefineEnemy _name'_suf, #0xAA, #0, #0, #0, #0, #0, #0x0000, #0xFFFF, #0, #0, #0, #0, #0, #0, #0, #0, #0, #0, #1, #1           ;;'
+                             99  .endm
+                            100 
+                            101  ;; Definir N entidades enemigo
+                            102  .macro DefineNEnemies _name, _n
+                            103     _c = 0
+                            104     .rept _n
+                            105        DefineEnemyDefault _name, \_c
+                            106        _c = _c + 1
+                            107     .endm
+                            108  .endm
+                            109 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+Hexadecimal [16-Bits]
+
+
+
+                            110  ;; Entidad enemigo
+                            111  .macro DefineEnemy  _name, _x, _y, _w, _h, _vx, _vy, _spr, _upd, _goal_flag, _goal_x, _goal_y, save_dX, save_dY, IncYr, IncXr, av, avR, avI, flag_vel, alive
+                            112  _name:
+                            113     DefineDrawableEnt _name'_dw, _x, _y, _w, _h                       ;;'
+                            114     DefineMovableEnt  _name'_mv, _vx, _vy                             ;;'
+                            115  ;; Si tiene sprite
+                            116     .dw  _spr
+                            117     .dw  _upd        ;; Puntero a la funcion de update
+                            118     .db  _goal_flag  ;; 0 -> No se ha
+                            119     .db  _goal_x     ;; X de la posicion final
+                            120     .db  _goal_y     ;; Y de la posicion final
+                            121 
+                            122     ;;BRESENHAM
+                            123     .dw  save_dX     ;; Distancia en X del objetivo
+                            124     .dw  save_dY     ;; Distancia en Y del objetivo
+                            125     .db  IncYr       ;; Incremento recto en Y
+                            126     .db  IncXr       ;; Incremento recto en X
+                            127     .dw  av          ;; Avance
+                            128     .dw  avR         ;; Avance recto
+                            129     .dw  avI         ;; Avance inclinado
+                            130     .db  flag_vel    ;; 1 = Esta utilizando IncYi/IncXi |------------| 0 = Esta utilizando IncYr/IncXr
+                            131     .db  alive
+                            132  ;; Aqui falta saber el tamanyo de la entidad
+                            133  en_size = . - (_name)
+                            134  .endm
+                            135 
+                            136  ;;;;;;;;;;;;;;;;;;;
+                            137  ;; Constantes de las entidades hero/enemy
+                            138  ;;;;;;;;;;;;;;;;;;;
+                            139 
+                     0001   140       en_x = 0         en_y = 1
+                     0003   141       en_w = 2         en_h = 3
+                     0005   142      en_vx = 4        en_vy = 5
+                     0007   143   en_spr_l = 6     en_spr_h = 7
+                     0009   144    en_up_l = 8      en_up_h = 9
+                     000A   145  en_g_flag = 10
+                            146  ;;------------------------------BRESENHAM
+                     000C   147     en_g_x = 11      en_g_y = 12
+                     000E   148    en_dX_l = 13     en_dX_h = 14
+                     0010   149    en_dY_l = 15     en_dY_h = 16
+                     0012   150   en_incYr = 17    en_incXr = 18
+                     0014   151    en_av_l = 19     en_av_h = 20
+                     0016   152   en_avR_l = 21    en_avR_h = 22
+                     0018   153   en_avI_l = 23    en_avI_h = 24
+                     001A   154 en_flagVel = 25      en_alv = 26
+                            155 
+                            156 
+                            157 
+                            158 
+                            159 
+                            160 
+                            161 
+                            162 
+                            163 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+Hexadecimal [16-Bits]
+
+
+
+                              5 
+   0000 00 00                 6 cam_min::       .db #0, #0
+   0002 00 00                 7 CoordMapMin::   .db #0, #0
+                              8 
+   0004 00                    9 CameraTargetX:: .db #0
+   0005 00                   10 CameraTargetY:: .db #0
+                             11 
+   0006 00 00                12 map_ptr:    .dw #decompress_buffer
+                             13 
+                     03CE    14 HUD_END_DECOMPRESSED = 499 + 0x1DB
+                             15 ;========================================================================;
+                             16 ;   Inreases ptr for the map
+                             17 ;   Input:  DE => Incremento del mapa
+                             18 ;            B => Incremento de cam_min/max
+                             19 ;            C => Incremento de CameraMinX/Y en coordenadas de mapa
+                             20 ;           HL => Puntero a CameraMinX/Y
+                             21 ;========================================================================;
+   0008                      22 inc_map::
+   0008 7E            [ 7]   23     ld a, (hl)              ;; Cargo en a cam_min o cam_max,
+                             24                             ;; depende de lo que me hayan pasado
+   0009 80            [ 4]   25     add b                   ;; Le añado B, que será 1 o -1
+   000A 77            [ 7]   26     ld (hl), a              ;; Lo guardo
+   000B 23            [ 6]   27     inc hl                  ;; Aumento 2 veces el puntero para llegar al
+   000C 23            [ 6]   28     inc hl                  ;; minimo en coordenadas de mapa, no de tile
+   000D 7E            [ 7]   29     ld a, (hl)              ;; A = CoordManMin
+   000E 81            [ 4]   30     add c                   ;; A += C, donde C será 4 o -4 en X, 8 o -8 en Y
+   000F 77            [ 7]   31     ld (hl), a
+                             32 
+   0010 2A 06 00      [16]   33     ld hl, (map_ptr)        ;; Cambio el puntero del mapa
+   0013 19            [11]   34     add hl, de              ;; sumándole lo que le hay pasado en DE
+   0014 22 06 00      [16]   35     ld (map_ptr), hl
+                             36 
+   0017 C9            [10]   37 ret
+                             38 
+                             39 ;;============================================
+                             40 ;;  Calculate camera offset from hero position
+                             41 ;;  DESTROYS:   A, BC, HL, DE
+                             42 ;;============================================
+   0018                      43 recalculateCameraOffset::
+   0018 21 00 00      [10]   44     ld hl, #decompress_buffer
+   001B 11 1E 00      [10]   45     ld de, #30
+                             46 
+   001E DD 7E 00      [19]   47     ld a, e_x(ix)
+   0021 D6 20         [ 7]   48     sub #32
+   0023 38 17         [12]   49     jr c, setCamMinXToZero
+   0025 28 15         [12]   50     jr z, setCamMinXToZero
+   0027 47            [ 4]   51     ld b, a
+   0028 3E 00         [ 7]   52     ld a, #0        ;; CoordMapMin
+   002A 0E 00         [ 7]   53     ld c, #0        ;; cam_min
+   002C                      54     X_iterator:
+   002C 0C            [ 4]   55         inc c
+   002D C6 04         [ 7]   56         add #4
+   002F 23            [ 6]   57         inc hl
+   0030 B8            [ 4]   58         cp b
+   0031 38 F9         [12]   59     jr c, X_iterator
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
+Hexadecimal [16-Bits]
+
+
+
+   0033 32 02 00      [13]   60         ld (CoordMapMin), a
+   0036 79            [ 4]   61         ld a, c
+   0037 32 00 00      [13]   62         ld (cam_min), a
+   003A 18 08         [12]   63     jr calculate_y
+   003C                      64     setCamMinXToZero:
+   003C 3E 00         [ 7]   65         ld a, #0
+   003E 32 02 00      [13]   66         ld (CoordMapMin), a
+   0041 32 00 00      [13]   67         ld (cam_min), a
+                             68 
+   0044                      69     calculate_y:
+   0044 DD 7E 01      [19]   70     ld a, e_y(ix)
+   0047 D6 40         [ 7]   71     sub #64
+   0049 38 17         [12]   72     jr c, setCamMinYToZero
+   004B 28 15         [12]   73     jr z, setCamMinYToZero
+   004D 47            [ 4]   74     ld b, a
+   004E 3E 00         [ 7]   75     ld a, #0        ;; CoordMapMin
+   0050 0E 00         [ 7]   76     ld c, #0        ;; cam_min
+   0052                      77     Y_iterator:
+   0052 0C            [ 4]   78         inc c
+   0053 C6 08         [ 7]   79         add #8
+   0055 19            [11]   80         add hl, de
+   0056 B8            [ 4]   81         cp b
+   0057 38 F9         [12]   82     jr c, Y_iterator
+   0059 32 03 00      [13]   83         ld (CoordMapMin+1), a
+   005C 79            [ 4]   84         ld a, c
+   005D 32 01 00      [13]   85         ld (cam_min+1), a
+   0060 18 08         [12]   86     jr finish
+   0062                      87     setCamMinYToZero:
+   0062 3E 00         [ 7]   88         ld a, #0
+   0064 32 03 00      [13]   89         ld (CoordMapMin+1), a
+   0067 32 01 00      [13]   90         ld (cam_min+1), a
+   006A                      91     finish:
+   006A 22 06 00      [16]   92     ld (map_ptr), hl
+                             93 
+   006D 3E 00         [ 7]   94     ld a, #0
+   006F 32 04 00      [13]   95     ld (CameraTargetX), a
+   0072 32 05 00      [13]   96     ld (CameraTargetY), a
+   0075 C9            [10]   97 ret
+                             98 
+                             99 ;;  ENTRADA:    B -> Incremento molon de camara
+   0076                     100 setTargetX::
+   0076 3A 04 00      [13]  101     ld a, (#CameraTargetX)
+   0079 80            [ 4]  102     add b
+   007A 32 04 00      [13]  103     ld (#CameraTargetX), a
+   007D C9            [10]  104 ret
+                            105 
+                            106 ;;  ENTRADA:    B -> Incremento molon de camara
+   007E                     107 setTargetY::
+   007E 3A 05 00      [13]  108     ld a, (#CameraTargetY)
+   0081 80            [ 4]  109     add b
+   0082 32 05 00      [13]  110     ld (#CameraTargetY), a
+   0085 C9            [10]  111 ret
+                            112 
+                            113 ;========================================================================;
+                            114 ;   Comprueba si la cámara debe hacer scroll y cambia las variables
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
+Hexadecimal [16-Bits]
+
+
+
+                            115 ;   de mínimos y máximos automáticamente
+                            116 ;   Destroys: A, BC, DE, HL
+                            117 ;========================================================================;
+   0086                     118 update_cam::
+   0086 3A 04 00      [13]  119     ld a, (#CameraTargetX)
+   0089 FE 00         [ 7]  120     cp #0                   ;; Hay algún target para la cámara?
+   008B 28 41         [12]  121     jr z, noTargetX
+                            122         ;; Tenemos target en X
+   008D FE F0         [ 7]  123         cp #0xF0            ;; Compruebo si el target es negativo
+   008F 3A 00 00      [13]  124         ld a, (cam_min)     ;; Cargo el camera min ahora, porque
+                            125                             ;; lo voy a tener que cargar igualmente
+                            126                             ;; tanto si es positivo como negativo
+   0092 38 1B         [12]  127         jr c, is_positive_x
+                            128             ;; Negativo
+                            129             ;; Comprueba que no se salga del mapa
+   0094 FE 00         [ 7]  130                 cp #0
+   0096 20 07         [12]  131                 jr nz, not_on_limit_left
+   0098 06 00         [ 7]  132                 ld b, #0            ;; Se sale del mapa! Pon el target a 0
+   009A CD 76 00      [17]  133                 call setTargetX
+   009D 18 2F         [12]  134                 jr noTargetX        ;; Y no hagas nada más, ve a comprobar Y
+   009F                     135             not_on_limit_left:
+                            136             ;; No nos salimos del mapa al aumentar! ʕ ͡° ͜ʖ ͡°ʔ
+   009F 06 FF         [ 7]  137             ld b, #-1               ;;  B aumentará cam_min/max
+   00A1 0E FC         [ 7]  138             ld c, #-4               ;;  C aumentará CoordMapMin
+   00A3 11 FF FF      [10]  139             ld de, #-1              ;; DE aumentará el puntero del mapa
+   00A6 3A 04 00      [13]  140             ld a, (CameraTargetX)   ;; Como estamos en target negativo
+   00A9 3C            [ 4]  141             inc a                   ;; Le sumo uno para ir llevándolo a 0
+   00AA 32 04 00      [13]  142             ld (CameraTargetX), a
+   00AD 18 19         [12]  143             jr update_x
+   00AF                     144         is_positive_x:
+                            145             ;; Positivo
+                            146             ;; Comprueba que no se salga del mapa
+   00AF FE 00         [ 7]  147                 cp #LimitRight
+   00B1 20 07         [12]  148                 jr nz, not_on_limit_right
+   00B3 06 00         [ 7]  149                 ld b, #0            ;; Se sale del mapa! Pon el target a 0
+   00B5 CD 76 00      [17]  150                 call setTargetX
+   00B8 18 14         [12]  151                 jr noTargetX
+                            152 
+   00BA                     153             not_on_limit_right:
+                            154             ;; Mismo de antes pero en positivo
+   00BA 06 01         [ 7]  155             ld b, #1
+   00BC 0E 04         [ 7]  156             ld c, #4
+   00BE 11 01 00      [10]  157             ld de, #1
+   00C1 3A 04 00      [13]  158             ld a, (CameraTargetX)
+   00C4 3D            [ 4]  159             dec a           ;; Ahora es positivo, resto para llevarlo a 0
+   00C5 32 04 00      [13]  160             ld (CameraTargetX), a
+   00C8                     161         update_x:
+   00C8 21 00 00      [10]  162         ld hl, #cam_min     ;; Cargo en hl cam_min, que es la que tiene la X
+   00CB CD 08 00      [17]  163         call inc_map
+                            164 
+                            165     ;; Repetimos el mismo proceso para Y
+   00CE                     166     noTargetX:
+   00CE 3A 05 00      [13]  167     ld a, (CameraTargetY)
+   00D1 FE 00         [ 7]  168     cp #0
+   00D3 C8            [11]  169     ret z
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 8.
+Hexadecimal [16-Bits]
+
+
+
+                            170         ;; Tenemos target en Y
+                            171         ;; Comprueba que no se salga del mapa
+   00D4 FE F0         [ 7]  172         cp #0xF0
+   00D6 3A 01 00      [13]  173         ld a, (cam_min+1)
+   00D9 38 1A         [12]  174         jr c, is_positive_y
+                            175             ;; Negativo
+                            176             ;; Comprueba que no se salga del mapa
+   00DB FE 00         [ 7]  177                 cp #0
+   00DD 20 06         [12]  178                 jr nz, not_on_limit_up
+   00DF 06 00         [ 7]  179                 ld b, #0            ;; Se sale del mapa! Pon el target a 0
+   00E1 CD 7E 00      [17]  180                 call setTargetY
+   00E4 C9            [10]  181                 ret
+   00E5                     182             not_on_limit_up:
+   00E5 06 FF         [ 7]  183             ld b, #-1      ;;AAAAAAAAAAAAAAAAAAAAAAAAAAA
+   00E7 0E F8         [ 7]  184             ld c, #-8
+   00E9 11 E2 FF      [10]  185             ld de, #-30
+   00EC 3A 05 00      [13]  186             ld a, (CameraTargetY)
+   00EF 3C            [ 4]  187             inc a
+   00F0 32 05 00      [13]  188             ld (CameraTargetY), a
+   00F3 18 18         [12]  189             jr update_y
+   00F5                     190         is_positive_y:
+                            191             ;; Positivo
+                            192             ;; Comprueba que no se salga del mapa
+   00F5 FE 00         [ 7]  193                 cp #LimitDown
+   00F7 20 06         [12]  194                 jr nz, not_on_limit_down
+   00F9 06 00         [ 7]  195                 ld b, #0            ;; Se sale del mapa! Pon el target a 0
+   00FB CD 7E 00      [17]  196                 call setTargetY
+   00FE C9            [10]  197                 ret
+                            198 
+   00FF                     199             not_on_limit_down:
+   00FF 11 1E 00      [10]  200             ld de, #30
+   0102 06 01         [ 7]  201             ld b, #1       ;;AAAAAAAAAAAAAAAAAAAAAAAAAAA
+   0104 0E 08         [ 7]  202             ld c, #8
+   0106 3A 05 00      [13]  203             ld a, (CameraTargetY)
+   0109 3D            [ 4]  204             dec a
+   010A 32 05 00      [13]  205             ld (CameraTargetY), a
+   010D                     206         update_y:
+   010D 21 01 00      [10]  207         ld hl, #cam_min+1   ;; Ahora le paso la Y
+   0110 CD 08 00      [17]  208         call inc_map
+   0113 C9            [10]  209 ret
+                            210 
+   0114                     211 openTeleporter::
+                            212 
+   0114 C9            [10]  213 ret
+                            214 
+                            215 ;========================================================================;
+                            216 ;   Draws the complete map.in.include "drawable.h.s"clude "drawable.h.s"
+                            217 ;========================================================================;
+   0115                     218 drawMap::
+   0115 3A 00 00      [13]  219     ld a, (back_buffer)                  ;; Apunta al inicio de la memoria de video
+   0118 3C            [ 4]  220     inc a
+   0119 67            [ 4]  221     ld h, a
+   011A 2E 48         [ 7]  222     ld l, #0x48
+   011C ED 5B 06 00   [20]  223     ld de, (map_ptr)
+   0120 CD 00 00      [17]  224     call cpct_etm_drawTilemap4x8_ag_asm
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 9.
+Hexadecimal [16-Bits]
+
+
+
+   0123 C9            [10]  225 ret
+                            226 
+                            227 ;; DIBUJADO DEL HUD
+   0124                     228 drawHud::
+   0124 21 00 00      [10]  229     ld hl, #_g_00
+   0127 0E 14         [ 7]  230     ld c, #20        ;; Ancho en tiles -> 20*8 = 160
+   0129 06 19         [ 7]  231     ld b, #25        ;; Alto en tiles  -> 25*8 = 200
+   012B 11 14 00      [10]  232     ld de, #20
+   012E CD 00 00      [17]  233     call cpct_etm_setDrawTilemap4x8_ag_asm
+                            234 
+                            235     ;; DECRUNCH
+   0131 11 CE 03      [10]  236     ld de, #HUD_END_DECOMPRESSED
+   0134 21 00 00      [10]  237     ld hl, #_hud_end
+   0137 CD 00 00      [17]  238     call cpct_zx7b_decrunch_s_asm
+                            239 
+   013A 3A 00 00      [13]  240     ld a, (back_buffer)
+   013D 67            [ 4]  241     ld h, a
+   013E 2E 00         [ 7]  242     ld l, #0
+   0140 11 00 00      [10]  243     ld de, #decompress_buffer
+   0143 CD 00 00      [17]  244     call cpct_etm_drawTilemap4x8_ag_asm
+   0146 C9            [10]  245 ret

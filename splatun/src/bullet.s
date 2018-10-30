@@ -475,7 +475,7 @@ shoot_sfx::
    ld e, #10  ;NOTA
    ld d, #2   ;VELOCIDAD
    ld bc, #0  ;PITCH
-   ld a, #1   ;CANAL
+   ld a, #4   ;CANAL
    call cpct_akp_SFXPlay_asm
 
    pop iy
