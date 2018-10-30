@@ -82,6 +82,12 @@ $(eval $(call IMG2SP, CONVERT         , assets/GAMEOVER/GAMEOVER_1.png, 32, 97,o
 $(eval $(call IMG2SP, CONVERT         , assets/GAMEOVER/GAMEOVER_2.png, 32, 97,o, ))
 $(eval $(call IMG2SP, CONVERT         , assets/GAMEOVER/GAMEOVER_3.png, 32, 97,o, ))
 $(eval $(call IMG2SP, CONVERT         , assets/GAMEOVER/GAMEOVER_4.png, 36, 97,o, ))
+
+$(eval $(call IMG2SP, CONVERT         , assets/VICTORY/VICTORY_1.png, 30, 114,v, ))
+$(eval $(call IMG2SP, CONVERT         , assets/VICTORY/VICTORY_2.png, 30, 114,v, ))
+$(eval $(call IMG2SP, CONVERT         , assets/VICTORY/VICTORY_3.png, 30, 114,v, ))
+$(eval $(call IMG2SP, CONVERT         , assets/VICTORY/VICTORY_4.png, 30, 114,v, ))
+$(eval $(call IMG2SP, CONVERT         , assets/VICTORY/VICTORY_5.png, 12, 114,v, ))
 #$(eval $(call IMG2SPRITES,assets/PRESSA2.png,0,m,80,66,$(PALETTEMENU),,src/Sprites))
 
 

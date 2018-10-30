@@ -78,6 +78,23 @@ $(eval $(call PACKZX7B,GameOver3,src/Compression/))
 $(eval $(call ADD2PACK,GameOver4,src/Sprites/GAMEOVER_4.bin))
 $(eval $(call PACKZX7B,GameOver4,src/Compression/))
 
+#VICTORY
+$(eval $(call ADD2PACK,Victory1,src/Sprites/VICTORY_1.bin))
+$(eval $(call PACKZX7B,Victory1,src/Compression/))
+
+$(eval $(call ADD2PACK,Victory2,src/Sprites/VICTORY_2.bin))
+$(eval $(call PACKZX7B,Victory2,src/Compression/))
+
+$(eval $(call ADD2PACK,Victory3,src/Sprites/VICTORY_3.bin))
+$(eval $(call PACKZX7B,Victory3,src/Compression/))
+
+$(eval $(call ADD2PACK,Victory4,src/Sprites/VICTORY_4.bin))
+$(eval $(call PACKZX7B,Victory4,src/Compression/))
+
+$(eval $(call ADD2PACK,Victory5,src/Sprites/VICTORY_5.bin))
+$(eval $(call PACKZX7B,Victory5,src/Compression/))
+
+
 
 # El jud
 $(eval $(call ADD2PACK,hud,src/Mapas/hud.bin))

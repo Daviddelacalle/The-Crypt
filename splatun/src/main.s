@@ -94,8 +94,6 @@ _main::
     ld hl, #SEED    ;; SEED
     call loadMenu
 
-    ;ld de, #map_start
-    ;call waitInput  ;; In util.s
     map_start::
 
         call recalculateCameraOffset
