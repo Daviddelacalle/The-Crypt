@@ -50,7 +50,7 @@
 #   and Z80 memory location where code will start in the generated binary
 PROJNAME   := thecrypt
 #Z80CODELOC := 0x3C4			# 0 40 + 3 84
-Z80CODELOC := 0x8F7			# 0 40 + 14 A0
+Z80CODELOC := 0x94A			# 0 40 + 14 A0
 
 ##
 ## Folders

@@ -7,7 +7,7 @@ GameOverFragment2            = 0x6D2
 VictoryFragment1             = 0x6AE
 VictoryFragment2             = 0x2AC
 
-decompress_buffer == 0x1DB
+decompress_buffer == 0x022E
 buffer_end_gameOver = decompress_buffer + GameOverFragment1 - 1
 buffer_end_gameOver2 = decompress_buffer + GameOverFragment2 - 1
 

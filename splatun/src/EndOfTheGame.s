@@ -5,7 +5,7 @@ imageMaxSize             = 0x610
 imageMaxSize2            = 0x6D2
 PRESSANYSize            == 0xB4
 
-decompress_buffer == 0x1DB
+decompress_buffer == 0x022E
 buffer_end_gameOver = decompress_buffer + imageMaxSize - 1
 buffer_end_gameOver2 = decompress_buffer + imageMaxSize2 - 1
 buffer_end_PRESSANY = decompress_buffer + PRESSANYSize - 1
@@ -31,14 +31,14 @@ loadVictory::
     ld a, #K_HERO_LIVES
     ld (HERO_LIVES), a
 
-    ld de, #_GameOver
+    ld de, #_win
     call cpct_akp_musicInit_asm
-
+    
     call drawVictory
     call swapBuffers
     call drawVictory
     call drawMessageSwapAndWaitInput
-    ;;
+
 ret
 
 drawMessageSwapAndWaitInput:

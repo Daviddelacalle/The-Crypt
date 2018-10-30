@@ -19,7 +19,7 @@
 ;; BUCLE PARA EL MENU
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-decompress_buffer == 0x1DB
+decompress_buffer == 0x022E
 imageMaxSize             = 0x71C
 buffer_end_menu = decompress_buffer + imageMaxSize - 1
 

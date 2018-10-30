@@ -5,7 +5,7 @@ current_level_1by1:: .db #0
 
 CLEAR_COLOR     = 0
 
-decompress_buffer        = 0x1DB
+decompress_buffer        = 0x022E
 MapSize                  = 0x384
 EnemiesSize              = 0x1
 MapSize                  = 0x384
@@ -27,6 +27,7 @@ SpawnOffset::    .db #0
 
 level_list:
     .dw #_level1_end
+    .dw #_level21_end
     .dw #_level2_end
     .dw #_level3_end
     .dw #_level4_end
@@ -45,7 +46,6 @@ level_list:
     .dw #_level17_end
     .dw #_level18_end
     .dw #_level20_end
-    .dw #_level21_end
 
 ;   Public
 ;=================================
