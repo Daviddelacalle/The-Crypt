@@ -61,3 +61,35 @@ waitInput::
     ex de, hl
     jp (hl)
 ret
+
+drawImagePortion::
+    ld a, (back_buffer)
+    ld h, a
+    ld l, #0x00
+    add hl, de
+    ex de, hl
+    DIPwidth == . + 1
+    ld c, #20
+    DIPheight == . + 1
+    ld b, #91
+    ld hl,#decompress_buffer
+    call cpct_drawSprite_asm  ;; Inicio del buffer de descompresión
+ret
+
+;;======================================
+;;  Wait D before proceed
+;;  INPUT: D => Time
+;;  If you divide D by 4, you'll get
+;;  seconds mesurement approximately
+;;======================================
+setTimeOut::
+    WaitB:
+        ld e, #0xFF
+        Timeout:
+            call cpct_waitVSYNC_asm
+            dec e
+        jr nz, Timeout
+        dec d
+    jr nz, WaitB
+ret
+
