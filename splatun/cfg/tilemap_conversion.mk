@@ -52,6 +52,13 @@ $(eval $(call TMX2DATA, CONVERT, assets/World1/Level7/Level7.tmx, level7	))
 $(eval $(call TMX2DATA, CONVERT, assets/World1/Level8/Level8.tmx, level8	))
 $(eval $(call TMX2DATA, CONVERT, assets/World1/Level9/Level9.tmx, level9	))
 $(eval $(call TMX2DATA, CONVERT, assets/World1/Level10/Level10.tmx, level10	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level11/Level11.tmx, level11	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level13/Level13.tmx, level13	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level14/Level14.tmx, level14	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level16/Level16.tmx, level16	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level17/Level17.tmx, level17	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level20/Level20.tmx, level20	))
+$(eval $(call TMX2DATA, CONVERT, assets/World1/Level21/Level21.tmx, level21	))
 $(eval $(call TMX2DATA, CONVERT, assets/Hud/hud.tmx, hud	))
 
 ##
