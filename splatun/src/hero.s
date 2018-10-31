@@ -248,20 +248,39 @@ checkTeleporter::
         cp #0
     ret nz
 
-    ld h, e_y(ix)
-    ld l, e_x(ix)
+    call getUpperLeftCorner
     call mapa_a_tile
+    call insideTP
 
+    call getUpperRightCorner
+    call mapa_a_tile
+    call insideTP
+
+    call getLowerLeftCorner
+    call mapa_a_tile
+    call insideTP
+
+    call getLowerRightCorner
+    call mapa_a_tile
+    call insideTP
+
+    ret
+    go_next:
+    push ix
+        call teleport_sfx
+        call loadNextLevel
+    pop ix
+ret
+
+insideTP:
     ld a, (Teleporter)
         cp c
     ret nz
     ld a, (Teleporter+1)
         cp b
     ret nz
-    push ix
-        call teleport_sfx
-        call loadNextLevel
-    pop ix
+
+    jr go_next
 ret
 
 resetHero::

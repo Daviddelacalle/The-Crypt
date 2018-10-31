@@ -166,6 +166,7 @@ checkEntityCollision::
     ld a, #1
 ret
 
+
 getUpperRightCorner::
     ld a, e_x(ix)       ;; Si mi personaje está en X = 0
         add e_w(ix)     ;; y le sumo el ancho que es 8, X = 8
